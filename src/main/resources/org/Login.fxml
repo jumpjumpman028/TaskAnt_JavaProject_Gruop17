@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: &quot;F7F7F7&quot;;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.LoginSystem">
+<AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: &quot;F7F7F7&quot;;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.LoginSystem">
     <children>
-        <TextField layoutX="192.0" layoutY="155.0" prefHeight="23.0" prefWidth="219.0" fx:id="usernameField"/>
-        <PasswordField layoutX="192.0" layoutY="210.0" prefHeight="23.0" prefWidth="219.0" fx:id="passwordField"/>
+        <TextField fx:id="usernameField" layoutX="192.0" layoutY="155.0" prefHeight="23.0" prefWidth="219.0" />
+        <PasswordField fx:id="passwordField" layoutX="192.0" layoutY="210.0" prefHeight="23.0" prefWidth="219.0" />
         <Label layoutX="227.0" layoutY="84.0" prefHeight="19.0" prefWidth="144.0" text="Welcome to TaskAnt!" wrapText="true">
             <font>
                 <Font name="Arial Bold Italic" size="14.0" />
@@ -23,8 +23,8 @@
         </Label>
         <Label layoutX="128.0" layoutY="159.0" text="Username:" />
         <Label layoutX="130.0" layoutY="214.0" text="Password:" />
-        <Button layoutX="192.0" layoutY="252.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Login" onAction="#onLogin"/>
-        <Button layoutX="342.0" layoutY="252.0" mnemonicParsing="false" text="Register?" />
-        <Label alignment="CENTER" layoutX="192.0" layoutY="289.0" prefHeight="15.0" prefWidth="219.0" textAlignment="CENTER" textFill="RED" fx:id="statusLabel"/>
+        <Button layoutX="192.0" layoutY="252.0" mnemonicParsing="false" onAction="#onLogin" prefHeight="23.0" prefWidth="69.0" text="Login" />
+        <Button layoutX="342.0" layoutY="252.0" mnemonicParsing="false" onAction="#onRegister" text="Register?" />
+        <Label fx:id="statusLabel" alignment="CENTER" layoutX="192.0" layoutY="289.0" prefHeight="15.0" prefWidth="219.0" textAlignment="CENTER" textFill="RED" />
     </children>
 </AnchorPane>

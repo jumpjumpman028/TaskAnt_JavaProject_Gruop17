@@ -31,4 +31,16 @@ public class LoginSystem {
             statusLabel.setTextFill(Color.RED);  // 設置文字顏色為紅色
         }
     }
+
+    @FXML
+    private void onRegister(){
+        try {
+            MainApplication.switchScene("Register.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();  // 至少印出錯誤幫助除錯
+            statusLabel.setText("Error opening register page");
+            statusLabel.setTextFill(Color.RED);
+        }
+    }
+
 }

@@ -6,13 +6,28 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainApplication extends Application {
+
+    private static Stage primaryStage;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Login.fxml"));
-        Scene scene = new Scene(loader.load());
-        primaryStage.setTitle("TaskAnt - Login");
-        primaryStage.setScene(scene);
+    public void start(Stage stage) throws Exception {
+        primaryStage = stage;
+        switchScene("Login.fxml");
+        primaryStage.setTitle("TaskAnt");
+        
+        primaryStage.setWidth(600);
+        primaryStage.setHeight(400);
+
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(400);
         primaryStage.show();
+    }
+
+
+    public static void switchScene(String fxmlFile) throws Exception {
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("/org/" + fxmlFile));
+        Scene scene = new Scene(loader.load());
+        primaryStage.setScene(scene);
     }
 
     public static void main(String[] args) {
