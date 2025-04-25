@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 
 public class DBTest {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/test_db";
+        String url = "jdbc:mysql://localhost:3306/taskant_userinfo";
         String user = "root";
         String password = "Z02280228z";
 
