@@ -25,5 +25,6 @@ module org.example.taskant_javaproject {
     // JSON 解析
     requires java.sql;
     requires com.fasterxml.jackson.core;
+    opens org to javafx.fxml;
     exports org;
 }
