@@ -4,8 +4,11 @@ module org.example.taskant_javaproject {
     requires javafx.web;
     requires javafx.swing;
     requires javafx.media;
-
+    requires com.google.api.client;
+    requires com.google.api.client.json.jackson2;
     requires java.net.http;
+    requires java.logging;
+    requires jdk.httpserver;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
@@ -15,7 +18,6 @@ module org.example.taskant_javaproject {
     requires com.almasb.fxgl.all;
     requires google.api.client;
     // Google API 相關
-    requires com.google.api.client;
     requires com.google.api.client.auth;
     requires com.google.api.client.extensions.java6.auth;
     requires com.google.api.client.extensions.jetty.auth;
@@ -23,7 +25,5 @@ module org.example.taskant_javaproject {
 
     // JSON 解析
     requires com.fasterxml.jackson.core;
-
-    opens org.example.taskant_javaproject to javafx.fxml;
     exports org;
 }

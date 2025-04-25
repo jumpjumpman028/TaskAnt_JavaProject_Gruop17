@@ -2,7 +2,9 @@ package org;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.JacksonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -15,7 +17,7 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
-public class CalendarQuickstart {
+public class GoogleCalendarQuickstart {
     private static final String APPLICATION_NAME = "TaskAnt Calendar Integration";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();  // 使用 JacksonFactory
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -23,7 +25,7 @@ public class CalendarQuickstart {
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     private static Credential getCredentials() throws Exception {
-        InputStream in = CalendarQuickstart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = GoogleCalendarQuickstart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new Exception("找不到 credentials.json");
         }
