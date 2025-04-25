@@ -14,12 +14,10 @@ public class MainApplication extends Application {
         primaryStage = stage;
         switchScene("Login.fxml");
         primaryStage.setTitle("TaskAnt");
-        
-        primaryStage.setWidth(600);
-        primaryStage.setHeight(400);
 
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
+
         primaryStage.show();
     }
 

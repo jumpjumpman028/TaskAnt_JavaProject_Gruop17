@@ -31,7 +31,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button layoutX="447.0" layoutY="363.0" mnemonicParsing="false" onAction="#cancel" prefHeight="23.0" prefWidth="138.0" text="Back to login page" />
+      <Button layoutX="445.0" layoutY="362.0" mnemonicParsing="false" onAction="#cancel" prefHeight="23.0" prefWidth="138.0" text="Back to login page" />
 
     </children>
 </AnchorPane>

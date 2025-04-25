@@ -54,6 +54,7 @@
       <artifactId>google-http-client</artifactId>
       <version>1.43.3</version> <!-- 保持這個版本 -->
     </dependency>
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>

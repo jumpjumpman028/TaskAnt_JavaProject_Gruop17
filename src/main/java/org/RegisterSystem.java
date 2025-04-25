@@ -45,7 +45,8 @@ public class RegisterSystem {
         try {
             MainApplication.switchScene("Login.fxml");
         } catch (Exception e) {
-
+            showRegisterStatus.setText("Error opening register page");
+            showRegisterStatus.setTextFill(Color.RED);
         }
     }
 
