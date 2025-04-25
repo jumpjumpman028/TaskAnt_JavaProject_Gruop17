@@ -22,8 +22,8 @@ module org.example.taskant_javaproject {
     requires com.google.api.client.extensions.java6.auth;
     requires com.google.api.client.extensions.jetty.auth;
     requires google.api.services.calendar.v3.rev411;
-
     // JSON 解析
+    requires java.sql;
     requires com.fasterxml.jackson.core;
     exports org;
 }
