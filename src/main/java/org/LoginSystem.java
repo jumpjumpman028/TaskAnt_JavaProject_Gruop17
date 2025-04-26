@@ -14,9 +14,9 @@ import java.sql.SQLException;
 public class LoginSystem {
 
     // 資料庫連接參數
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/taskant_userinfo";
+    private static final String DB_URL = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "Z02280228z";
+    private static final String DB_PASSWORD = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
 
     @FXML
     private TextField usernameField;

@@ -1,4 +1,4 @@
-module org.example.taskant_javaproject {
+module org{
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
