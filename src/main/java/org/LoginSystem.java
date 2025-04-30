@@ -43,6 +43,11 @@ public class LoginSystem {
                     statusLabel.setText("Login successful!");
                     statusLabel.setTextFill(Color.GREEN);
                     // 這裡可以轉換場景或跳轉到主頁
+                    try {
+                        MainApplication.switchScene("Menu.fxml");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     statusLabel.setText("Invalid credentials");
                     statusLabel.setTextFill(Color.RED);
