@@ -2,6 +2,8 @@ package org;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 public class Task {
 
@@ -17,30 +19,31 @@ public class Task {
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
 
-    public Task(String name, String description, String assignee, Type type, LocalTime startTime, LocalTime endTime,List<DayOfWeek> recurringDays) {
+    public Task(String name, String description, String assignee, Type type, String startTime, String endTime,List<DayOfWeek> recurringDays) {
         //制式化任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.status = Status.TODO;
         this.type = type;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = convertStringToLocalTime(startTime);
+        this.endTime = convertStringToLocalTime(endTime);
         this.recurringDays = recurringDays;
     }
-    public Task(String name, String description, String assignee, Type type,LocalTime startTime, LocalTime endTime) {
+    public Task(String name, String description, String assignee, Type type,LocalDate startDate,String startTime, String endTime) {
         //每天重複任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.status = Status.TODO;
         this.type = type;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startDate = startDate;
+        this.startTime = convertStringToLocalTime(startTime);
+        this.endTime = convertStringToLocalTime(endTime);
         this.recurringDays = List.of(DayOfWeek.MONDAY,DayOfWeek.TUESDAY,DayOfWeek.WEDNESDAY,DayOfWeek.THURSDAY,DayOfWeek.FRIDAY,DayOfWeek.SATURDAY,DayOfWeek.SUNDAY);
 
     }
-    public Task(String name, String description, String assignee, Type type,LocalDate startDate) {
+    public Task(String name, String description, String assignee, Type type,LocalDate startDate, String startTime) {
         //一次性任務範例
         this.name = name;
         this.description = description;
@@ -48,7 +51,7 @@ public class Task {
         this.status = Status.IN_PROGRESS;
         this.type = type;
         this.startDate = startDate;
-        this.startTime = null;
+        this.startTime = convertStringToLocalTime(startTime);
         this.endTime = null;
         this.recurringDays = null;
 
@@ -137,7 +140,15 @@ public class Task {
         }
         this.endTime = endTime;
     }
-
+    private static LocalTime convertStringToLocalTime(String timeString) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            return LocalTime.parse(timeString, formatter);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid time format: " + timeString);
+            return null;
+        }
+    }
     public enum Status {
         TODO, IN_PROGRESS, COMPLETED, LOCKED
     }

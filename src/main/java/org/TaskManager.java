@@ -29,4 +29,9 @@ public class TaskManager {
                 .filter(t -> t.getStatus() == status)
                 .collect(Collectors.toList());
     }
+    public boolean ChangeTaskData(List<Task> taskList) {
+        //todo: this.taskList -> DataBase
+        this.taskList = taskList;
+        return true;
+    }
 }

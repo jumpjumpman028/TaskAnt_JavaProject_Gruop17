@@ -34,43 +34,65 @@ public class Menu {
         DatePicker startDate = new DatePicker(LocalDate.now());
         DatePicker endDate = new DatePicker(LocalDate.now());
 
-        TextField startTime = new TextField();
-        startTime.setPromptText("開始時間 (HH:mm)");
-        TextField endTime = new TextField();
-        endTime.setPromptText("結束時間 (HH:mm)");
+        // 小時、分鐘下拉選單
+        ComboBox<Integer> startHour = new ComboBox<>();
+        ComboBox<Integer> startMinute = new ComboBox<>();
+        ComboBox<Integer> endHour = new ComboBox<>();
+        ComboBox<Integer> endMinute = new ComboBox<>();
+        for (int i = 0; i < 24; i++) {
+            startHour.getItems().add(i);
+            endHour.getItems().add(i);
+        }
+        for (int i = 0; i < 60; i++) {
+            startMinute.getItems().add(i);
+            endMinute.getItems().add(i);
+        }
+        startHour.setValue(9);
+        startMinute.setValue(0);
+        endHour.setValue(18);
+        endMinute.setValue(0);
 
+        // 放進 GridPane
         grid.add(new Label("任務名稱:"), 0, 0);
         grid.add(taskName, 1, 0);
         grid.add(new Label("描述:"), 0, 1);
         grid.add(description, 1, 1);
         grid.add(new Label("開始日期:"), 0, 2);
         grid.add(startDate, 1, 2);
+
         grid.add(new Label("開始時間:"), 0, 3);
-        grid.add(startTime, 1, 3);
+        grid.add(startHour, 1, 3);
+        grid.add(new Label(":"), 2, 3);
+        grid.add(startMinute, 3, 3);
+
         grid.add(new Label("結束日期:"), 0, 4);
         grid.add(endDate, 1, 4);
+
         grid.add(new Label("結束時間:"), 0, 5);
-        grid.add(endTime, 1, 5);
+        grid.add(endHour, 1, 5);
+        grid.add(new Label(":"), 2, 5);
+        grid.add(endMinute, 3, 5);
 
         dialog.getDialogPane().setContent(grid);
 
-        // 取得輸入資料
-        //todo:需要改成task物件
+        // 取得輸入資料並回傳 TaskData 物件
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
-                return new Task(
+                String startTime = String.format("%02d:%02d", startHour.getValue(), startMinute.getValue());
+                String endTime = String.format("%02d:%02d", endHour.getValue(), endMinute.getValue());
+                return new TaskData(
                         taskName.getText(),
                         description.getText(),
                         startDate.getValue(),
-                        startTime.getText(),
+                        startTime,
                         endDate.getValue(),
-                        endTime.getText()
+                        endTime
                 );
             }
             return null;
         });
 
-        Optional<Task> result = dialog.showAndWait();
+        Optional<TaskData> result = dialog.showAndWait();
         result.ifPresent(data -> {
             System.out.println("任務名稱: " + data.taskName);
             System.out.println("描述: " + data.description);
@@ -79,4 +101,22 @@ public class Menu {
         });
     }
 
+    // 建議加 public 方便外部存取
+    public static class TaskData {
+        public String taskName;
+        public String description;
+        public LocalDate startDate;
+        public String startTime;
+        public LocalDate endDate;
+        public String endTime;
+
+        public TaskData(String taskName, String description, LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
+            this.taskName = taskName;
+            this.description = description;
+            this.startDate = startDate;
+            this.startTime = startTime;
+            this.endDate = endDate;
+            this.endTime = endTime;
+        }
+    }
 }
