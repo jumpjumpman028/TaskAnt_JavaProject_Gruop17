@@ -117,6 +117,8 @@ public class Menu {
             this.startTime = startTime;
             this.endDate = endDate;
             this.endTime = endTime;
+            //測試用
+            TaskManager.getInstance().addTask(new Task(taskName,description,"",startDate,startTime));
         }
     }
 }

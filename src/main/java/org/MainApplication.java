@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Calendar;
+
 public class MainApplication extends Application {
 
     private static Stage primaryStage;
@@ -12,7 +14,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        switchScene("Login.fxml");
+        switchScene("Menu.fxml");
         primaryStage.setTitle("TaskAnt");
 
         primaryStage.setMinWidth(600);
@@ -29,6 +31,15 @@ public class MainApplication extends Application {
     }
 
     public static void main(String[] args) {
+        try{
+            GoogleCalendarAuthorization.getCalendarService();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
         launch(args);
+
+
+
     }
 }

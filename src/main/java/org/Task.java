@@ -19,39 +19,40 @@ public class Task {
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
 
-    public Task(String name, String description, String assignee, Type type, String startTime, String endTime,List<DayOfWeek> recurringDays) {
+    public Task(String name, String description, String assignee, String startTime, String endTime,List<DayOfWeek> recurringDays) {
         //制式化任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.status = Status.TODO;
-        this.type = type;
+        this.type = Type.GENERAL;
         this.startTime = convertStringToLocalTime(startTime);
         this.endTime = convertStringToLocalTime(endTime);
         this.recurringDays = recurringDays;
     }
-    public Task(String name, String description, String assignee, Type type,LocalDate startDate,String startTime, String endTime) {
+    public Task(String name, String description, String assignee,LocalDate startDate,String startTime, String endTime) {
         //每天重複任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.status = Status.TODO;
-        this.type = type;
+        this.type = Type.BOSS;
         this.startDate = startDate;
         this.startTime = convertStringToLocalTime(startTime);
         this.endTime = convertStringToLocalTime(endTime);
         this.recurringDays = List.of(DayOfWeek.MONDAY,DayOfWeek.TUESDAY,DayOfWeek.WEDNESDAY,DayOfWeek.THURSDAY,DayOfWeek.FRIDAY,DayOfWeek.SATURDAY,DayOfWeek.SUNDAY);
 
     }
-    public Task(String name, String description, String assignee, Type type,LocalDate startDate, String startTime) {
+    public Task(String name, String description, String assignee,LocalDate startDate, String startTime) {
         //一次性任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.status = Status.IN_PROGRESS;
-        this.type = type;
+        this.type = Type.Experience;
         this.startDate = startDate;
         this.startTime = convertStringToLocalTime(startTime);
+        this.endDate = startDate;
         this.endTime = null;
         this.recurringDays = null;
 
@@ -112,6 +113,10 @@ public class Task {
     }
 
     public LocalDate getEndDate() {
+        if(endDate == null){
+            DeBugConsole.log("getEndDate為null,更改為startDate");
+            return startDate;
+        }
         return endDate;
     }
     public LocalTime getStartTime() {
@@ -132,6 +137,9 @@ public class Task {
     }
 
     public LocalTime getEndTime() {
+        if(endTime == null){
+            return startTime.plusHours(+6);
+        }
         return endTime;
     }
     public void setEndTime(LocalTime endTime) {
@@ -153,7 +161,12 @@ public class Task {
         TODO, IN_PROGRESS, COMPLETED, LOCKED
     }
 
+    ///  GENERAL 一般性任務 Experience 一次性任務 BOSS 每天重複性任務
     public enum Type {
-        GENERAL, NODE, BOSS
+        GENERAL, Experience, BOSS
+    }
+    @Override
+    public String toString() {
+        return String.format("name=%s description=%s assignee=%s startTime=%s endTime=%s type=%s", name, description, assignee, startTime, endTime, type);
     }
 }

@@ -15,6 +15,13 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+
+
 public class GoogleCalendarAuthorization {
     private static final String APPLICATION_NAME = "TaskAnt Calendar Integration";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -44,5 +51,39 @@ public class GoogleCalendarAuthorization {
                 .build();
 
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+    }
+
+
+    public void addTaskToGoogleCalendar(Task task) throws Exception {
+        try {
+            Calendar service = getCalendarService();
+
+            Event event = new Event()
+                    .setSummary(task.getName())
+                    .setDescription(task.getDescription());
+
+            // 設定事件時間
+            EventDateTime start = new EventDateTime()
+                    .setDateTime(new com.google.api.client.util.DateTime(task.getStartDate().toString() + "T" + task.getStartTime().toString() + ":00"))
+                    .setTimeZone("Asia/Taipei");
+            event.setStart(start);
+
+            EventDateTime end = new EventDateTime()
+                    .setDateTime(new com.google.api.client.util.DateTime(task.getEndDate().toString() + "T" + task.getEndTime().toString() + ":00"))
+                    .setTimeZone("Asia/Taipei");
+            event.setEnd(end);
+
+            // 新增事件到 Google Calendar
+            String calendarId = "primary"; // 主日曆
+            event = service.events().insert(calendarId, event).execute();
+
+            System.out.printf("Event created: %s\n", event.getHtmlLink());
+        } catch (IOException e) {
+            System.err.println("IO Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (GeneralSecurityException e) {
+            System.err.println("Security Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
