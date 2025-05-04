@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class LoginSystem {
 
@@ -33,30 +34,35 @@ public class LoginSystem {
         String password = passwordField.getText();
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String loginQuery = "SELECT COUNT(*) FROM user WHERE UserAccount = ? AND UserPassword = ?";
-            try (PreparedStatement loginStmt = connection.prepareStatement(loginQuery)) {
-                loginStmt.setString(1, username);
-                loginStmt.setString(2, password);
-                ResultSet rs = loginStmt.executeQuery();
+            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2, password);
 
-                if (rs.next() && rs.getInt(1) > 0) {
-                    statusLabel.setText("Login successful!");
-                    statusLabel.setTextFill(Color.GREEN);
-                    // 這裡可以轉換場景或跳轉到主頁
-                    try {
-                        MainApplication.switchScene("Menu.fxml");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    statusLabel.setText("Invalid credentials");
-                    statusLabel.setTextFill(Color.RED);
-                }
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // 獲取 userID 和其他資訊
+                int userID = resultSet.getInt("user_id");
+                LocalDate createDate = resultSet.getDate("create_date").toLocalDate();
+
+                // 設定目前登入的使用者
+                UserInfo currentUser = new UserInfo(username, createDate, userID);
+                UserInfo.setCurrentUser(currentUser);
+
+                // 載入該使用者的任務
+                //todo:TaskManager.getInstance().loadTasksForUser(userID);
+
+                statusLabel.setTextFill(Color.GREEN);
+                statusLabel.setText("登入成功！");
+            } else {
+                statusLabel.setTextFill(Color.RED);
+                statusLabel.setText("帳號或密碼錯誤！");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            statusLabel.setText("Database error: " + e.getMessage());
             statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("登入時發生錯誤！");
         }
     }
 
