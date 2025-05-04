@@ -14,7 +14,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        switchScene("WaterTest.fxml");
+        switchScene("Login.fxml");
         primaryStage.setTitle("TaskAnt");
 
         primaryStage.setMinWidth(600);
