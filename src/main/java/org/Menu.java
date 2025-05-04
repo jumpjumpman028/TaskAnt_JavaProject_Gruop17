@@ -4,6 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -98,7 +102,35 @@ public class Menu {
             System.out.println("描述: " + data.description);
             System.out.println("開始: " + data.startDate + " " + data.startTime);
             System.out.println("結束: " + data.endDate + " " + data.endTime);
+
+            try {
+                saveTaskToDatabase(data);
+                System.out.println("任務已成功新增至資料庫！");
+            } catch (SQLException e) {
+                System.err.println("新增任務時發生錯誤：" + e.getMessage());
+            }
         });
+    }
+
+    private void saveTaskToDatabase(TaskData taskData) throws SQLException {
+        String dbUrl = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";
+        String dbUser = "root";
+        String dbPassword = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
+
+        String insertTaskSQL = "INSERT INTO tasks (task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?)";
+        //                            mySQL table名稱(各column名稱)
+        try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+             PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
+
+            preparedStatement.setString(1, taskData.taskName);//數字對應幾個?
+            preparedStatement.setString(2, taskData.description);
+            preparedStatement.setDate(3, java.sql.Date.valueOf(taskData.startDate));
+            preparedStatement.setString(4, taskData.startTime);
+            preparedStatement.setDate(5, java.sql.Date.valueOf(taskData.endDate));
+            preparedStatement.setString(6, taskData.endTime);
+
+            preparedStatement.executeUpdate();
+        }
     }
 
     // 建議加 public 方便外部存取
