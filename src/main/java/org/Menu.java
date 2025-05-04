@@ -84,7 +84,7 @@ public class Menu {
             if (dialogButton == okButtonType) {
                 String startTime = String.format("%02d:%02d", startHour.getValue(), startMinute.getValue());
                 String endTime = String.format("%02d:%02d", endHour.getValue(), endMinute.getValue());
-                return TaskManager.getInstance().CreateTask(taskName.getText(),description.getText(),startDate.getValue(),startHour.getValue(),startMinute.getValue(),endDate.getValue(),endHour.getValue(),endMinute.getValue());
+                //return TaskManager.getInstance().CreateTask(taskName.getText(),description.getText(),startDate.getValue(),startHour.getValue(),startMinute.getValue(),endDate.getValue(),endHour.getValue(),endMinute.getValue());
             }
             return null;
         });

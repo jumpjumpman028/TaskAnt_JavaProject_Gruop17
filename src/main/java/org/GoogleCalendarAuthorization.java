@@ -64,12 +64,12 @@ public class GoogleCalendarAuthorization {
 
             // 設定事件時間
             EventDateTime start = new EventDateTime()
-                    .setDateTime(new com.google.api.client.util.DateTime(task.getStartDate().toString() + "T" + task.getStartTime().toString() + ":00"))
+                    .setDateTime(new com.google.api.client.util.DateTime(task.getStartDateString() + "T" + task.getStartTimeString() + ":00"))
                     .setTimeZone("Asia/Taipei");
             event.setStart(start);
 
             EventDateTime end = new EventDateTime()
-                    .setDateTime(new com.google.api.client.util.DateTime(task.getEndDate().toString() + "T" + task.getEndTime().toString() + ":00"))
+                    .setDateTime(new com.google.api.client.util.DateTime(task.getEndDateString() + "T" + task.getEndTimeString() + ":00"))
                     .setTimeZone("Asia/Taipei");
             event.setEnd(end);
 

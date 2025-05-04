@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +23,7 @@ public class TaskManager {
         return instance;
     }
 
-    public void AddTask(Task task, UserInfo currentUser) {
+    public void AddTask(Task task) {
         try {
             // 將任務加入本地列表
             taskList.add(task);
@@ -29,30 +32,41 @@ public class TaskManager {
             CheckAndUpdateTaskInGoogleCalendar(task);
 
             // 插入資料庫
-            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-                    PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
+//            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//            try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+//                    PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
+//
+//                preparedStatement.setString(2, task.getName()); // task_name
+//                preparedStatement.setString(3, task.getDescription()); // task_description
+//                preparedStatement.setDate(4, java.sql.Date.valueOf(task.getStartDate())); // start_date
+//                preparedStatement.setString(5, task.getStartTimeString()); // start_time
+//                preparedStatement.setDate(6, java.sql.Date.valueOf(task.getEndDate())); // end_date
+//                preparedStatement.setString(7, task.getEndTimeString()); // end_time
+//
+//                preparedStatement.executeUpdate();
+//                System.out.println("任務已成功新增至資料庫！");
 
-                preparedStatement.setInt(1, currentUser.getUserID()); // user_id
-                preparedStatement.setString(2, task.getName()); // task_name
-                preparedStatement.setString(3, task.getDescription()); // task_description
-                preparedStatement.setDate(4, java.sql.Date.valueOf(task.getStartDate())); // start_date
-                preparedStatement.setString(5, task.getStartTimeString()); // start_time
-                preparedStatement.setDate(6, java.sql.Date.valueOf(task.getEndDate())); // end_date
-                preparedStatement.setString(7, task.getEndTimeString()); // end_time
-
-                preparedStatement.executeUpdate();
-                System.out.println("任務已成功新增至資料庫！");
-            }
         } catch (Exception e) {
             System.err.println("新增任務時發生錯誤：" + e.getMessage());
         }
     }
 
-    public Task CreateTask(String taskName, String description, LocalDate startDate, int startHour, int startMinute,
-            LocalDate endDate, int endHour, int endMinute) {
-        // Todo:判斷任務為一次性 重複 又或著是每天 然後新增任務
-        return null;
+    public void CreateTask(String taskName, String description, LocalDate startDate, Integer startHour, Integer startMinute,
+                           LocalDate endDate, Integer endHour, Integer endMinute, List<DayOfWeek> recurringDays , Task.Type taskType ) {
+        LocalTime startTime = null;
+        LocalTime endTime = null;
+        if(startHour != null && startMinute != null) {
+            startTime = LocalTime.of(startHour,startMinute);
+        }
+        if(endHour != null && endMinute != null) {
+            endTime = LocalTime.of(endHour,endMinute);
+        }
+
+        if(taskType == Task.Type.Experience) {
+            AddTask(new Task(taskName,description,"使用者",startDate,startTime));
+        }else{
+            AddTask(new Task(taskName,description,"使用者",startDate,startTime,endDate,endTime,recurringDays,taskType));
+        }
     }
 
     public void updateStatus(Task task, Task.Status newStatus) {
@@ -108,10 +122,18 @@ public class TaskManager {
      */
     public void CheckAndUpdateTaskInGoogleCalendar(Task task) throws Exception {
         // TODO: 如果Task是In_process 就新增至GOOGLE CALENDAR上
-        if (task.getStatus() == Task.Status.IN_PROGRESS) {
-            GoogleCalendarAuthorization calendarAuthorization = new GoogleCalendarAuthorization();
-            calendarAuthorization.addTaskToGoogleCalendar(task);
-            System.out.println("Task added to Google Calendar: " + task.getName());
+        if(task.getType() == Task.Type.Experience){
+            return;
         }
+        try {
+            if (task.getStatus() == Task.Status.IN_PROGRESS) {
+                GoogleCalendarAuthorization calendarAuthorization = new GoogleCalendarAuthorization();
+                calendarAuthorization.addTaskToGoogleCalendar(task);
+                System.out.println("Task added to Google Calendar: " + task.getName());
+            }
+        }catch (Exception e) {
+            throw new Exception("CheckAndUpdateTaskInGoogleCalendar 有錯"+ e.getMessage());
+        }
+
     }
 }

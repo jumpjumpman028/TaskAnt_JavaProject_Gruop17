@@ -25,6 +25,7 @@ module org{
     // JSON 解析
     requires java.sql;
     requires com.fasterxml.jackson.core;
+    requires org.checkerframework.checker.qual;
     opens org to javafx.fxml;
     exports org;
 }

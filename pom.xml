@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>1.34.0</version> <!-- 降級版本以確保相容性 -->
+      <version>1.34.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.http-client</groupId>
