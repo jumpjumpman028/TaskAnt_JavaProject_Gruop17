@@ -13,6 +13,7 @@ public class TaskManager {
     public void AddTask(Task task){
         try{
             taskList.add(task);
+            UploadDataToDatabase();
             CheckAndUpdateTaskInGoogleCalendar(task);
             DeBugConsole.log("成功新增任務" + task.toString());
 
@@ -55,7 +56,8 @@ public class TaskManager {
      * @return
      */
     public boolean UploadDataToDatabase() {
-        //todo: this.taskList -> DataBase
+        //todo: this.taskList -> DataBase (多人)
+        NotifyAllUsersDataChanged(taskList);
         return true;
     }
     /**
@@ -63,7 +65,7 @@ public class TaskManager {
      * @param taskList
      */
     public void NotifyAllUsersDataChanged(List<Task> taskList) {
-        //todo:當任務更新時 通知團隊中的其他人 必須更新資料庫資料
+        //todo:當任務更新時 通知團隊中的其他人 必須更新資料庫資料 (多人)
     }
 
     /**
