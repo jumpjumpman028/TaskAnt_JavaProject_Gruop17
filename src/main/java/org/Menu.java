@@ -117,17 +117,17 @@ public class Menu {
         String dbUser = "root";
         String dbPassword = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
 
-        String insertTaskSQL = "INSERT INTO tasks (task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
         //                            mySQL table名稱(各column名稱)
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
              PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
-
-            preparedStatement.setString(1, taskData.taskName);//數字對應幾個?
-            preparedStatement.setString(2, taskData.description);
-            preparedStatement.setDate(3, java.sql.Date.valueOf(taskData.startDate));
-            preparedStatement.setString(4, taskData.startTime);
-            preparedStatement.setDate(5, java.sql.Date.valueOf(taskData.endDate));
-            preparedStatement.setString(6, taskData.endTime);
+            preparedStatement.setInt(1, 1);//數字對應幾個?
+            preparedStatement.setString(2, taskData.taskName);//數字對應幾個?
+            preparedStatement.setString(3, taskData.description);
+            preparedStatement.setDate(4, java.sql.Date.valueOf(taskData.startDate));
+            preparedStatement.setString(5, taskData.startTime);
+            preparedStatement.setDate(6, java.sql.Date.valueOf(taskData.endDate));
+            preparedStatement.setString(7, taskData.endTime);
 
             preparedStatement.executeUpdate();
         }
