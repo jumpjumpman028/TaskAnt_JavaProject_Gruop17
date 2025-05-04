@@ -18,7 +18,7 @@
         <!-- 按鈕區域 -->
         <HBox layoutX="50" layoutY="30" spacing="20">
             <children>
-                <Button fx:id="oneTimeBtn" defaultButton="true" onAction="#showOneTimeTask" text="一次性任務" />
+                <Button fx:id="oneTimeBtn" onAction="#showOneTimeTask" text="一次性任務" />
                 <Button fx:id="repeatBtn" onAction="#showRepeatTask" text="重複性任務" />
             </children>
         </HBox>
@@ -116,13 +116,8 @@
                         </items>
                     </ChoiceBox>
                 </HBox>
-                <HBox spacing="10">
-                    <Label minWidth="80" text="時間選擇器：" />
-                    <TextField fx:id="repeatTimeHour" maxWidth="40" promptText="HH" />
-                    <Label text=":" />
-                    <TextField fx:id="repeatTimeMinute" maxWidth="40" promptText="MM" />
-                </HBox>
             </children>
         </VBox>
+      <Button fx:id="comfirmButton" defaultButton="true" layoutX="524.0" layoutY="442.0" mnemonicParsing="false" onAction="#ConfirmData" prefHeight="44.0" prefWidth="62.0" text="確認" textFill="#613535" />
     </children>
 </AnchorPane>

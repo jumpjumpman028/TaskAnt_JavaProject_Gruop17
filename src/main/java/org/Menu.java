@@ -97,5 +97,6 @@ public class Menu {
             System.out.println("結束: " + data.getEndDate() + " " + data.getEndTime());
         });
     }
+}
 
 

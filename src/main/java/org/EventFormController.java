@@ -4,9 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class EventFormController { // implements Initializable
     @FXML private VBox oneTimePane;
     @FXML private VBox repeatPane;
@@ -18,6 +15,10 @@ public class EventFormController { // implements Initializable
     @FXML private CheckBox friCheck;
     @FXML private CheckBox satCheck;
     @FXML private CheckBox sunCheck;
+    @FXML
+    private void ConfirmData(){
+        
+    }
     @FXML
     private void showOneTimeTask() {
         oneTimePane.setVisible(true);
