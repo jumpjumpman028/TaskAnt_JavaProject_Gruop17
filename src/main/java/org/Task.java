@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 public class Task {
 
-
+    private int ID = -1 ;
     private String name;
     private String description;
     private String assignee;
@@ -90,6 +90,12 @@ public class Task {
         }
         if(status == Status.IN_PROGRESS && this.status == Status.TODO){
             setStartDate(LocalDate.now());
+            try{
+                TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(this);
+            }catch (Exception e){
+                DeBugConsole.log("Error in checkAndUpdateTaskInGoogleCalendar" + e.getMessage());
+            }
+
         }
         this.status = status;
     }
@@ -122,6 +128,10 @@ public class Task {
     public LocalTime getStartTime() {
         return startTime;
     }
+    public String getStartTimeString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return startTime.format(formatter);
+    }
     public void setStartDate(LocalDate startDate){
         this.startDate = startDate;
     }
@@ -142,6 +152,10 @@ public class Task {
         }
         return endTime;
     }
+    public String getEndTimeString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return endTime.format(formatter);
+    }
     public void setEndTime(LocalTime endTime) {
         if(endTime.isBefore(startTime)){
             DeBugConsole.log("setEndTime is Error!,endTime is before startTime");
@@ -157,6 +171,18 @@ public class Task {
             return null;
         }
     }
+    public void SetID(int ID) {
+        if(ID <0){
+            this.ID = ID;
+        }else{
+            DeBugConsole.log("多次更改"+ getName() +"的ID,不被受理");
+        }
+
+    }
+    public int getID() {
+        return ID;
+    }
+
     public enum Status {
         TODO, IN_PROGRESS, COMPLETED, LOCKED
     }

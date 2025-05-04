@@ -16,7 +16,7 @@ public class Menu {
     @FXML
     private void addTask() {
         // 建立自訂 Dialog
-        Dialog<TaskData> dialog = new Dialog<>();
+        Dialog<Task> dialog = new Dialog<>();
         dialog.setTitle("新增任務");
         dialog.setHeaderText("請輸入任務資料");
 
@@ -84,24 +84,17 @@ public class Menu {
             if (dialogButton == okButtonType) {
                 String startTime = String.format("%02d:%02d", startHour.getValue(), startMinute.getValue());
                 String endTime = String.format("%02d:%02d", endHour.getValue(), endMinute.getValue());
-                return new TaskData(
-                        taskName.getText(),
-                        description.getText(),
-                        startDate.getValue(),
-                        startTime,
-                        endDate.getValue(),
-                        endTime
-                );
+                return TaskManager.getInstance().CreateTask(taskName.getText(),description.getText(),startDate.getValue(),startHour.getValue(),startMinute.getValue(),endDate.getValue(),endHour.getValue(),endMinute.getValue());
             }
             return null;
         });
 
-        Optional<TaskData> result = dialog.showAndWait();
+        Optional<Task> result = dialog.showAndWait();
         result.ifPresent(data -> {
-            System.out.println("任務名稱: " + data.taskName);
-            System.out.println("描述: " + data.description);
-            System.out.println("開始: " + data.startDate + " " + data.startTime);
-            System.out.println("結束: " + data.endDate + " " + data.endTime);
+            System.out.println("任務名稱: " + data.getName());
+            System.out.println("描述: " + data.getDescription());
+            System.out.println("開始: " + data.getStartDate() + " " + data.getStartTime());
+            System.out.println("結束: " + data.getEndDate() + " " + data.getEndTime());
 
             try {
                 saveTaskToDatabase(data);
@@ -112,7 +105,7 @@ public class Menu {
         });
     }
 
-    private void saveTaskToDatabase(TaskData taskData) throws SQLException {
+    private void saveTaskToDatabase(Task taskData) throws SQLException {
         String dbUrl = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";
         String dbUser = "root";
         String dbPassword = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
@@ -122,35 +115,14 @@ public class Menu {
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
              PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
-            preparedStatement.setString(1, taskData.taskName);//數字對應幾個?
-            preparedStatement.setString(2, taskData.description);
-            preparedStatement.setDate(3, java.sql.Date.valueOf(taskData.startDate));
-            preparedStatement.setString(4, taskData.startTime);
-            preparedStatement.setDate(5, java.sql.Date.valueOf(taskData.endDate));
-            preparedStatement.setString(6, taskData.endTime);
+            preparedStatement.setString(1, taskData.getName());//數字對應幾個?
+            preparedStatement.setString(2, taskData.getDescription());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(taskData.getStartDate()));
+            preparedStatement.setString(4, taskData.getStartTimeString());
+            preparedStatement.setDate(5, java.sql.Date.valueOf(taskData.getEndDate()));
+            preparedStatement.setString(6, taskData.getEndTimeString());
 
             preparedStatement.executeUpdate();
-        }
-    }
-
-    // 建議加 public 方便外部存取
-    public static class TaskData {
-        public String taskName;
-        public String description;
-        public LocalDate startDate;
-        public String startTime;
-        public LocalDate endDate;
-        public String endTime;
-
-        public TaskData(String taskName, String description, LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
-            this.taskName = taskName;
-            this.description = description;
-            this.startDate = startDate;
-            this.startTime = startTime;
-            this.endDate = endDate;
-            this.endTime = endTime;
-            //測試用
-            TaskManager.getInstance().addTask(new Task(taskName,description,"",startDate,startTime));
         }
     }
 }
