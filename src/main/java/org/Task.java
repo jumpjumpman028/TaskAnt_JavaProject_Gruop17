@@ -25,7 +25,8 @@ public class Task {
         this.description = description;
         this.assignee = assignee;
         this.status = Status.TODO;
-        this.type = Type.GENERAL;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.recurringDays = recurringDays;
@@ -103,7 +104,6 @@ public class Task {
         this.recurringDays = recurringDays;
     }
     public LocalDate getStartDate() {
-
         return startDate;
     }
     public String getStartDateString() {

@@ -27,7 +27,7 @@ public class TaskManager {
         try {
             // 將任務加入本地列表
             taskList.add(task);
-
+            CheckLocalDateTimeInProcess(task);
             // 同步到 Google Calendar
             CheckAndUpdateTaskInGoogleCalendar(task);
 
@@ -121,7 +121,7 @@ public class TaskManager {
      * @throws Exception
      */
     public void CheckAndUpdateTaskInGoogleCalendar(Task task) throws Exception {
-        // TODO: 如果Task是In_process 就新增至GOOGLE CALENDAR上
+
         if(task.getType() == Task.Type.Experience){
             return;
         }
@@ -135,5 +135,14 @@ public class TaskManager {
             throw new Exception("CheckAndUpdateTaskInGoogleCalendar 有錯"+ e.getMessage());
         }
 
+    }
+    public void CheckLocalDateTimeInProcess(Task task) {
+        if(task.getStatus() == Task.Status.TODO && task.getStartDate().isAfter(LocalDate.now())){
+            return;
+        } else if (task.getStatus() == Task.Status.TODO && task.getStartDate().isEqual(LocalDate.now()) && task.getStartTime().isAfter(LocalTime.now())) {
+            return;
+        }
+        task.setStatus(Task.Status.IN_PROGRESS);
+        DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
     }
 }

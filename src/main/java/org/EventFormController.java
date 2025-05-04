@@ -149,10 +149,10 @@ public class EventFormController implements Initializable {
         }
         if(startDate == null){
             DeBugConsole.log("startDate is null");
-        }else if(startDate.isBefore(LocalDate.now())){
-            DeBugConsole.log("startDate is before now");
-            return "開始日期不得為過去!";
-        }
+        }//else if(startDate.isBefore(LocalDate.now())){
+        //    DeBugConsole.log("startDate is before now");
+        //    return "開始日期不得為過去!";
+        //}
         if(startHour == null || startMinute == null){
             DeBugConsole.log("startHour is null");
             return "開始時間設定錯誤!";
