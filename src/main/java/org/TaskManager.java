@@ -1,4 +1,5 @@
 package org;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,9 +15,11 @@ public class TaskManager {
     private final String dbPassword = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
     private List<Task> taskList = new ArrayList<>();
     private final static TaskManager instance = new TaskManager();
+
     public static TaskManager getInstance() {
         return instance;
     }
+
     public void AddTask(Task task, UserInfo currentUser) {
         try {
             // 將任務加入本地列表
@@ -28,7 +31,7 @@ public class TaskManager {
             // 插入資料庫
             String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-                 PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
+                    PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
                 preparedStatement.setInt(1, currentUser.getUserID()); // user_id
                 preparedStatement.setString(2, task.getName()); // task_name
@@ -46,16 +49,20 @@ public class TaskManager {
         }
     }
 
-    public Task CreateTask(String taskName, String description, LocalDate startDate,int startHour, int startMinute, LocalDate endDate, int endHour, int  endMinute){
-        //Todo:判斷任務為一次性 重複 又或著是每天 然後新增任務
+    public Task CreateTask(String taskName, String description, LocalDate startDate, int startHour, int startMinute,
+            LocalDate endDate, int endHour, int endMinute) {
+        // Todo:判斷任務為一次性 重複 又或著是每天 然後新增任務
         return null;
     }
-    public void updateStatus(Task task,Task.Status newStatus){
+
+    public void updateStatus(Task task, Task.Status newStatus) {
         task.setStatus(newStatus);
     }
-    public List<Task> getTaskList(){
+
+    public List<Task> getTaskList() {
         return taskList;
     }
+
     public List<Task> getTasksByStatus(Task.Status status) {
         return taskList.stream()
                 .filter(t -> t.getStatus() == status)
@@ -63,38 +70,44 @@ public class TaskManager {
     }
 
     /**
-     *  當要把資料從資料庫抓下來時使用
+     * 當要把資料從資料庫抓下來時使用
+     * 
      * @param taskList
      * @return bool
      */
     public boolean FetchDataFromDatabase(List<Task> taskList) {
-        //todo:  DataBase -> this.taskList
+        // todo: DataBase -> this.taskList
         this.taskList = taskList;
         return true;
     }
 
     /**
      * 當需要上傳資料至資料庫中使用
+     * 
      * @return
      */
     public boolean UploadDataToDatabase() {
-        //todo: this.taskList -> DataBase
+        // todo: this.taskList -> DataBase (多人)
+        NotifyAllUsersDataChanged(taskList);
         return true;
     }
+
     /**
      * 當更新任務時，請呼叫此函式
+     * 
      * @param taskList
      */
     public void NotifyAllUsersDataChanged(List<Task> taskList) {
-        //todo:當任務更新時 通知團隊中的其他人 必須更新資料庫資料
+        // todo:當任務更新時 通知團隊中的其他人 必須更新資料庫資料 (多人)
     }
 
     /**
      * 確認是否需上傳至GoogleCalendar
+     * 
      * @throws Exception
      */
-    public void CheckAndUpdateTaskInGoogleCalendar(Task task) throws Exception{
-        //TODO: 如果Task是In_process 就新增至GOOGLE CALENDAR上
+    public void CheckAndUpdateTaskInGoogleCalendar(Task task) throws Exception {
+        // TODO: 如果Task是In_process 就新增至GOOGLE CALENDAR上
         if (task.getStatus() == Task.Status.IN_PROGRESS) {
             GoogleCalendarAuthorization calendarAuthorization = new GoogleCalendarAuthorization();
             calendarAuthorization.addTaskToGoogleCalendar(task);

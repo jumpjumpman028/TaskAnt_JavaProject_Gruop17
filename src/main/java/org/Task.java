@@ -19,7 +19,7 @@ public class Task {
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
 
-    public Task(String name, String description, String assignee, String startTime, String endTime,List<DayOfWeek> recurringDays) {
+        public Task(String name, String description, String assignee, String startTime, String endTime,List<DayOfWeek> recurringDays) {
         //制式化任務範例
         this.name = name;
         this.description = description;
