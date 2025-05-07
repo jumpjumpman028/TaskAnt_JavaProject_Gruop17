@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -12,6 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.EventFormController">
     <children>
@@ -40,19 +42,9 @@
                 </HBox>
                 <HBox spacing="10">
                     <Label minWidth="80" text="開始時間：" />
-                    <TextField fx:id="oneStartHour" maxWidth="40" promptText="HH" />
+                    <ComboBox fx:id="oneStartHour" maxWidth="60" prefWidth="60" />
                     <Label text=":" />
-                    <TextField fx:id="oneStartMinute" maxWidth="40" promptText="MM" />
-                </HBox>
-                <HBox spacing="10">
-                    <Label minWidth="80" text="日期選擇器：" />
-                    <DatePicker fx:id="oneDatePicker" />
-                </HBox>
-                <HBox spacing="10">
-                    <Label minWidth="80" text="時間選擇器：" />
-                    <TextField fx:id="oneTimeHour" maxWidth="40" promptText="HH" />
-                    <Label text=":" />
-                    <TextField fx:id="oneTimeMinute" maxWidth="40" promptText="MM" />
+                    <ComboBox fx:id="oneStartMinute" maxWidth="60" prefWidth="60" />
                 </HBox>
             </children>
         </VBox>
@@ -93,15 +85,15 @@
                 </HBox>
                 <HBox spacing="10">
                     <Label minWidth="80" text="開始時間：" />
-                    <TextField fx:id="repeatStartHour" maxWidth="40" promptText="HH" />
+                    <ComboBox fx:id="repeatStartHour" maxWidth="60" prefWidth="60" />
                     <Label text=":" />
-                    <TextField fx:id="repeatStartMinute" maxWidth="40" promptText="MM" />
+                    <ComboBox fx:id="repeatStartMinute" maxWidth="60" prefWidth="60" />
                 </HBox>
                 <HBox spacing="10">
                     <Label minWidth="80" text="結束時間：" />
-                    <TextField fx:id="repeatEndHour" maxWidth="40" promptText="HH" />
+                    <ComboBox fx:id="repeatEndHour" maxWidth="60" prefWidth="60" />
                     <Label text=":" />
-                    <TextField fx:id="repeatEndMinute" maxWidth="40" promptText="MM" />
+                    <ComboBox fx:id="repeatEndMinute" maxWidth="60" prefWidth="60" />
                 </HBox>
                 <HBox spacing="10">
                     <Label minWidth="80" text="提醒前置時間：" />
@@ -119,5 +111,10 @@
             </children>
         </VBox>
       <Button fx:id="comfirmButton" defaultButton="true" layoutX="524.0" layoutY="442.0" mnemonicParsing="false" onAction="#ConfirmData" prefHeight="44.0" prefWidth="62.0" text="確認" textFill="#613535" />
+      <Label fx:id="errorLabel" alignment="TOP_LEFT" layoutX="26.0" layoutY="399.0" prefHeight="101.0" prefWidth="471.0" textFill="#eb0707">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

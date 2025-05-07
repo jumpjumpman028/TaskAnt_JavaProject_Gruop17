@@ -19,31 +19,20 @@ public class Task {
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
 
-        public Task(String name, String description, String assignee, String startTime, String endTime,List<DayOfWeek> recurringDays) {
+        public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
         //制式化任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.status = Status.TODO;
-        this.type = Type.GENERAL;
-        this.startTime = convertStringToLocalTime(startTime);
-        this.endTime = convertStringToLocalTime(endTime);
-        this.recurringDays = recurringDays;
-    }
-    public Task(String name, String description, String assignee,LocalDate startDate,String startTime, String endTime) {
-        //每天重複任務範例
-        this.name = name;
-        this.description = description;
-        this.assignee = assignee;
-        this.status = Status.TODO;
-        this.type = Type.BOSS;
         this.startDate = startDate;
-        this.startTime = convertStringToLocalTime(startTime);
-        this.endTime = convertStringToLocalTime(endTime);
-        this.recurringDays = List.of(DayOfWeek.MONDAY,DayOfWeek.TUESDAY,DayOfWeek.WEDNESDAY,DayOfWeek.THURSDAY,DayOfWeek.FRIDAY,DayOfWeek.SATURDAY,DayOfWeek.SUNDAY);
-
+        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.recurringDays = recurringDays;
+        this.type = type;
     }
-    public Task(String name, String description, String assignee,LocalDate startDate, String startTime) {
+    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime) {
         //一次性任務範例
         this.name = name;
         this.description = description;
@@ -51,7 +40,7 @@ public class Task {
         this.status = Status.IN_PROGRESS;
         this.type = Type.Experience;
         this.startDate = startDate;
-        this.startTime = convertStringToLocalTime(startTime);
+        this.startTime = startTime;
         this.endDate = startDate;
         this.endTime = null;
         this.recurringDays = null;
@@ -117,6 +106,13 @@ public class Task {
     public LocalDate getStartDate() {
         return startDate;
     }
+    public String getStartDateString() {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            if(startDate == null){
+                return "無開始日期";
+            }
+            return startDate.format(formatter);
+    }
 
     public LocalDate getEndDate() {
         if(endDate == null){
@@ -125,11 +121,21 @@ public class Task {
         }
         return endDate;
     }
+    public String getEndDateString() {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            if(endDate == null){
+                return "無結束日期";
+            }
+            return endDate.format(formatter);
+    }
     public LocalTime getStartTime() {
         return startTime;
     }
     public String getStartTimeString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        if(startTime == null){
+            return "無時間XX:XX";
+        }
         return startTime.format(formatter);
     }
     public void setStartDate(LocalDate startDate){
@@ -147,13 +153,14 @@ public class Task {
     }
 
     public LocalTime getEndTime() {
-        if(endTime == null){
-            return startTime.plusHours(+6);
-        }
+
         return endTime;
     }
     public String getEndTimeString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        if(endTime == null){
+            return "無時間XX:XX";
+        }
         return endTime.format(formatter);
     }
     public void setEndTime(LocalTime endTime) {

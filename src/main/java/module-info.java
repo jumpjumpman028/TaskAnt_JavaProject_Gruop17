@@ -28,6 +28,7 @@ module org{
     //Hikari
     requires com.zaxxer.hikari;
     requires com.fasterxml.jackson.core;
+    requires org.checkerframework.checker.qual;
     opens org to javafx.fxml;
     exports org;
 }
