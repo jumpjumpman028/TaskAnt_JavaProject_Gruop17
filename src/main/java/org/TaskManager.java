@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TaskManager {
-    private final String dbUrl = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";
-    private final String dbUser = "root";
-    private final String dbPassword = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
+
     private List<Task> taskList = new ArrayList<>();
     private final static TaskManager instance = new TaskManager();
 
@@ -32,23 +30,25 @@ public class TaskManager {
             CheckAndUpdateTaskInGoogleCalendar(task);
 
             // 插入資料庫
-//            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
-//            try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-//                    PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
-//
-//                preparedStatement.setString(2, task.getName()); // task_name
-//                preparedStatement.setString(3, task.getDescription()); // task_description
-//                preparedStatement.setDate(4, java.sql.Date.valueOf(task.getStartDate())); // start_date
-//                preparedStatement.setString(5, task.getStartTimeString()); // start_time
-//                preparedStatement.setDate(6, java.sql.Date.valueOf(task.getEndDate())); // end_date
-//                preparedStatement.setString(7, task.getEndTimeString()); // end_time
-//
-//                preparedStatement.executeUpdate();
-//                System.out.println("任務已成功新增至資料庫！");
+            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
-        } catch (Exception e) {
-            System.err.println("新增任務時發生錯誤：" + e.getMessage());
-        }
+                preparedStatement.setInt(1, UserInfo.userID ); // user_id
+                preparedStatement.setString(2, task.getName()); // task_name
+                preparedStatement.setString(3, task.getDescription()); // task_description
+                preparedStatement.setDate(4, java.sql.Date.valueOf(task.getStartDate())); // start_date
+                preparedStatement.setString(5, task.getStartTimeString()); // start_time
+                preparedStatement.setDate(6, java.sql.Date.valueOf(task.getEndDate())); // end_date
+                preparedStatement.setString(7, task.getEndTimeString()); // end_time
+
+                preparedStatement.executeUpdate();
+                System.out.println("任務已成功新增至資料庫！");
+            }
+            catch (Exception e) {
+              System.err.println("新增任務時發生錯誤：" + e.getMessage());
+            }
+         }
     }
 
     public void CreateTask(String taskName, String description, LocalDate startDate, Integer startHour, Integer startMinute,

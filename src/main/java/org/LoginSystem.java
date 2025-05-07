@@ -33,8 +33,8 @@ public class LoginSystem {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
+            String query = "SELECT * FROM user WHERE UserAccount = ? AND UserPassword = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
             statement.setString(2, password);
@@ -43,7 +43,7 @@ public class LoginSystem {
 
             if (resultSet.next()) {
                 // 獲取 userID 和其他資訊
-                int userID = resultSet.getInt("user_id");
+                int userID = resultSet.getInt("id");
                 LocalDate createDate = resultSet.getDate("create_date").toLocalDate();
 
                 // 設定目前登入的使用者

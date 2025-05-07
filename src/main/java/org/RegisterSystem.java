@@ -14,9 +14,6 @@ import java.sql.SQLException;
 public class RegisterSystem {
 
     // 資料庫連接參數
-    private static final String DB_URL = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "zrKLjtYqVNzwFAVvMtklGAWgKlGHFPhb";
 
     @FXML
     private TextField usernameField;
@@ -43,7 +40,7 @@ public class RegisterSystem {
             showRegisterStatus.setText("Passwords do not match, please try again.");
             showRegisterStatus.setTextFill(Color.RED);
         } else {
-            try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
                 // 檢查使用者名稱是否已存在
                 String checkUserQuery = "SELECT COUNT(*) FROM user WHERE UserAccount = ?";
                 try (PreparedStatement checkStmt = connection.prepareStatement(checkUserQuery)) {
