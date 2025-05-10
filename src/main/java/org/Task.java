@@ -46,7 +46,7 @@ public class Task {
 
     }
 
-    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime) {
+    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type) {
         //資料庫抓下來的所有任務
         this.name = name;
         this.description = description;
@@ -55,6 +55,8 @@ public class Task {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+        this.status = status;
+        this.type = type;
 
     }
 
@@ -246,6 +248,7 @@ public class Task {
             }
             throw new IllegalArgumentException("Invalid code: " + code);
         }
+
         private final int code;
     }
     @Override
