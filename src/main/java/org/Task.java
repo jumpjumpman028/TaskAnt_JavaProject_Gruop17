@@ -18,7 +18,6 @@ public class Task {
     private LocalDate endDate;  //結束日期
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
-
         public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
         //制式化任務範例
         this.name = name;
@@ -41,20 +40,20 @@ public class Task {
         this.type = Type.Experience;
         this.startDate = startDate;
         this.startTime = startTime;
-        this.endDate = startDate;
+        this.endDate = null;
         this.endTime = null;
         this.recurringDays = null;
 
     }
 
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime) {
-        //一次性任務範例
+        //資料庫抓下來的所有任務
         this.name = name;
         this.description = description;
         this.assignee = assignee;
         this.startDate = startDate;
         this.startTime = startTime;
-        this.endDate = startDate;
+        this.endDate = endDate;
         this.endTime = endTime;
 
     }
@@ -202,13 +201,46 @@ public class Task {
         return ID;
     }
 
+
+
+
+
     public enum Status {
-        TODO, IN_PROGRESS, COMPLETED, LOCKED
+        TODO(0), IN_PROGRESS(1), COMPLETED(2), LOCKED(3);
+        Status(int code) {
+            this.code = code;
+        }
+        public int getCode() {
+            return code;
+        }
+        public static Status getStatus(int code) {
+            for (Status status : Status.values()) {
+                if (status.getCode() == code) {
+                    return status;
+                }
+            }
+        }
+        private final int code;
     }
+
 
     ///  GENERAL 一般性任務 Experience 一次性任務 BOSS 每天重複性任務
     public enum Type {
-        GENERAL, Experience, BOSS
+        GENERAL(0), Experience(1), BOSS(2);
+        Type(int code) {
+            this.code = code;
+        }
+        public int getCode() {
+            return code;
+        }
+        public static Type getType(int code) {
+            for (Type type : Type.values()) {
+                if (type.getCode() == code) {
+                    return type;
+                }
+            }
+        }
+        private final int code;
     }
     @Override
     public String toString() {
