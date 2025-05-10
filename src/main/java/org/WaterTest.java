@@ -39,44 +39,29 @@ public class WaterTest {
         taskListPane.getChildren().clear();
         List<Task> tasks = TaskManager.getInstance().getTaskList();
         for (Task task : tasks) {
-            HBox cell = new HBox(10);
-
-            // 任務名稱
-            Label nameLabel = new Label(task.getName());
-
-            // 開始時間
-            String startTime = "";
-
-                startTime = String.format("%s %s",
-                        task.getStartDateString(),
-                        task.getStartTimeString());
-
-
-            // 結束時間
-            String endTime = "";
-
-                endTime = String.format("%s %s",
-                        task.getEndDateString(),
-                        task.getEndTimeString());
-
-
-            Label timeLabel = new Label("開始：" + startTime + "\n結束：" + endTime);
-
-            // 狀態
-            Label statusLabel = new Label(task.getStatus().GetString());
-
-            cell.getChildren().addAll(nameLabel, timeLabel, statusLabel);
-            taskListPane.getChildren().add(cell);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCell.fxml"));
+                HBox cell = loader.load();
+                TaskCellController controller = loader.getController();
+                controller.setTask(task);
+                taskListPane.getChildren().add(cell);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     private HBox createTaskCell(Task task) {
-        HBox cell = new HBox(10);
-        Label name = new Label(task.getName());
-        Label status = new Label(task.getStatus().toString());
-        cell.getChildren().addAll(name, status);
-        // 可以加更多資訊
-        return cell;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCell.fxml"));
+            HBox cell = loader.load();
+            TaskCellController controller = loader.getController();
+            controller.setTask(task);
+            return cell;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new HBox(); // 回傳空 HBox 防呆
+        }
     }
 }

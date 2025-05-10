@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="root" alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TaskCellController">
+    <children>
+        <Label fx:id="nameLabel" maxWidth="120" style="-fx-font-weight: bold; -fx-text-overrun: ellipsis;" text="任務名稱" />
+        <Label fx:id="timeLabel" maxWidth="180" text="時間資訊" wrapText="true" />
+        <Label fx:id="statusLabel" style="-fx-text-fill: green;" text="狀態" />
+    </children>
+</HBox>

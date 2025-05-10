@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.EventFormController">
+<AnchorPane prefHeight="407.0" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.EventFormController">
     <children>
         <!-- 按鈕區域 -->
         <HBox layoutX="50" layoutY="30" spacing="20">
@@ -26,7 +26,7 @@
         </HBox>
 
         <!-- 一次性任務區塊 -->
-        <VBox fx:id="oneTimePane" layoutX="50" layoutY="80" spacing="15" visible="true">
+        <VBox fx:id="oneTimePane" layoutX="50" layoutY="80" prefHeight="169.0" prefWidth="298.0" spacing="15">
             <children>
                 <HBox spacing="10">
                     <Label minWidth="80" text="任務名稱：" />
@@ -110,11 +110,12 @@
                 </HBox>
             </children>
         </VBox>
-      <Button fx:id="comfirmButton" defaultButton="true" layoutX="524.0" layoutY="442.0" mnemonicParsing="false" onAction="#ConfirmData" prefHeight="44.0" prefWidth="62.0" text="確認" textFill="#613535" />
-      <Label fx:id="errorLabel" alignment="TOP_LEFT" layoutX="26.0" layoutY="399.0" prefHeight="101.0" prefWidth="471.0" textFill="#eb0707">
+      <Button fx:id="comfirmButton" defaultButton="true" layoutX="504.0" layoutY="350.0" mnemonicParsing="false" onAction="#ConfirmData" prefHeight="62.0" prefWidth="80.0" text="確認" textFill="#613535" />
+      <Label fx:id="errorLabel" alignment="TOP_LEFT" layoutX="-3.0" layoutY="390.0" prefHeight="44.0" prefWidth="525.0" textFill="#eb0707">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
+      <Button fx:id="cancelButton" cancelButton="true" layoutX="502.0" layoutY="8.0" mnemonicParsing="false" onAction="#CancelScene" prefHeight="44.0" prefWidth="84.0" text="取消" />
     </children>
 </AnchorPane>

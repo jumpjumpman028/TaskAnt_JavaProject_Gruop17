@@ -117,6 +117,7 @@ public class TaskManager {
     }
 
     public void updateStatus(Task task, Task.Status newStatus) {
+        DeBugConsole.log("TaskManager請求更改 "+ task.getName() +" 的狀態");
         task.setStatus(newStatus);
     }
 

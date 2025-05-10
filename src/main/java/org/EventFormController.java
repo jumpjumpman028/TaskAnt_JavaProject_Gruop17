@@ -2,6 +2,7 @@ package org;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -34,6 +35,7 @@ public class EventFormController implements Initializable {
     @FXML private ComboBox<Integer> repeatEndMinute;
     @FXML private ChoiceBox<String> remindBefore;
 
+    @FXML private Button cancelButton;
     @FXML private Button comfirmButton;
     @FXML private Label errorLabel;
 
@@ -125,13 +127,13 @@ public class EventFormController implements Initializable {
         internalUpdate = false;
     }
 
+    @FXML
+    private void CancelScene(ActionEvent event) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
+
     private String validateInput(String name , String desc, LocalDate startDate , Integer startHour, Integer startMinute) {
-        if(name.isEmpty()){
-            name = "None";
-        }
-        if(desc.isEmpty()){
-            desc = "None";
-        }
         if(startDate == null){
             DeBugConsole.log("startDate is null");
         }else if(startDate.isBefore(LocalDate.now())){
@@ -141,12 +143,6 @@ public class EventFormController implements Initializable {
         return null; // 沒有錯誤
     }
     private String validateInput(String name , String desc, LocalDate startDate, Integer startHour, Integer startMinute, LocalDate endDate,Integer endHour, Integer endMinute) {
-        if(name.isEmpty()){
-            name = "None";
-        }
-        if(desc.isEmpty()){
-            desc = "None";
-        }
         if(startDate == null){
             DeBugConsole.log("startDate is null");
         } else if(startDate.isBefore(LocalDate.now())){
@@ -187,6 +183,7 @@ public class EventFormController implements Initializable {
         }
         return selected;
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources)  {
         // 小時 0~23
