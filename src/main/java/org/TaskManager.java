@@ -1,12 +1,17 @@
 package org;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter; // 日期時間格式化
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,11 +42,11 @@ public class TaskManager {
             }
 
             // 插入資料庫
-            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
-                preparedStatement.setInt(1, 1); // user_id
+                preparedStatement.setInt(1, UserInfo.userID); // user_id
                 preparedStatement.setString(2, task.getName()); // task_name
                 preparedStatement.setString(3, task.getDescription()); // task_description
 
@@ -51,7 +56,7 @@ public class TaskManager {
                     preparedStatement.setNull(4, java.sql.Types.DATE);
                 }
 
-                if (task.getStartTimeString() != null && !task.getStartTimeString().isEmpty()) {
+                if (task.getStartTimeString() != null) {
                     preparedStatement.setString(5, task.getStartTimeString()); // start_time
                 } else {
                     preparedStatement.setNull(5, java.sql.Types.VARCHAR);
@@ -63,7 +68,7 @@ public class TaskManager {
                     preparedStatement.setNull(6, java.sql.Types.DATE);
                 }
 
-                if (task.getEndTimeString() != null && !task.getEndTimeString().isEmpty()) {
+                if (task.getEndTimeString() != null) {
                     preparedStatement.setString(7, task.getEndTimeString()); // end_time
                 } else {
                     preparedStatement.setNull(7, java.sql.Types.VARCHAR);
@@ -77,13 +82,16 @@ public class TaskManager {
             } catch (SQLException e) {
                 System.err.println("新增任務到資料庫時發生錯誤：" + e.getMessage());
                 e.printStackTrace();
+                // 如果需要，可以將錯誤重新拋出
                 throw new RuntimeException("資料庫操作失敗", e);
             }
         } catch (Exception e) {
             System.err.println("新增任務時發生錯誤：" + e.getMessage());
             e.printStackTrace();
+            // 如果需要，可以記錄到日誌或通知用戶
         }
     }
+
 
     public void CreateTask(String taskName, String description, LocalDate startDate, Integer startHour, Integer startMinute,
                            LocalDate endDate, Integer endHour, Integer endMinute, List<DayOfWeek> recurringDays, Task.Type taskType) {
@@ -117,15 +125,20 @@ public class TaskManager {
                 .collect(Collectors.toList());
     }
 
+    //當要把資料從資料庫抓下來時使用
+
     public boolean FetchDataFromDatabase() {
         String query = "SELECT * FROM tasks";
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
+            // 清空本地 taskList，避免重複添加
             taskList.clear();
 
+            // 遍歷結果集，將每一條記錄轉換為 Task 並加入 taskList
             while (resultSet.next()) {
+                // 從資料庫中提取欄位值
                 String taskName = resultSet.getString("task_name");
                 String taskDescription = resultSet.getString("task_description");
                 LocalDate startDate = resultSet.getDate("start_date") != null ? resultSet.getDate("start_date").toLocalDate() : null;
@@ -158,17 +171,34 @@ public class TaskManager {
     }
 
 
+    /**
+     * 當需要上傳資料至資料庫中使用
+     * 
+     * @return
+     */
     public boolean UploadDataToDatabase() {
+        // todo: this.taskList -> DataBase (多人)
         NotifyAllUsersDataChanged(taskList);
         return true;
     }
 
+    /**
+     * 當更新任務時，請呼叫此函式
+     * 
+     * @param taskList
+     */
     public void NotifyAllUsersDataChanged(List<Task> taskList) {
         // TODO: 當任務更新時通知團隊中的其他人
     }
 
+    /**
+     * 確認是否需上傳至GoogleCalendar
+     * 
+     * @throws Exception
+     */
     public void CheckAndUpdateTaskInGoogleCalendar(Task task) throws Exception {
-        if (task.getType() == Task.Type.Experience) {
+        //TODO:時間到，需要上傳資料至GoogleCalender，
+        if(task.getType() == Task.Type.Experience){
             return;
         }
         try {
@@ -180,15 +210,15 @@ public class TaskManager {
         } catch (Exception e) {
             throw new Exception("CheckAndUpdateTaskInGoogleCalendar 有錯" + e.getMessage());
         }
-    }
 
+    }
     public void CheckLocalDateTimeInProcess(Task task) {
-        if (task.getStatus() == Task.Status.TODO && task.getStartDate().isAfter(LocalDate.now())) {
+        if(task.getStatus() == Task.Status.TODO && task.getStartDate().isAfter(LocalDate.now())){
             return;
         } else if (task.getStatus() == Task.Status.TODO && task.getStartDate().isEqual(LocalDate.now()) && task.getStartTime().isAfter(LocalTime.now())) {
             return;
         }
         task.setStatus(Task.Status.IN_PROGRESS);
-        DeBugConsole.log("成功將任務 " + task.getName() + " 調至進行");
+        DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
     }
 }

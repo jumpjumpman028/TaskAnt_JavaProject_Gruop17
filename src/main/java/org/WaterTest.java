@@ -13,7 +13,8 @@ public class WaterTest {
     @FXML
     private void handleAddEvent(ActionEvent event) {
         try {
-            // 載入 EventForm.fxml
+
+            GoogleCalendarAuthorization.getCalendarService();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EventForm.fxml"));
             Parent root = loader.load();
 

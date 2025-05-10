@@ -149,10 +149,10 @@ public class EventFormController implements Initializable {
         }
         if(startDate == null){
             DeBugConsole.log("startDate is null");
-        }//else if(startDate.isBefore(LocalDate.now())){
-        //    DeBugConsole.log("startDate is before now");
-        //    return "開始日期不得為過去!";
-        //}
+        } else if(startDate.isBefore(LocalDate.now())){
+            DeBugConsole.log("startDate is before now");
+            return "開始日期不得為過去!";
+        }
         if(startHour == null || startMinute == null){
             DeBugConsole.log("startHour is null");
             return "開始時間設定錯誤!";
@@ -168,10 +168,11 @@ public class EventFormController implements Initializable {
             DeBugConsole.log("startMinute < endMinute");
             return "開始時間不得晚於結束時間!!!";
         }
-        if(startDate.isAfter(endDate)){
-            DeBugConsole.log("startDate is after endDate");
-            return "開始日期不得晚於結束日期";
-        }
+        if(endDate != null)
+            if(startDate.isAfter(endDate)){
+                DeBugConsole.log("startDate is after endDate");
+                return "開始日期不得晚於結束日期";
+            }
         return null; // 沒有錯誤
     }
     public List<DayOfWeek> getSelectedDays() {

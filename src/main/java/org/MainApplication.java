@@ -16,7 +16,6 @@ public class MainApplication extends Application {
         primaryStage = stage;
         switchScene("WaterTest.fxml");
         primaryStage.setTitle("TaskAnt");
-
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
 

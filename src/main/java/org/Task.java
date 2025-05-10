@@ -203,8 +203,16 @@ public class Task {
         return ID;
     }
 
-
-
+    public boolean isTaskOnTimeCheck() {
+            if((!startDate.isBefore(LocalDate.now())&& !type.equals(Task.Type.Experience))){
+                //TODO:通知使用者 日期已到
+                return true;    //非一次性任務時，當開始日期>=目前日期 任務開始
+            }else if (!startDate.isBefore(LocalDate.now()) && startTime.isAfter(LocalTime.now()) && type.equals(Task.Type.Experience)) {
+                //TODO 通知使用者 時間已到
+                return true;    //一次性任務時，當開始時間 >= 目前時間 任務開始
+            }
+            return false;
+    }
 
 
     public enum Status {
