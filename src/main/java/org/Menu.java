@@ -2,8 +2,13 @@ package org;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
+
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +17,34 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class Menu {
+    @FXML
+    private void notification(){
+        if (!SystemTray.isSupported()) {
+            System.err.println("系統不支援通知功能！");
+            return;
+        }
+
+        try {
+            // 創建系統托盤圖標
+            SystemTray systemTray = SystemTray.getSystemTray();
+            Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/notification.jpg")); // 確保圖片路徑正確
+            TrayIcon trayIcon = new TrayIcon(image, "任務通知");
+            trayIcon.setImageAutoSize(true);
+
+            // 添加到系統托盤
+            systemTray.add(trayIcon);
+
+            // 顯示通知
+            trayIcon.displayMessage("TaskAnt Notification", "Your team updated your task,go take a look!", TrayIcon.MessageType.INFO);
+
+            // 移除托盤圖標（可選，延遲幾秒後移除）
+            Thread.sleep(5000);
+            systemTray.remove(trayIcon);
+        } catch (Exception e) {
+            System.err.println("發送通知時發生錯誤：" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void addTask() {

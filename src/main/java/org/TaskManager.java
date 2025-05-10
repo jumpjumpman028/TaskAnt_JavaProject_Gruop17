@@ -1,5 +1,6 @@
 package org;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -46,31 +47,35 @@ public class TaskManager {
             try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
-                preparedStatement.setInt(1, UserInfo.userID); // user_id
+                preparedStatement.setInt(1, UserInfo.userID); // user_id //UserInfo.userid
                 preparedStatement.setString(2, task.getName()); // task_name
                 preparedStatement.setString(3, task.getDescription()); // task_description
 
                 if (task.getStartDate() != null) {
                     preparedStatement.setDate(4, java.sql.Date.valueOf(task.getStartDate())); // start_date
-                } else {
+                }
+                else {
                     preparedStatement.setNull(4, java.sql.Types.DATE);
                 }
 
                 if (task.getStartTimeString() != null) {
                     preparedStatement.setString(5, task.getStartTimeString()); // start_time
-                } else {
+                }
+                else {
                     preparedStatement.setNull(5, java.sql.Types.VARCHAR);
                 }
 
                 if (task.getEndDate() != null) {
                     preparedStatement.setDate(6, java.sql.Date.valueOf(task.getEndDate())); // end_date
-                } else {
+                }
+                else {
                     preparedStatement.setNull(6, java.sql.Types.DATE);
                 }
 
                 if (task.getEndTimeString() != null) {
                     preparedStatement.setString(7, task.getEndTimeString()); // end_time
-                } else {
+                }
+                else {
                     preparedStatement.setNull(7, java.sql.Types.VARCHAR);
                 }
 
@@ -171,16 +176,185 @@ public class TaskManager {
     }
 
 
-    /**
-     * 當需要上傳資料至資料庫中使用
-     * 
-     * @return
-     */
     public boolean UploadDataToDatabase() {
-        // todo: this.taskList -> DataBase (多人)
-        NotifyAllUsersDataChanged(taskList);
-        return true;
+        // SQL 語句：檢查任務是否存在，需同時判斷 user_id 和 task_name
+        String checkTaskExistsSQL = "SELECT COUNT(*) FROM tasks WHERE user_id = ? AND task_name = ?";
+        // SQL 語句：更新任務
+        String updateTaskSQL = "UPDATE tasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ? WHERE user_id = ? AND task_name = ?";
+        // SQL 語句：插入新任務
+        String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
+            for (Task task : taskList) {
+                // 檢查任務是否已存在於資料庫
+                boolean taskExists = false;
+                try (PreparedStatement checkStmt = connection.prepareStatement(checkTaskExistsSQL)) {
+                    checkStmt.setInt(1, UserInfo.userID); // 判斷 user_id
+                    checkStmt.setString(2, task.getName()); // 判斷 task_name
+                    try (ResultSet resultSet = checkStmt.executeQuery()) {
+                        if (resultSet.next()) {
+                            taskExists = resultSet.getInt(1) > 0; // 如果查詢結果大於 0，任務存在
+                        }
+                    }
+                }
+
+                if (taskExists) {
+                    // 任務已存在，執行更新操作
+                    try (PreparedStatement updateStmt = connection.prepareStatement(updateTaskSQL)) {
+                        updateStmt.setString(1, task.getDescription());
+                        if (task.getStartDate() != null) {
+                            updateStmt.setDate(2, java.sql.Date.valueOf(task.getStartDate()));
+                        }
+                        else {
+                            updateStmt.setNull(2, java.sql.Types.DATE);
+                        }
+
+                        if (task.getStartTimeString() != null) {
+                            updateStmt.setString(3, task.getStartTimeString());
+                        }
+                        else {
+                            updateStmt.setNull(3, java.sql.Types.VARCHAR);
+                        }
+
+                        if (task.getEndDate() != null) {
+                            updateStmt.setDate(4, java.sql.Date.valueOf(task.getEndDate()));
+                        }
+                        else {
+                            updateStmt.setNull(4, java.sql.Types.DATE);
+                        }
+
+                        if (task.getEndTimeString() != null) {
+                            updateStmt.setString(5, task.getEndTimeString());
+                        }
+                        else {
+                            updateStmt.setNull(5, java.sql.Types.VARCHAR);
+                        }
+
+                        updateStmt.setInt(6, task.getStatus().getCode());
+                        updateStmt.setInt(7, task.getType().getCode());
+                        updateStmt.setInt(8, UserInfo.userID); // 加入 user_id 條件
+                        updateStmt.setString(9, task.getName()); // 加入 task_name 條件
+
+                        updateStmt.executeUpdate();
+                        System.out.println("任務已更新：" + task.getName());
+                    }
+                }
+                else {
+                    // 任務不存在，執行插入操作
+                    try (PreparedStatement insertStmt = connection.prepareStatement(insertTaskSQL)) {
+                        insertStmt.setInt(1, UserInfo.userID); // user_id
+                        insertStmt.setString(2, task.getName()); // task_name
+                        insertStmt.setString(3, task.getDescription()); // task_description
+
+                        if (task.getStartDate() != null) {
+                            insertStmt.setDate(4, java.sql.Date.valueOf(task.getStartDate()));
+                        }
+                        else {
+                            insertStmt.setNull(4, java.sql.Types.DATE);
+                        }
+
+                        if (task.getStartTimeString() != null) {
+                            insertStmt.setString(5, task.getStartTimeString());
+                        }
+                        else {
+                            insertStmt.setNull(5, java.sql.Types.VARCHAR);
+                        }
+
+                        if (task.getEndDate() != null) {
+                            insertStmt.setDate(6, java.sql.Date.valueOf(task.getEndDate()));
+                        }
+                        else {
+                            insertStmt.setNull(6, java.sql.Types.DATE);
+                        }
+
+                        if (task.getEndTimeString() != null) {
+                            insertStmt.setString(7, task.getEndTimeString());
+                        }
+                        else {
+                            insertStmt.setNull(7, java.sql.Types.VARCHAR);
+                        }
+
+                        insertStmt.setInt(8, task.getStatus().getCode());
+                        insertStmt.setInt(9, task.getType().getCode());
+
+                        insertStmt.executeUpdate();
+                        System.out.println("任務已新增：" + task.getName());
+                    }
+                }
+            }
+            return true; // 所有任務同步成功
+        } catch (SQLException e) {
+            System.err.println("同步任務到資料庫時發生錯誤：" + e.getMessage());
+            e.printStackTrace();
+            return false; // 同步失敗
+        }
     }
+
+    public void Notify() {
+        // 遍歷所有任務
+        for (Task task : taskList) {
+            // 判斷任務的狀態
+            if (task.getStatus() == Task.Status.TODO) {
+                // 檢查任務是否即將開始
+                if (task.getStartDate() != null && task.getStartTime() != null) {
+                    LocalDateTime taskStartDateTime = LocalDateTime.of(task.getStartDate(), task.getStartTime());
+                    LocalDateTime now = LocalDateTime.now();
+
+                    // 如果任務即將開始（例如提前10分鐘提醒）
+                    if (taskStartDateTime.isAfter(now) && taskStartDateTime.isBefore(now.plusMinutes(10))) {
+                        // 發送通知
+                        sendNotification("任務即將開始", "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+
+                        // 更新任務狀態為進行中
+                        task.setStatus(Task.Status.IN_PROGRESS);
+                        System.out.println("任務狀態已更新為進行中：" + task.getName());
+                    }
+                }
+            } else if (task.getStatus() == Task.Status.IN_PROGRESS) {
+                // 如果任務正在進行，檢查是否需要提醒用戶
+                if (task.getEndDate() != null && task.getEndTime() != null) {
+                    LocalDateTime taskEndDateTime = LocalDateTime.of(task.getEndDate(), task.getEndTime());
+                    LocalDateTime now = LocalDateTime.now();
+
+                    // 如果任務即將結束（例如提前10分鐘提醒）
+                    if (taskEndDateTime.isAfter(now) && taskEndDateTime.isBefore(now.plusMinutes(10))) {
+                        // 發送通知
+                        sendNotification("任務即將結束", "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+                    }
+                }
+            }
+        }
+    }
+
+    private void sendNotification(String title, String message) {
+        // 檢查系統是否支援 SystemTray
+        if (!SystemTray.isSupported()) {
+            System.err.println("系統不支援通知功能！");
+            return;
+        }
+
+        try {
+            // 創建系統托盤圖標
+            SystemTray systemTray = SystemTray.getSystemTray();
+            Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/notification.jpg")); // 確保圖片路徑正確
+            TrayIcon trayIcon = new TrayIcon(image, "任務通知");
+            trayIcon.setImageAutoSize(true);
+
+            // 添加到系統托盤
+            systemTray.add(trayIcon);
+
+            // 顯示通知
+            trayIcon.displayMessage(title, message, TrayIcon.MessageType.INFO);
+
+            // 移除托盤圖標（可選，延遲幾秒後移除）
+            Thread.sleep(5000);
+            systemTray.remove(trayIcon);
+        } catch (Exception e) {
+            System.err.println("發送通知時發生錯誤：" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 當更新任務時，請呼叫此函式
