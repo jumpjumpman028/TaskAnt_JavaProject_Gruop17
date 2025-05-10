@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class UserInfo {
     public static String username;
     private final LocalDate createDate;
-    public static int userID;
+    public static int userID = 1;
 
     // 靜態變數，存儲目前登入的使用者
     private static UserInfo currentUser;

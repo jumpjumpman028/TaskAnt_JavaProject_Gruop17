@@ -36,7 +36,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.assignee = assignee;
-        this.status = Status.IN_PROGRESS;
+        this.status = Status.TODO;
         this.type = Type.Experience;
         this.startDate = startDate;
         this.startTime = startTime;
@@ -89,6 +89,7 @@ public class Task {
     public void setStatus(Status status) {
         if(status == Status.COMPLETED && this.status == Status.IN_PROGRESS){
             setEndDate( LocalDate.now());
+            DeBugConsole.log("已將任務 "+name+" 調至完成");
         }
         if(status == Status.IN_PROGRESS && this.status == Status.TODO){
             setStartDate(LocalDate.now());
@@ -128,10 +129,6 @@ public class Task {
     }
 
     public LocalDate getEndDate() {
-        if(endDate == null){
-            DeBugConsole.log("getEndDate為null,更改為startDate");
-            return startDate;
-        }
         return endDate;
     }
     public String getEndDateString() {
@@ -232,6 +229,19 @@ public class Task {
                 }
             }
             throw new IllegalArgumentException("Invalid code: " + code);
+        }
+        public String GetString(){
+            switch (this){
+                case TODO:
+                    return "尚未開始";
+                    case IN_PROGRESS:
+                        return "進行中";
+                        case COMPLETED:
+                            return "完成";
+                            case LOCKED:
+                                return "封鎖";
+                default : return "未知";
+            }
         }
         private final int code;
     }

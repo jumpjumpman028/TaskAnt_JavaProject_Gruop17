@@ -213,12 +213,10 @@ public class TaskManager {
 
     }
     public void CheckLocalDateTimeInProcess(Task task) {
-        if(task.getStatus() == Task.Status.TODO && task.getStartDate().isAfter(LocalDate.now())){
-            return;
-        } else if (task.getStatus() == Task.Status.TODO && task.getStartDate().isEqual(LocalDate.now()) && task.getStartTime().isAfter(LocalTime.now())) {
-            return;
+        if(task.getStatus() == Task.Status.TODO && task.isTaskOnTimeCheck()){
+            task.setStatus(Task.Status.IN_PROGRESS);
+            DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
         }
-        task.setStatus(Task.Status.IN_PROGRESS);
-        DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
+
     }
 }
