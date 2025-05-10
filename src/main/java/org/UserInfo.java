@@ -3,7 +3,7 @@ package org;
 import java.time.LocalDate;
 
 public class UserInfo {
-    private final String username;
+    public static String username;
     private final LocalDate createDate;
     public static int userID;
 

@@ -47,6 +47,18 @@ public class Task {
 
     }
 
+    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime) {
+        //一次性任務範例
+        this.name = name;
+        this.description = description;
+        this.assignee = assignee;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = startDate;
+        this.endTime = endTime;
+
+    }
+
     public String getName() {
         return name;
     }
