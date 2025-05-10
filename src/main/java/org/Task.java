@@ -206,6 +206,8 @@ public class Task {
 
 
     public enum Status {
+            //使用範例 : 獲得code Status.IN_PROGRESS.getCode(); => 1
+            //使用範例  code=>Status Status.getStatus(1) => Status.IN_PROGRESS
         TODO(0), IN_PROGRESS(1), COMPLETED(2), LOCKED(3);
         Status(int code) {
             this.code = code;
@@ -219,6 +221,7 @@ public class Task {
                     return status;
                 }
             }
+            throw new IllegalArgumentException("Invalid code: " + code);
         }
         private final int code;
     }
@@ -226,6 +229,8 @@ public class Task {
 
     ///  GENERAL 一般性任務 Experience 一次性任務 BOSS 每天重複性任務
     public enum Type {
+        //使用範例 : 獲得code Type.GENERAL.getCode(); => 0
+        //使用範例  code=>Status Type.getStatus(0) => Type.GENERAL
         GENERAL(0), Experience(1), BOSS(2);
         Type(int code) {
             this.code = code;
@@ -239,6 +244,7 @@ public class Task {
                     return type;
                 }
             }
+            throw new IllegalArgumentException("Invalid code: " + code);
         }
         private final int code;
     }
