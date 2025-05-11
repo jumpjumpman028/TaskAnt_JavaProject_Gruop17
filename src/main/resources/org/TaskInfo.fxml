@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="org.TaskInfoController">
+    <Label fx:id="nameLabel" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+    <Label fx:id="timeLabel"/>
+    <Label fx:id="statusLabel"/>
+    <Label fx:id="descLabel" wrapText="true"/>
+    <Label fx:id="typeLabel"/>
+</VBox>

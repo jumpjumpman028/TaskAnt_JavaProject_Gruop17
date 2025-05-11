@@ -112,6 +112,7 @@ public class TaskManager {
         if (taskType == Task.Type.Experience) {
             AddTask(new Task(taskName, description, "使用者", startDate, startTime));
         } else {
+
             AddTask(new Task(taskName, description, "使用者", startDate, startTime, endDate, endTime, recurringDays, taskType));
         }
     }
