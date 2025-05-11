@@ -37,9 +37,6 @@ public class Menu {
             // 顯示通知
             trayIcon.displayMessage("TaskAnt Notification", "Your team updated your task,go take a look!", TrayIcon.MessageType.INFO);
 
-            // 移除托盤圖標（可選，延遲幾秒後移除）
-            Thread.sleep(5000);
-            systemTray.remove(trayIcon);
         } catch (Exception e) {
             System.err.println("發送通知時發生錯誤：" + e.getMessage());
             e.printStackTrace();

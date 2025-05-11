@@ -18,6 +18,11 @@ import java.time.LocalTime;
 public class WaterTest {
     @FXML private VBox taskListPane;
     @FXML
+    private void reloadTasks(){
+        refreshTaskList();
+        TaskManager.getInstance().FetchDataFromDatabase();
+    }
+    @FXML
     private void handleAddEvent(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EventForm.fxml"));
