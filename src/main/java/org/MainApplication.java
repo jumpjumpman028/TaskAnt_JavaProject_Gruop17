@@ -26,8 +26,16 @@ public class MainApplication extends Application {
     public static void switchScene(String fxmlFile) throws Exception {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("/org/" + fxmlFile));
         Scene scene = new Scene(loader.load());
+
+        // 自動加載與 FXML 同名的 CSS 檔案
+        String cssFile = "/styles/" + fxmlFile.replace(".fxml", ".css");
+        if (MainApplication.class.getResource(cssFile) != null) {
+            scene.getStylesheets().add(MainApplication.class.getResource(cssFile).toExternalForm());
+        }
+
         primaryStage.setScene(scene);
     }
+
 
     public static void main(String[] args) {
         try{

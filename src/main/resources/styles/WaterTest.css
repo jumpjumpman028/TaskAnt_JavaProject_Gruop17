@@ -1,0 +1,34 @@
+/* HBox 的基本樣式 */
+.green-hbox {
+    -fx-background-color: #accbe4; /* 單一綠色背景 */
+    -fx-background-radius: 30; /* 圓角背景 */
+    -fx-border-radius: 30; /* 圓角邊框 */
+    -fx-padding: 10 20; /* 內邊距 */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 2); /* 陰影效果 */
+    -fx-cursor: hand; /* 滑鼠指標變成手型 */
+}
+
+/* 滑鼠懸停時的效果 */
+.green-hbox:hover {
+    -fx-background-color: #a5bde4; /* 更亮的綠色 */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 15, 0.5, 0, 4); /* 更強的陰影 */
+}
+
+/* 按下時的效果 */
+.green-hbox:pressed {
+    -fx-background-color: #a5bde4; /* 更深的綠色 */
+    -fx-effect: none; /* 移除陰影 */
+    -fx-translate-y: 2px; /* 模擬按下的效果 */
+}
+
+/* HBox 內部文字的樣式 */
+#nameLabel, #timeLabel, #statusLabel {
+    -fx-text-fill: white; /* 白色文字 */
+    -fx-font-size: 14px; /* 字體大小 */
+    -fx-font-weight: bold; /* 粗體字 */
+}
+
+/* 狀態文字單獨樣式 */
+#statusLabel {
+    -fx-text-fill: yellow; /* 狀態文字為黃色 */
+}

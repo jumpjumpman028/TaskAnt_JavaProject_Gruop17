@@ -1,0 +1,23 @@
+/* 統一所有按鈕的樣式 */
+.button {
+    -fx-background-color: linear-gradient(#ff7e5f, #feb47b);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #ff5400;
+    -fx-border-width: 2px;
+}
+
+/* 特定類型的按鈕 */
+.primary-button {
+    -fx-background-color: linear-gradient(#6a11cb, #2575fc);
+    -fx-text-fill: white;
+}
+
+.secondary-button {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #333333;
+    -fx-border-color: #cccccc;
+}

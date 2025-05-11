@@ -33,11 +33,16 @@ public class TaskCellController {
         Tooltip.install(root, tip);
     }
     public void initialize() {
+        // 滑鼠移入時添加 hover 樣式
         root.setOnMouseEntered(e -> {
-            root.setStyle("-fx-background-color: #d0ebff; -fx-border-color: #228be6; -fx-border-radius: 5; -fx-padding: 10;");
+            if (!root.getStyleClass().contains("hover-hbox")) {
+                root.getStyleClass().add("hover-hbox");
+            }
         });
+
+        // 滑鼠移出時移除 hover 樣式
         root.setOnMouseExited(e -> {
-            root.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;");
+            root.getStyleClass().remove("hover-hbox");
         });
     }
 }
