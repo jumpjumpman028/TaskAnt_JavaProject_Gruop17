@@ -15,7 +15,7 @@ import javafx.scene.control.Button;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
-public class WaterTest {
+public class WaterTest implements SceneInterface {
     @FXML private VBox taskListPane;
     @FXML
     private void reloadTasks(){
@@ -68,5 +68,15 @@ public class WaterTest {
             e.printStackTrace();
             return new HBox(); // 回傳空 HBox 防呆
         }
+    }
+
+    @Override
+    public void LoadEvent() {
+        DeBugConsole.log("LoadEvent " + getClass().getName());
+    }
+
+    @Override
+    public void UnloadEvent() {
+        DeBugConsole.log("UnloadEvent " + getClass().getName());
     }
 }

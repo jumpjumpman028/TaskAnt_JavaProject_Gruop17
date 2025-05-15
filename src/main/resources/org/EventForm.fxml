@@ -26,7 +26,7 @@
         </HBox>
 
         <!-- 一次性任務區塊 -->
-        <VBox fx:id="oneTimePane" layoutX="50" layoutY="80" prefHeight="169.0" prefWidth="298.0" spacing="15">
+        <VBox fx:id="oneTimePane" layoutX="50" layoutY="80" prefHeight="169.0" prefWidth="298.0" spacing="15" visible="false">
             <children>
                 <HBox spacing="10">
                     <Label minWidth="80" text="任務名稱：" />
@@ -50,7 +50,7 @@
         </VBox>
 
         <!-- 重複性任務區塊 -->
-        <VBox fx:id="repeatPane" layoutX="50" layoutY="80" spacing="15" visible="false">
+        <VBox fx:id="repeatPane" layoutX="50" layoutY="80" spacing="15">
             <children>
                 <HBox spacing="10">
                     <Label minWidth="80" text="任務名稱：" />
@@ -68,7 +68,7 @@
                     <Label minWidth="80" text="重複頻率：" />
                     <HBox fx:id="repeatDayBox" spacing="5">
                         <children>
-                            <CheckBox fx:id="everydayCheck" onAction="#onEverydayCheck" text="每日" />
+                            <CheckBox fx:id="everydayCheck" onAction="#onEverydayCheck" selected="true" text="每日" />
                             <CheckBox fx:id="monCheck" onAction="#onDayCheck" text="週一" />
                             <CheckBox fx:id="tueCheck" onAction="#onDayCheck" text="週二" />
                             <CheckBox fx:id="wedCheck" onAction="#onDayCheck" text="週三" />

@@ -4,19 +4,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class TaskInfoController {
-    @FXML
-    private Label nameLabel;
+    @FXML private Label NameLabel;
     @FXML private Label timeLabel;
     @FXML private Label statusLabel;
-    @FXML private Label descLabel;
-    @FXML private Label typeLabel;
-
+    @FXML private Label assigneeLabel;
+    @FXML private Label descriptionLabel;
+    @FXML private Label TypeLabel;
+    //@FXML private Label recurringDaysLabel;
     public void setTask(Task task) {
-        nameLabel.setText(task.getName());
+        NameLabel.setText(task.getName());
         timeLabel.setText("開始：" + task.getStartDateString() + " " + task.getStartTimeString()
                 + "\n結束：" + task.getEndDateString() + " " + task.getEndTimeString());
         statusLabel.setText(task.getStatus().GetString());
-        descLabel.setText(task.getDescription());
-        typeLabel.setText(task.getType().GetString());
+        assigneeLabel.setText(task.getAssignee());
+        descriptionLabel.setText(task.getDescription());
+        TypeLabel.setText(task.getType().GetString());
+
     }
 }

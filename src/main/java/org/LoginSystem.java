@@ -15,7 +15,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class LoginSystem {
+public class LoginSystem implements SceneInterface {
+    @Override
+    public void LoadEvent() {
+        DeBugConsole.log("LoadEvent " + getClass().getName());
+    }
+
+    @Override
+    public void UnloadEvent() {
+        DeBugConsole.log("UnloadEvent " +getClass().getName());
+    }
 
     // 資料庫連接參數
     private static final String DB_URL = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";

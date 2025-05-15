@@ -8,13 +8,12 @@ import javafx.stage.Stage;
 import java.util.Calendar;
 
 public class MainApplication extends Application {
-
+    private static SceneInterface SceneController;
     private static Stage primaryStage;
-
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        switchScene("WaterTest.fxml");
+        switchScene("Login.fxml");
         primaryStage.setTitle("TaskAnt");
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
@@ -24,9 +23,11 @@ public class MainApplication extends Application {
 
 
     public static void switchScene(String fxmlFile) throws Exception {
-        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("/org/" + fxmlFile));
-        Scene scene = new Scene(loader.load());
-
+        if(SceneController != null) SceneController.UnloadEvent();
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/org/" + fxmlFile));
+        Scene scene = new Scene(fxmlLoader.load());
+        SceneController =  (SceneInterface) fxmlLoader.getController();
+        SceneController.LoadEvent();
         // 自動加載與 FXML 同名的 CSS 檔案
         String cssFile = "/styles/" + fxmlFile.replace(".fxml", ".css");
         if (MainApplication.class.getResource(cssFile) != null) {
