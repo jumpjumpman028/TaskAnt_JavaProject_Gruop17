@@ -47,7 +47,7 @@ public class Task {
 
     }
 
-    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type) {
+    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays) {
         //資料庫抓下來的所有任務
         this.name = name;
         this.description = description;
@@ -58,6 +58,7 @@ public class Task {
         this.endTime = endTime;
         this.status = status;
         this.type = type;
+        this.recurringDays = recurringDays;
 
     }
 
@@ -125,7 +126,7 @@ public class Task {
         DeBugConsole.log( Integer.toString(result) );
         return result;
     }
-    public List<DayOfWeek> intToRecurringDays(int value) {
+    public static List<DayOfWeek> intToRecurringDays(int value) {
         List<DayOfWeek> days = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             if ((value & (1 << i)) != 0) {

@@ -81,11 +81,12 @@ public class TaskManager {
 
                 preparedStatement.setInt(8, task.getStatus().getCode());
                 preparedStatement.setInt(9, task.getType().getCode());
-                if( task. !=null) {
-                    preparedStatement.setInt(10, task.);
-                }else{
+                if( task.getType()== Task.Type.Experience) {
                     preparedStatement.setNull(10, java.sql.Types.INTEGER);
+                }else{
+                    preparedStatement.setInt(10, task.getRecurringDaysInt());
                 }
+
                 preparedStatement.executeUpdate();
                 System.out.println("任務已成功新增至資料庫！");
             } catch (SQLException e) {
@@ -139,47 +140,56 @@ public class TaskManager {
     //當要把資料從資料庫抓下來時使用
 
     public boolean FetchDataFromDatabase() {
-        String query = "SELECT * FROM tasks";
+        // 假設 UserInfo.userId 是當前使用者的 ID
+        String query = "SELECT * FROM tasks WHERE user_id = ?";
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // 清空本地 taskList，避免重複添加
-            taskList.clear();
+            // 設置查詢參數（user_id）
+            preparedStatement.setInt(1, UserInfo.userID);
 
-            // 遍歷結果集，將每一條記錄轉換為 Task 並加入 taskList
-            while (resultSet.next()) {
-                // 從資料庫中提取欄位值
-                String taskName = resultSet.getString("task_name");
-                String taskDescription = resultSet.getString("task_description");
-                LocalDate startDate = resultSet.getDate("start_date") != null ? resultSet.getDate("start_date").toLocalDate() : null;
-                LocalTime startTime = resultSet.getTime("start_time") != null ? resultSet.getTime("start_time").toLocalTime() : null;
-                LocalDate endDate = resultSet.getDate("end_date") != null ? resultSet.getDate("end_date").toLocalDate() : null;
-                LocalTime endTime = resultSet.getTime("end_time") != null ? resultSet.getTime("end_time").toLocalTime() : null;
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // 清空本地 taskList，避免重複添加
+                taskList.clear();
 
-                // 抓取 status 和 type 欄位
-                int statusCode = resultSet.getInt("status");
-                Task.Status status = Task.Status.getStatus(statusCode); // 假設有一個方法從代碼轉換為枚舉
+                // 遍歷結果集，將每一條記錄轉換為 Task 並加入 taskList
+                while (resultSet.next()) {
+                    // 從資料庫中提取欄位值
+                    String taskName = resultSet.getString("task_name");
+                    String taskDescription = resultSet.getString("task_description");
+                    LocalDate startDate = resultSet.getDate("start_date") != null ? resultSet.getDate("start_date").toLocalDate() : null;
+                    LocalTime startTime = resultSet.getTime("start_time") != null ? resultSet.getTime("start_time").toLocalTime() : null;
+                    LocalDate endDate = resultSet.getDate("end_date") != null ? resultSet.getDate("end_date").toLocalDate() : null;
+                    LocalTime endTime = resultSet.getTime("end_time") != null ? resultSet.getTime("end_time").toLocalTime() : null;
 
-                int typeCode = resultSet.getInt("type");
-                Task.Type type = Task.Type.getType(typeCode); // 假設有一個方法從代碼轉換為枚舉
+                    // 抓取 status 和 type 欄位
+                    int statusCode = resultSet.getInt("status");
+                    Task.Status status = Task.Status.getStatus(statusCode); // 假設有一個方法從代碼轉換為枚舉
 
-                // 創建 Task 物件並設置屬性
-                Task task = new Task(taskName, taskDescription, UserInfo.username, startDate, startTime, endDate, endTime, status, type);
-                task.setStatus(status);
-                task.setType(type);
+                    int typeCode = resultSet.getInt("type");
+                    Task.Type type = Task.Type.getType(typeCode); // 假設有一個方法從代碼轉換為枚舉
 
-                taskList.add(task);
+                    int recurringDaysInt = resultSet.getInt("recurring_day");
+                    List<DayOfWeek> recurringDays = Task.intToRecurringDays(recurringDaysInt);
+
+                    // 創建 Task 物件並設置屬性
+                    Task task = new Task(taskName, taskDescription, UserInfo.username, startDate, startTime, endDate, endTime, status, type, recurringDays);
+                    task.setStatus(status);
+                    task.setType(type);
+
+                    taskList.add(task);
+                }
+
+                System.out.println("成功從資料庫抓取任務，共有 " + taskList.size() + " 條任務");
+                return true;
             }
-
-            System.out.println("成功從資料庫抓取任務，共有 " + taskList.size() + " 條任務");
-            return true;
         } catch (SQLException e) {
             System.err.println("從資料庫抓取任務時發生錯誤：" + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
+
 
 
     public boolean UploadDataToDatabase() {
