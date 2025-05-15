@@ -19,8 +19,9 @@ public class WaterTest implements SceneInterface {
     @FXML private VBox taskListPane;
     @FXML
     private void reloadTasks(){
-        refreshTaskList();
         TaskManager.getInstance().FetchDataFromDatabase();
+        refreshTaskList();
+
     }
     @FXML
     private void handleAddEvent(ActionEvent event) {
@@ -72,6 +73,7 @@ public class WaterTest implements SceneInterface {
 
     @Override
     public void LoadEvent() {
+        reloadTasks();
         DeBugConsole.log("LoadEvent " + getClass().getName());
 
     }

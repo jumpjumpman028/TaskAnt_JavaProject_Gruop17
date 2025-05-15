@@ -114,7 +114,7 @@ public class Task {
     }
     public List<DayOfWeek> getRecurringDays() {
         return recurringDays;
-    }
+    } //0~127
 
     public void setRecurringDays(List<DayOfWeek> recurringDays) {
         this.recurringDays = recurringDays;
