@@ -146,7 +146,7 @@ public class Task {
     public String getStartTimeString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         if(startTime == null){
-            return "無時間XX:XX";
+            return null;
         }
         return startTime.format(formatter);
     }
@@ -171,7 +171,7 @@ public class Task {
     public String getEndTimeString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         if(endTime == null){
-            return "無時間XX:XX";
+            return null;
         }
         return endTime.format(formatter);
     }

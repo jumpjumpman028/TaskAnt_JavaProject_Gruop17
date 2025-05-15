@@ -13,7 +13,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        switchScene("Login.fxml");
+        switchScene("login.fxml");
         primaryStage.setTitle("TaskAnt");
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
