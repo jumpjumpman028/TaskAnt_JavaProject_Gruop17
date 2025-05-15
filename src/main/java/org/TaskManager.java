@@ -43,7 +43,7 @@ public class TaskManager {
             }
 
             // 插入資料庫
-            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time , status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
@@ -73,11 +73,11 @@ public class TaskManager {
                 }
 
                 if (task.getEndTimeString() != null) {
-                    preparedStatement.setString(7, task.getEndTimeString()); // end_time
-                }
-                else {
+                    preparedStatement.setString(7, task.getEndTimeString());
+                } else {
                     preparedStatement.setNull(7, java.sql.Types.VARCHAR);
                 }
+
 
                 preparedStatement.setInt(8, task.getStatus().getCode());
                 preparedStatement.setInt(9, task.getType().getCode());
@@ -184,7 +184,7 @@ public class TaskManager {
         // SQL 語句：更新任務
         String updateTaskSQL = "UPDATE tasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ? WHERE user_id = ? AND task_name = ?";
         // SQL 語句：插入新任務
-        String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertTaskSQL = "INSERT INTO tasks (task_id, user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
             for (Task task : taskList) {
@@ -244,40 +244,44 @@ public class TaskManager {
                 else {
                     // 任務不存在，執行插入操作
                     try (PreparedStatement insertStmt = connection.prepareStatement(insertTaskSQL)) {
-                        insertStmt.setInt(1, UserInfo.userID); // user_id
-                        insertStmt.setString(2, task.getName()); // task_name
-                        insertStmt.setString(3, task.getDescription()); // task_description
+                        // 計算該用戶的下一個任務編號
+                        int nextTaskId = getNextTaskNumberForUser(UserInfo.userID);
+
+                        insertStmt.setInt(1, nextTaskId);
+                        insertStmt.setInt(2, UserInfo.userID); // user_id
+                        insertStmt.setString(3, task.getName()); // task_name
+                        insertStmt.setString(4, task.getDescription()); // task_description
 
                         if (task.getStartDate() != null) {
-                            insertStmt.setDate(4, java.sql.Date.valueOf(task.getStartDate()));
+                            insertStmt.setDate(5, java.sql.Date.valueOf(task.getStartDate()));
                         }
                         else {
-                            insertStmt.setNull(4, java.sql.Types.DATE);
+                            insertStmt.setNull(5, java.sql.Types.DATE);
                         }
 
                         if (task.getStartTimeString() != null) {
-                            insertStmt.setString(5, task.getStartTimeString());
+                            insertStmt.setString(6, task.getStartTimeString());
                         }
                         else {
-                            insertStmt.setNull(5, java.sql.Types.VARCHAR);
+                            insertStmt.setNull(6, java.sql.Types.VARCHAR);
                         }
 
                         if (task.getEndDate() != null) {
-                            insertStmt.setDate(6, java.sql.Date.valueOf(task.getEndDate()));
+                            insertStmt.setDate(7, java.sql.Date.valueOf(task.getEndDate()));
                         }
                         else {
-                            insertStmt.setNull(6, java.sql.Types.DATE);
+                            insertStmt.setNull(7, java.sql.Types.DATE);
                         }
 
                         if (task.getEndTimeString() != null) {
-                            insertStmt.setString(7, task.getEndTimeString());
+                            insertStmt.setString(8, task.getEndTimeString());
                         }
                         else {
-                            insertStmt.setNull(7, java.sql.Types.VARCHAR);
+                            insertStmt.setNull(8, java.sql.Types.VARCHAR);
                         }
 
-                        insertStmt.setInt(8, task.getStatus().getCode());
-                        insertStmt.setInt(9, task.getType().getCode());
+                        insertStmt.setInt(9, task.getStatus().getCode());
+                        insertStmt.setInt(10, task.getType().getCode());
 
                         insertStmt.executeUpdate();
                         System.out.println("任務已新增：" + task.getName());
@@ -395,4 +399,25 @@ public class TaskManager {
         }
 
     }
+
+    public int getNextTaskNumberForUser(int userId) {
+        String query = "SELECT COUNT(*) FROM tasks WHERE user_id = ?";
+        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int taskCount = resultSet.getInt(1); // 獲取任務數量
+                    return taskCount + 1; // 返回下一個任務編號
+                }
+            }
+        } catch (SQLException e) {
+            // 錯誤處理：記錄日誌或拋出異常
+            e.printStackTrace();
+        }
+
+        // 如果查詢失敗或發生異常，返回 -1 表示錯誤
+        return -1;
+    }
+
 }
