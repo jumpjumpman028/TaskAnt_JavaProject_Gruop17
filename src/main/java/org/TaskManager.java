@@ -43,7 +43,7 @@ public class TaskManager {
             }
 
             // 插入資料庫
-            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time , status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time , status, type, recurring_day) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
@@ -81,7 +81,11 @@ public class TaskManager {
 
                 preparedStatement.setInt(8, task.getStatus().getCode());
                 preparedStatement.setInt(9, task.getType().getCode());
-
+                if( task. !=null) {
+                    preparedStatement.setInt(10, task.);
+                }else{
+                    preparedStatement.setNull(10, java.sql.Types.INTEGER);
+                }
                 preparedStatement.executeUpdate();
                 System.out.println("任務已成功新增至資料庫！");
             } catch (SQLException e) {
