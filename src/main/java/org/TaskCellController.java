@@ -54,7 +54,7 @@ public class TaskCellController {
     public void initialize() {
         // 滑鼠移入時添加 hover 樣式
         root.setOnMouseEntered(e -> {
-            root.setStyle("-fx-background-color: " + hoverColor + "; -fx-border-color: #228be6; -fx-border-radius: 5; -fx-padding: 10;");
+            // root.setStyle("-fx-background-color: " + hoverColor + "; -fx-border-color: #228be6; -fx-border-radius: 5; -fx-padding: 10;"); 我暫且把它改掉，我覺得他不太好看
             if (!root.getStyleClass().contains("hover-hbox")) {
                 root.getStyleClass().add("hover-hbox");
             }

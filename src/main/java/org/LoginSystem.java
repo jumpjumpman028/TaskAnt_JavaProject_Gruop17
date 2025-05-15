@@ -5,6 +5,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+
+import java.awt.*;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -55,6 +58,13 @@ public class LoginSystem {
 
                 statusLabel.setTextFill(Color.GREEN);
                 statusLabel.setText("登入成功！");
+                // 我先在這切換視窗到WaterTest
+                try{
+                    MainApplication.switchScene("WaterTest.fxml");
+                }catch (Exception e){
+                    DeBugConsole.log(e.getMessage());
+                }
+
             } else {
                 statusLabel.setTextFill(Color.RED);
                 statusLabel.setText("帳號或密碼錯誤！");
