@@ -58,7 +58,7 @@ public class TaskManager {
                     preparedStatement.setNull(4, java.sql.Types.DATE);
                 }
 
-                if (task.getStartTimeString() != null) {
+                if (task.getStartTime() != null) {
                     preparedStatement.setString(5, task.getStartTimeString()); // start_time
                 }
                 else {
@@ -72,7 +72,7 @@ public class TaskManager {
                     preparedStatement.setNull(6, java.sql.Types.DATE);
                 }
 
-                if (task.getEndTimeString() != null) {
+                if (task.getEndTime() != null) {
                     preparedStatement.setString(7, task.getEndTimeString());
                 } else {
                     preparedStatement.setNull(7, java.sql.Types.VARCHAR);
