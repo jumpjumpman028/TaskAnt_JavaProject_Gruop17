@@ -13,7 +13,7 @@
          <children>
             <FlowPane fx:id="FlowPane" prefHeight="50.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="NameLabel" prefHeight="50.0" prefWidth="471.0" text="NameLabel">
+                  <Label fx:id="NameLabel" prefHeight="50.0" prefWidth="375.0" text="NameLabel">
                      <font>
                         <Font name="Consolas Bold Italic" size="29.0" />
                      </font>
@@ -21,7 +21,7 @@
                         <Insets />
                      </opaqueInsets>
                   </Label>
-                  <Label fx:id="TypeLabel" alignment="CENTER" prefHeight="50.0" prefWidth="129.0" text="TypeLabel">
+                  <Label fx:id="TypeLabel" alignment="CENTER" prefHeight="50.0" prefWidth="214.0" text="TypeLabel">
                      <font>
                         <Font name="Consolas Bold Italic" size="20.0" />
                      </font>
@@ -33,13 +33,22 @@
                   </Label>
                   <Label fx:id="assigneeLabel" prefHeight="52.0" prefWidth="600.0" text="assignee">
                      <font>
-                        <Font name="Consolas Italic" size="14.0" />
+                        <Font name="Consolas Italic" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="statusLabel" prefHeight="50.0" prefWidth="600.0" text="status" />
+                  <Label fx:id="statusLabel" prefHeight="50.0" prefWidth="600.0" text="status">
+                     <font>
+                        <Font name="Consolas" size="20.0" />
+                     </font></Label>
                   <Label fx:id="recurringDaysLabel" prefHeight="31.0" prefWidth="600.0" text="recurringDays" />
-                  <Label fx:id="timeLabel" prefHeight="50.0" prefWidth="600.0" text="timeLabel" />
-                  <Label prefHeight="73.0" prefWidth="600.0" text="None" />
+                  <Label fx:id="StarttimeLabel" prefHeight="69.0" prefWidth="272.0" text="StarttimeLabel">
+                     <font>
+                        <Font name="Consolas" size="25.0" />
+                     </font></Label>
+                  <Label fx:id="EndtimeLabel" prefHeight="73.0" prefWidth="324.0" text="EndtimeLabel">
+                     <font>
+                        <Font name="Consolas" size="25.0" />
+                     </font></Label>
                </children>
             </FlowPane>
          </children>

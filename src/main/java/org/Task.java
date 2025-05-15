@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 public class Task {
 
@@ -114,6 +115,24 @@ public class Task {
     }
     public List<DayOfWeek> getRecurringDays() {
         return recurringDays;
+    }
+    public int getRecurringDaysInt() {
+        int result = 0;
+        for (DayOfWeek day : recurringDays) {
+            int bitIndex = day.getValue() - 1; // 0~6
+            result |= (1 << bitIndex);
+        }
+        DeBugConsole.log( Integer.toString(result) );
+        return result;
+    }
+    public List<DayOfWeek> intToRecurringDays(int value) {
+        List<DayOfWeek> days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            if ((value & (1 << i)) != 0) {
+                days.add(DayOfWeek.of(i + 1));
+            }
+        }
+        return days;
     }
 
     public void setRecurringDays(List<DayOfWeek> recurringDays) {
