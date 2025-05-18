@@ -31,4 +31,6 @@ module org{
     requires org.checkerframework.checker.qual;
     opens org to javafx.fxml;
     exports org;
+    exports org.Task;
+    opens org.Task to javafx.fxml;
 }

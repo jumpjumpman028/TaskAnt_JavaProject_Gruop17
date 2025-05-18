@@ -5,18 +5,29 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
+import org.Task.Task;
+import org.Task.TaskCellController;
+import org.Task.TaskManager;
+
 import java.util.List;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 public class WaterTest implements SceneInterface {
+
+    @FXML private ScrollPane ScrollPane;
     @FXML private VBox taskListPane;
+    public static WaterTest instance;
+    public WaterTest() {
+        instance = this;
+    }
+    public static WaterTest getInstance() {
+        return instance;
+    }
     @FXML
     private void reloadTasks(){
         TaskManager.getInstance().FetchDataFromDatabase();
@@ -36,12 +47,13 @@ public class WaterTest implements SceneInterface {
             stage.showAndWait();
 
             // 新增完任務後，刷新任務清單
+            ScrollPane.setVvalue(1.0);
             refreshTaskList();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void refreshTaskList() {
+    public void refreshTaskList() {
         taskListPane.getChildren().clear();
         List<Task> tasks = TaskManager.getInstance().getTaskList();
         for (Task task : tasks) {
@@ -55,6 +67,7 @@ public class WaterTest implements SceneInterface {
                 e.printStackTrace();
             }
         }
+
     }
 
 

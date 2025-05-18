@@ -1,4 +1,6 @@
-package org;
+package org.Task;
+import org.DeBugConsole;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
@@ -143,7 +145,7 @@ public class Task {
         return startDate;
     }
     public String getStartDateString() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
             if(startDate == null){
                 return "無開始日期";
             }
@@ -154,7 +156,7 @@ public class Task {
         return endDate;
     }
     public String getEndDateString() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
             if(endDate == null){
                 return "無結束日期";
             }

@@ -2,14 +2,29 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" alignment="CENTER_LEFT" spacing="20"
-      styleClass="green-hbox"
-      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.TaskCellController">
+<HBox fx:id="root" alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="402.0" spacing="20" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Task.TaskCellController">
     <children>
-        <Label fx:id="nameLabel" maxWidth="120" style="-fx-font-weight: bold; -fx-text-overrun: ellipsis;" text="任務名稱" />
-        <Label fx:id="timeLabel" maxWidth="180" text="時間資訊" wrapText="true" />
-        <Label fx:id="statusLabel" style="-fx-text-fill: green;" text="狀態" />
+        <Label fx:id="nameLabel" maxWidth="120" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="101.0" style="-fx-font-weight: bold; -fx-text-overrun: ellipsis;" text="任務名稱" />
+      <VBox prefHeight="31.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="starttimeLabel" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="132.0" text="時間資訊" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+              <Label fx:id="endtimeLabel" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="24.0" prefWidth="186.0" text="時間資訊" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+        <Label fx:id="statusLabel" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="104.0" style="-fx-text-fill: green;" text="狀態">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font></Label>
     </children>
 </HBox>

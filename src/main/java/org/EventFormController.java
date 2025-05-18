@@ -6,10 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
+import org.Task.Task;
+import org.Task.TaskManager;
+
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -63,7 +64,7 @@ public class EventFormController implements Initializable {
                 errorLabel.setText(ErrorMsg);
             }else{
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
-                TaskManager.getInstance().CreateTask(name,desc,startDate,startHour,startMinute,null,null,null,null,Task.Type.Experience);
+                TaskManager.getInstance().CreateTask(name,desc,startDate,startHour,startMinute,null,null,null,null, Task.Type.Experience);
                 stage.close();
             }
 
@@ -209,12 +210,5 @@ public class EventFormController implements Initializable {
         dayCheckMap.put(friCheck, DayOfWeek.FRIDAY);
         dayCheckMap.put(satCheck, DayOfWeek.SATURDAY);
         dayCheckMap.put(sunCheck, DayOfWeek.SUNDAY);
-        // 其他 ComboBox 也一樣設定
-        // repeatStartHour.setItems(hours);
-        // repeatStartMinute.setItems(minutes);
-        // oneTimeHour.setItems(hours);
-        // oneTimeMinute.setItems(minutes);
-        // repeatEndHour.setItems(hours);
-        // repeatEndMinute.setItems(minutes);
     }
 }

@@ -1,8 +1,12 @@
-package org;
+package org.Task;
+
+import org.DatabaseConnectionPool;
+import org.DeBugConsole;
+import org.GoogleCalendarAuthorization;
+import org.UserInfo;
 
 import java.awt.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +15,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter; // 日期時間格式化
 
 import java.util.ArrayList;
 import java.util.List;

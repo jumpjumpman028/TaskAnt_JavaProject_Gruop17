@@ -1,4 +1,4 @@
-package org;
+package org.Task;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,12 +11,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class TaskCellController {
     @FXML private Label nameLabel;
-    @FXML private Label timeLabel;
+    @FXML private Label starttimeLabel;
+    @FXML private Label endtimeLabel;
     @FXML private Label statusLabel;
     @FXML private HBox root;
 
@@ -25,9 +25,11 @@ public class TaskCellController {
     public void setTask(Task task) {
         this.task = task;
         nameLabel.setText(task.getName());
-        timeLabel.setText(
-                "開始：" + task.getStartDateString() + " " + task.getStartTimeString() +
-                        "\n結束：" + task.getEndDateString() + " " + task.getEndTimeString()
+        starttimeLabel.setText(
+                "開始：" + task.getStartDateString() + " " + task.getStartTimeString()
+        );
+        endtimeLabel.setText(
+                        "結束：" + task.getEndDateString() + " " + task.getEndTimeString()
         );
         statusLabel.setText(task.getStatus().GetString());
 

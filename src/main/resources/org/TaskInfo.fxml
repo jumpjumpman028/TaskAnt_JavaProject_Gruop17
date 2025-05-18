@@ -1,54 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TaskInfoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Task.TaskInfoController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <FlowPane fx:id="FlowPane" prefHeight="50.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="NameLabel" prefHeight="50.0" prefWidth="375.0" text="NameLabel">
+                  <TextField fx:id="NameTextField" alignment="CENTER" prefHeight="50.0" prefWidth="375.0" style="-fx-text-fill: #333333;-fx-control-inner-background: transparent; -fx-background-color: transparent;" text="NameLabel">
                      <font>
-                        <Font name="Consolas Bold Italic" size="29.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Label>
-                  <Label fx:id="TypeLabel" alignment="CENTER" prefHeight="50.0" prefWidth="214.0" text="TypeLabel">
+                        <Font name="Calisto MT" size="27.0" />
+                     </font></TextField>
+                  <Label fx:id="TypeLabel" alignment="CENTER" prefHeight="50.0" prefWidth="226.0" text="TypeLabel">
                      <font>
-                        <Font name="Consolas Bold Italic" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefHeight="89.0" prefWidth="600.0" text="descriptionLabel">
+                        <Font size="18.0" />
+                     </font></Label>
+                  <TextArea fx:id="descriptionTextArea" prefHeight="90.0" prefWidth="600.0" style="-fx-control-inner-background: transparent; -fx-background-color: transparent;" text="descriptionLabel" wrapText="true">
                      <font>
-                        <Font name="Consolas" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="assigneeLabel" prefHeight="52.0" prefWidth="600.0" text="assignee">
+                        <Font name="Constantia" size="18.0" />
+                     </font></TextArea>
+                  <Label fx:id="statusLabel" prefHeight="50.0" prefWidth="350.0" text="status">
                      <font>
-                        <Font name="Consolas Italic" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="statusLabel" prefHeight="50.0" prefWidth="600.0" text="status">
+                        <Font name="Consolas" size="24.0" />
+                     </font></Label>
+                  <ComboBox fx:id="statusComboBox" prefHeight="49.0" prefWidth="248.0" promptText="這是測試" style="-fx-background-color: transparent; -fx-border-color: #333333; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-font-size: 24px; -fx-font-family: Consolas; -fx-padding: 6 12 6 12;" />
+                  <CheckBox fx:id="recurringDaysCheckBox11" prefHeight="31.0" prefWidth="85.0" text="週一" />
+                  <CheckBox fx:id="recurringDaysCheckBox12" prefHeight="31.0" prefWidth="85.0" text="週二" />
+                  <CheckBox fx:id="recurringDaysCheckBox13" prefHeight="31.0" prefWidth="85.0" text="週三" />
+                  <CheckBox fx:id="recurringDaysCheckBox14" prefHeight="31.0" prefWidth="85.0" text="週四" />
+                  <CheckBox fx:id="recurringDaysCheckBox15" prefHeight="31.0" prefWidth="85.0" text="週五" />
+                  <CheckBox fx:id="recurringDaysCheckBox16" prefHeight="31.0" prefWidth="85.0" text="週六" />
+                  <CheckBox fx:id="recurringDaysCheckBox17" prefHeight="31.0" prefWidth="85.0" text="週日" />
+                  <Label fx:id="StarttimeLabel" prefHeight="30.0" prefWidth="437.0" text="StarttimeLabel">
                      <font>
                         <Font name="Consolas" size="20.0" />
                      </font></Label>
-                  <Label fx:id="recurringDaysLabel" prefHeight="31.0" prefWidth="600.0" text="recurringDays" />
-                  <Label fx:id="StarttimeLabel" prefHeight="69.0" prefWidth="272.0" text="StarttimeLabel">
+                  <DatePicker fx:id="startDatePicker" editable="false" prefHeight="23.0" prefWidth="63.0" />
+                  <ComboBox fx:id="startHourComboBox" prefHeight="23.0" prefWidth="25.0" />
+                  <ComboBox fx:id="startMinuteComboBox" prefHeight="23.0" prefWidth="25.0" />
+                  <Label fx:id="EndtimeLabel" prefHeight="23.0" prefWidth="437.0" text="EndtimeLabel">
                      <font>
-                        <Font name="Consolas" size="25.0" />
+                        <Font name="Consolas" size="20.0" />
                      </font></Label>
-                  <Label fx:id="EndtimeLabel" prefHeight="73.0" prefWidth="324.0" text="EndtimeLabel">
+                  <DatePicker fx:id="endDatePicker" editable="false" prefHeight="23.0" prefWidth="63.0" />
+                  <ComboBox fx:id="endHourComboBox" prefHeight="23.0" prefWidth="25.0" />
+                  <ComboBox fx:id="endMinuteComboBox" prefHeight="23.0" prefWidth="25.0" />
+                  <Label fx:id="assigneeLabel" prefHeight="62.0" prefWidth="440.0" text="assignee">
                      <font>
-                        <Font name="Consolas" size="25.0" />
-                     </font></Label>
+                        <Font name="Consolas" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" prefHeight="43.0" prefWidth="147.0" text="確認更改">
+                     <font>
+                        <Font name="Consolas" size="23.0" />
+                     </font>
+                  </Button>
                </children>
             </FlowPane>
          </children>
