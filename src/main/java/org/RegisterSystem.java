@@ -11,7 +11,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RegisterSystem {
+public class RegisterSystem implements SceneInterface{
+
+    @Override
+    public void LoadEvent() {
+
+    }
+
+    @Override
+    public void UnloadEvent() {
+
+    }
 
     // 資料庫連接參數
 
