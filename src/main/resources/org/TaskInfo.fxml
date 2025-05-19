@@ -74,9 +74,16 @@
                         <Font name="Consolas" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" prefHeight="43.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="確認更改">
+                  <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="58.0" prefWidth="118.0" style="-fx-stroke: black; -fx-stroke-width: 2px;" styleClass="image-button" text="confirm" textAlignment="CENTER" textFill="#b02525">
+                     <graphic>
+                        <ImageView fx:id="saveImageView" fitHeight="38.0" fitWidth="92.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../images/TextBTN_Medium.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <font>
-                        <Font name="Consolas" size="23.0" />
+                        <Font name="Consolas Bold" size="19.0" />
                      </font>
                   </Button>
                </children>

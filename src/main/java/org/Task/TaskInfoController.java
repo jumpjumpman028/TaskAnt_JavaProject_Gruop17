@@ -39,6 +39,9 @@ public class TaskInfoController {
     @FXML private ComboBox<Integer> endHourComboBox;
     @FXML private ComboBox<Integer> endMinuteComboBox;
     @FXML private Button saveButton;
+    @FXML private ImageView saveImageView;
+    private Image normalSaveImage;
+    private Image pressedSaveImage;
     @FXML private Button cancelButton;
     @FXML private ImageView cancelImageView;
     private Image normalCancelImage;
@@ -125,6 +128,7 @@ public class TaskInfoController {
         startMinuteComboBox.setItems(minutes);
         endMinuteComboBox.setItems(minutes);
         SetUpCancelButton();
+        SetUpSaveButton();
     }
 
     private void saveTask(Task task) {
@@ -191,14 +195,27 @@ public class TaskInfoController {
     public void UpdateEndtimeLabel(Task task){
         EndtimeLabel.setText("結束：" + task.getEndDateString() + " 時間" + task.getEndTimeString());
     }
+    private void SetUpSaveButton(){
+        normalSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium.png").toExternalForm());
+        pressedSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium_Pressed.png").toExternalForm());
+        saveImageView.setImage(normalSaveImage);
+        saveButton.setOnAction(event -> onCancelClicked());
+        // 按下時換圖
+        saveButton.setOnMousePressed(e -> saveImageView.setImage(pressedSaveImage));
+        saveButton.setOnMouseReleased(e -> saveImageView.setImage(normalSaveImage));
+    }
     private void SetUpCancelButton() {
         normalCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel.png").toExternalForm());
         pressedCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel_Pressed.png").toExternalForm());
         cancelImageView.setImage(normalCancelImage);
-
+        cancelButton.setOnAction(event -> onCancelClicked());
         // 按下時換圖
         cancelButton.setOnMousePressed(e -> cancelImageView.setImage(pressedCancelImage));
         cancelButton.setOnMouseReleased(e -> cancelImageView.setImage(normalCancelImage));
+    }
+    @FXML
+    private void onCancelClicked() {
+        ((Stage)cancelButton.getScene().getWindow()).close();
     }
 
 }
