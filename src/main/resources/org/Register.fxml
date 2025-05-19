@@ -8,9 +8,9 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.RegisterSystem">
     <children>
-        <TextField fx:id="usernameField" layoutX="225.0" layoutY="147.0" prefHeight="23.0" prefWidth="219.0" />
-        <TextField fx:id="passwordField" layoutX="225.0" layoutY="188.0" prefHeight="23.0" prefWidth="219.0" />
-        <TextField fx:id="reEnterField" layoutX="225.0" layoutY="230.0" prefHeight="23.0" prefWidth="219.0" />
+        <TextField fx:id="usernameField" layoutX="242.0" layoutY="147.0" prefHeight="23.0" prefWidth="219.0" />
+        <TextField fx:id="passwordField" layoutX="242.0" layoutY="187.0" prefHeight="23.0" prefWidth="219.0" />
+        <TextField fx:id="reEnterField" layoutX="242.0" layoutY="230.0" prefHeight="23.0" prefWidth="219.0" />
 
         <Label layoutX="211.0" layoutY="73.0" prefHeight="19.0" prefWidth="177.0" text="Welcome ! My new friend!" wrapText="true">
             <font>
@@ -24,7 +24,7 @@
         </Label>
         <Label layoutX="100.0" layoutY="151.0" text="Enter your username:" />
         <Label layoutX="83.0" layoutY="234.0" text="Re-enter your password:" />
-        <Button layoutX="264.0" layoutY="277.0" mnemonicParsing="false" onAction="#registerApply" prefHeight="23.0" prefWidth="70.0" text="Register" />
+        <Button layoutX="250.0" layoutY="278.0" mnemonicParsing="false" onAction="#registerApply" prefHeight="23.0" prefWidth="98.0" text="Register" />
       <Label layoutX="102.0" layoutY="191.0" text="Enter your password:" />
       <Label fx:id="showRegisterStatus" alignment="CENTER" layoutX="91.0" layoutY="310.0" prefHeight="19.0" prefWidth="416.0" textAlignment="CENTER" textFill="#04ff0c">
          <font>

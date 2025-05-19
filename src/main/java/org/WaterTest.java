@@ -40,11 +40,17 @@ public class WaterTest implements SceneInterface {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EventForm.fxml"));
             Parent root = loader.load();
 
+            Scene scene = new Scene(root);
+
+            scene.getStylesheets().add(getClass().getResource("/styles/EventForm.css").toExternalForm());
+
+
             Stage stage = new Stage();
             stage.setTitle("新增事件");
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+
 
             // 新增完任務後，刷新任務清單
             refreshTaskList();

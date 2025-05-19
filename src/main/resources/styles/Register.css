@@ -1,0 +1,74 @@
+/* Register.css */
+
+/* 設定整體背景顏色與字型 */
+AnchorPane {
+    -fx-background-color: #FFFAF0; /* 柔和的奶油色背景 */
+    -fx-font-family: "Comic Sans MS", Arial, sans-serif; /* 卡通風格字型 */
+}
+
+/* 標籤樣式 */
+Label {
+    -fx-text-fill: #333333; /* 深灰色文字 */
+    -fx-font-size: 14px; /* 預設字型大小 */
+    -fx-alignment: CENTER; /* 文字置中 */
+}
+
+/* 註冊狀態標籤 */
+Label[fx\\:id="showRegisterStatus"] {
+    -fx-text-fill: #FF4500; /* 鮮豔的橘紅色，用於提示狀態 */
+    -fx-font-weight: bold; /* 粗體顯示 */
+    -fx-font-size: 12px; /* 稍小的字型 */
+    -fx-alignment: CENTER; /* 文字置中 */
+}
+
+/* 輸入框樣式 */
+TextField, PasswordField {
+    -fx-background-color: #FFFFFF; /* 白色背景 */
+    -fx-border-color: #FFB6C1; /* 粉紅色邊框 */
+    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-background-radius: 10px; /* 圓角背景 */
+    -fx-padding: 5px; /* 內邊距 */
+    -fx-font-size: 14px; /* 字型大小 */
+    -fx-text-fill: #333333; /* 深灰色文字 */
+}
+
+/* 按鈕樣式 */
+Button {
+    -fx-background-color: linear-gradient(#FFB6C1, #FF69B4); /* 粉紅漸層背景 */
+    -fx-text-fill: white; /* 白色文字 */
+    -fx-font-weight: bold; /* 粗體文字 */
+    -fx-border-radius: 15px; /* 圓角邊框 */
+    -fx-background-radius: 15px; /* 圓角背景 */
+    -fx-padding: 5px 15px; /* 內邊距 */
+    -fx-cursor: hand; /* 滑鼠指標變成手型 */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0.2, 0, 2); /* 按鈕陰影 */
+}
+
+Button:hover {
+    -fx-background-color: linear-gradient(#FF69B4, #FF1493); /* 更深的粉紅漸層 */
+}
+
+Button:default {
+    -fx-border-color: #FF69B4; /* 預設按鈕的邊框顏色 */
+    -fx-border-width: 2px; /* 邊框寬度 */
+}
+
+/* 特定按鈕樣式：返回登入頁面按鈕 */
+Button[text="Back to login page"] {
+    -fx-background-color: linear-gradient(#FFDAB9, #FF8C00); /* 橘色漸層背景 */
+    -fx-text-fill: white; /* 白色文字 */
+}
+
+Button[text="Back to login page"]:hover {
+    -fx-background-color: linear-gradient(#FF8C00, #FFA500); /* 更深的橘色漸層 */
+}
+
+/* 特定按鈕樣式：註冊按鈕 */
+Button[text="Register"] {
+    -fx-background-color: linear-gradient(#87CEFA, #4682B4); /* 藍色漸層背景 */
+    -fx-text-fill: white; /* 白色文字 */
+}
+
+Button[text="Register"]:hover {
+    -fx-background-color: linear-gradient(#4682B4, #1E90FF); /* 更深的藍色漸層 */
+}

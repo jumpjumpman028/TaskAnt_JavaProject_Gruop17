@@ -1,0 +1,102 @@
+/* AnchorPane 主背景設定 */
+AnchorPane {
+    -fx-background-color: #E5EAF0; /* 柔和的莫蘭迪淺藍背景 */
+    -fx-font-family: "Comic Sans MS", cursive, sans-serif; /* 卡通風字型 */
+}
+
+/* 按鈕樣式（莫蘭迪藍色系，統一高度） */
+Button {
+    -fx-background-color: linear-gradient(#B8C6D1, #8FA4B8); /* 莫蘭迪淺藍到深藍的漸層背景 */
+    -fx-text-fill: white; /* 白色文字 */
+    -fx-font-size: 12px; /* 字型大小（縮小） */
+    -fx-font-weight: bold; /* 粗體文字 */
+    -fx-border-radius: 15px; /* 圓角邊框 */
+    -fx-background-radius: 15px; /* 圓角背景 */
+    -fx-padding: 6px 12px; /* 內邊距 */
+    -fx-pref-height: 30px; /* 統一按鈕高度 */
+    -fx-cursor: hand; /* 滑鼠指標變成手型 */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 6, 0.2, 0, 3); /* 柔和陰影 */
+}
+
+Button:hover {
+    -fx-background-color: linear-gradient(#8FA4B8, #6C8A9E); /* 更深的莫蘭迪藍漸層 */
+}
+
+Button:default {
+    -fx-border-color: #8FA4B8; /* 預設按鈕的邊框顏色 */
+    -fx-border-width: 1.5px; /* 邊框寬度 */
+}
+
+/* 標籤樣式 */
+Label {
+    -fx-text-fill: #5A6B7E; /* 柔和的深藍灰色文字 */
+    -fx-font-size: 12px; /* 字型大小（縮小） */
+    -fx-font-weight: bold; /* 粗體文字 */
+}
+
+Label#errorLabel {
+    -fx-text-fill: #D32F2F; /* 鮮紅色錯誤文字 */
+    -fx-font-size: 12px; /* 字型大小（縮小） */
+    -fx-font-weight: bold; /* 粗體 */
+}
+
+/* 輸入框樣式（縮小文字框尺寸） */
+TextField, TextArea, ComboBox, ChoiceBox {
+    -fx-background-color: #FFFFFF; /* 白色背景 */
+    -fx-border-color: #B8C6D1; /* 莫蘭迪淺藍邊框 */
+    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-background-radius: 10px; /* 圓角背景 */
+    -fx-padding: 4px 8px; /* 內邊距 */
+    -fx-font-size: 12px; /* 字型大小 */
+    -fx-text-fill: #333333; /* 深灰色文字 */
+}
+
+TextArea {
+    -fx-pref-height: 60px; /* 預設高度（縮小） */
+}
+
+/* 日期選擇器樣式（不美化內部按鈕） */
+DatePicker {
+    -fx-background-color: #FFFFFF; /* 白色背景 */
+    -fx-border-color: #B8C6D1; /* 莫蘭迪淺藍邊框 */
+    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-background-radius: 10px; /* 圓角背景 */
+    -fx-padding: 4px 8px; /* 內邊距 */
+    -fx-font-size: 12px; /* 字型大小 */
+}
+
+DatePicker .arrow-button {
+    -fx-background-color: transparent; /* 保留默認樣式 */
+    -fx-padding: 0; /* 無需額外內邊距 */
+}
+
+/* CheckBox 樣式 */
+CheckBox {
+    -fx-text-fill: #5A6B7E; /* 深藍灰色文字 */
+    -fx-font-size: 12px; /* 字型大小 */
+}
+
+/* HBox 和 VBox 內部間距調整 */
+HBox, VBox {
+    -fx-spacing: 10px; /* 元素間距 */
+}
+
+/* ComboBox 樣式 */
+ComboBox {
+    -fx-background-color: #FFFFFF; /* 白色背景 */
+    -fx-border-color: #B8C6D1; /* 莫蘭迪淺藍邊框 */
+    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-background-radius: 10px; /* 圓角背景 */
+    -fx-padding: 4px 8px; /* 內邊距 */
+    -fx-font-size: 12px; /* 字型大小 */
+}
+
+/* ChoiceBox 樣式 */
+ChoiceBox {
+    -fx-background-color: #FFFFFF; /* 白色背景 */
+    -fx-border-color: #B8C6D1; /* 莫蘭迪淺藍邊框 */
+    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-background-radius: 10px; /* 圓角背景 */
+    -fx-padding: 4px 8px; /* 內邊距 */
+    -fx-font-size: 12px; /* 字型大小 */
+}

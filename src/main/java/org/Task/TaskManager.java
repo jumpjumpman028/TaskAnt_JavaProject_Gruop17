@@ -196,20 +196,21 @@ public class TaskManager {
 
 
     public boolean UploadDataToDatabase() {
-        // SQL 語句：檢查任務是否存在，需同時判斷 user_id 和 task_name
+        // SQL 語句：檢查任務是否存在
         String checkTaskExistsSQL = "SELECT COUNT(*) FROM tasks WHERE user_id = ? AND task_name = ?";
         // SQL 語句：更新任務
-        String updateTaskSQL = "UPDATE tasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ? WHERE user_id = ? AND task_name = ?";
+        String updateTaskSQL = "UPDATE tasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ? WHERE user_id = ? AND task_name = ?";
         // SQL 語句：插入新任務
-        String insertTaskSQL = "INSERT INTO tasks (task_id, user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
             for (Task task : taskList) {
-                // 檢查任務是否已存在於資料庫
                 boolean taskExists = false;
+
+                // 檢查任務是否已存在於資料庫
                 try (PreparedStatement checkStmt = connection.prepareStatement(checkTaskExistsSQL)) {
-                    checkStmt.setInt(1, UserInfo.userID); // 判斷 user_id
-                    checkStmt.setString(2, task.getName()); // 判斷 task_name
+                    checkStmt.setInt(1, UserInfo.userID); // user_id
+                    checkStmt.setString(2, task.getName()); // task_name
                     try (ResultSet resultSet = checkStmt.executeQuery()) {
                         if (resultSet.next()) {
                             taskExists = resultSet.getInt(1) > 0; // 如果查詢結果大於 0，任務存在
@@ -220,85 +221,89 @@ public class TaskManager {
                 if (taskExists) {
                     // 任務已存在，執行更新操作
                     try (PreparedStatement updateStmt = connection.prepareStatement(updateTaskSQL)) {
+                        // 更新欄位
                         updateStmt.setString(1, task.getDescription());
                         if (task.getStartDate() != null) {
                             updateStmt.setDate(2, java.sql.Date.valueOf(task.getStartDate()));
-                        }
-                        else {
+                        } else {
                             updateStmt.setNull(2, java.sql.Types.DATE);
                         }
 
                         if (task.getStartTimeString() != null) {
                             updateStmt.setString(3, task.getStartTimeString());
-                        }
-                        else {
+                        } else {
                             updateStmt.setNull(3, java.sql.Types.VARCHAR);
                         }
 
                         if (task.getEndDate() != null) {
                             updateStmt.setDate(4, java.sql.Date.valueOf(task.getEndDate()));
-                        }
-                        else {
+                        } else {
                             updateStmt.setNull(4, java.sql.Types.DATE);
                         }
 
                         if (task.getEndTimeString() != null) {
                             updateStmt.setString(5, task.getEndTimeString());
-                        }
-                        else {
+                        } else {
                             updateStmt.setNull(5, java.sql.Types.VARCHAR);
                         }
 
                         updateStmt.setInt(6, task.getStatus().getCode());
                         updateStmt.setInt(7, task.getType().getCode());
-                        updateStmt.setInt(8, UserInfo.userID); // 加入 user_id 條件
-                        updateStmt.setString(9, task.getName()); // 加入 task_name 條件
+
+                        // 如果任務類型是 Experience，將 recurring_day 設為 NULL
+                        if (task.getType() == Task.Type.Experience) {
+                            updateStmt.setNull(8, java.sql.Types.INTEGER);
+                        } else {
+                            updateStmt.setInt(8, task.getRecurringDaysInt());
+                        }
+
+                        updateStmt.setInt(9, UserInfo.userID); // user_id
+                        updateStmt.setString(10, task.getName()); // task_name
 
                         updateStmt.executeUpdate();
                         System.out.println("任務已更新：" + task.getName());
                     }
-                }
-                else {
+                } else {
                     // 任務不存在，執行插入操作
                     try (PreparedStatement insertStmt = connection.prepareStatement(insertTaskSQL)) {
-                        // 計算該用戶的下一個任務編號
-                        int nextTaskId = getNextTaskNumberForUser(UserInfo.userID);
-
-                        insertStmt.setInt(1, nextTaskId);
-                        insertStmt.setInt(2, UserInfo.userID); // user_id
-                        insertStmt.setString(3, task.getName()); // task_name
-                        insertStmt.setString(4, task.getDescription()); // task_description
+                        // 插入欄位
+                        insertStmt.setInt(1, UserInfo.userID); // user_id
+                        insertStmt.setString(2, task.getName()); // task_name
+                        insertStmt.setString(3, task.getDescription());
 
                         if (task.getStartDate() != null) {
-                            insertStmt.setDate(5, java.sql.Date.valueOf(task.getStartDate()));
-                        }
-                        else {
-                            insertStmt.setNull(5, java.sql.Types.DATE);
+                            insertStmt.setDate(4, java.sql.Date.valueOf(task.getStartDate()));
+                        } else {
+                            insertStmt.setNull(4, java.sql.Types.DATE);
                         }
 
                         if (task.getStartTimeString() != null) {
-                            insertStmt.setString(6, task.getStartTimeString());
-                        }
-                        else {
-                            insertStmt.setNull(6, java.sql.Types.VARCHAR);
+                            insertStmt.setString(5, task.getStartTimeString());
+                        } else {
+                            insertStmt.setNull(5, java.sql.Types.VARCHAR);
                         }
 
                         if (task.getEndDate() != null) {
-                            insertStmt.setDate(7, java.sql.Date.valueOf(task.getEndDate()));
-                        }
-                        else {
-                            insertStmt.setNull(7, java.sql.Types.DATE);
+                            insertStmt.setDate(6, java.sql.Date.valueOf(task.getEndDate()));
+                        } else {
+                            insertStmt.setNull(6, java.sql.Types.DATE);
                         }
 
                         if (task.getEndTimeString() != null) {
-                            insertStmt.setString(8, task.getEndTimeString());
-                        }
-                        else {
-                            insertStmt.setNull(8, java.sql.Types.VARCHAR);
+                            insertStmt.setString(7, task.getEndTimeString());
+                        } else {
+                            insertStmt.setNull(7, java.sql.Types.VARCHAR);
                         }
 
-                        insertStmt.setInt(9, task.getStatus().getCode());
-                        insertStmt.setInt(10, task.getType().getCode());
+                        insertStmt.setInt(8, task.getStatus().getCode());
+                        insertStmt.setInt(9, task.getType().getCode());
+
+                        // 如果任務類型是 Experience，將 recurring_day 設為 NULL
+                        if (task.getType() == Task.Type.Experience) {
+                            insertStmt.setNull(10, java.sql.Types.INTEGER);
+                        } else {
+                            insertStmt.setInt(10, task.getRecurringDaysInt());
+                        }
 
                         insertStmt.executeUpdate();
                         System.out.println("任務已新增：" + task.getName());
@@ -312,6 +317,7 @@ public class TaskManager {
             return false; // 同步失敗
         }
     }
+
 
     public void Notify() {
         // 遍歷所有任務
