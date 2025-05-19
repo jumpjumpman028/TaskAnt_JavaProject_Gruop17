@@ -1,0 +1,23 @@
+.transparent-textarea {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-highlight-fill: transparent;
+    -fx-highlight-text-fill: #333;
+}
+.transparent-textarea .content {
+    -fx-background-color: transparent;
+}
+.transparent-textarea .viewport {
+    -fx-background-color: transparent;
+}
+.image-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}

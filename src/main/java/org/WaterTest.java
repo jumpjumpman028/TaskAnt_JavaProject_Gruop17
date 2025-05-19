@@ -47,7 +47,6 @@ public class WaterTest implements SceneInterface {
             stage.showAndWait();
 
             // 新增完任務後，刷新任務清單
-            ScrollPane.setVvalue(1.0);
             refreshTaskList();
         } catch (Exception e) {
             e.printStackTrace();

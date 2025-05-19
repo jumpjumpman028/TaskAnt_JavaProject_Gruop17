@@ -7,8 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -74,13 +76,16 @@ public class TaskCellController {
                 controller.setTask(this.task); // 傳遞任務資料
 
                 Stage stage = new Stage();
-                stage.setTitle("任務詳情");
+                stage.initStyle(StageStyle.TRANSPARENT);
                 stage.setScene(new Scene(root));
+                stage.getScene().setFill(Color.TRANSPARENT);
+                stage.getScene().getStylesheets().add(getClass().getResource("/styles/textArea.css").toExternalForm());
                 stage.initModality(Modality.APPLICATION_MODAL); // 視窗為模態
                 stage.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         });
     }
 }

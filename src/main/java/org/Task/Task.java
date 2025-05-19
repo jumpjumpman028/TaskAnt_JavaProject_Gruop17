@@ -180,8 +180,9 @@ public class Task {
     }
 
     public void setStartTime(LocalTime startTime) {
-        if(startTime.isAfter(endTime)){
+        if(endTime != null && startTime.isAfter(endTime)){
             DeBugConsole.log("setStartTime is Error!,startTime is after endTime");
+            return;
         }
         this.startTime = startTime;
     }
@@ -198,8 +199,9 @@ public class Task {
         return endTime.format(formatter);
     }
     public void setEndTime(LocalTime endTime) {
-        if(endTime.isBefore(startTime)){
+        if(startTime != null && endTime.isBefore(startTime)){
             DeBugConsole.log("setEndTime is Error!,endTime is before startTime");
+            return;
         }
         this.endTime = endTime;
     }

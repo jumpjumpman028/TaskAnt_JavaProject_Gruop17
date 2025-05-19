@@ -5,9 +5,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.DeBugConsole;
 import org.WaterTest;
 
+import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,6 +39,10 @@ public class TaskInfoController {
     @FXML private ComboBox<Integer> endHourComboBox;
     @FXML private ComboBox<Integer> endMinuteComboBox;
     @FXML private Button saveButton;
+    @FXML private Button cancelButton;
+    @FXML private ImageView cancelImageView;
+    private Image normalCancelImage;
+    private Image pressedCancelImage;
 
 
     //@FXML private Label recurringDaysLabel;
@@ -64,14 +72,16 @@ public class TaskInfoController {
             }
         });
         statusComboBox.getSelectionModel().select(task.getStatus());
+        if(task.getType() != Task.Type.Experience){
+            recurringDaysCheckBox11.setSelected(task.getRecurringDays().contains(DayOfWeek.MONDAY));
+            recurringDaysCheckBox12.setSelected(task.getRecurringDays().contains(DayOfWeek.TUESDAY));
+            recurringDaysCheckBox13.setSelected(task.getRecurringDays().contains(DayOfWeek.WEDNESDAY));
+            recurringDaysCheckBox14.setSelected(task.getRecurringDays().contains(DayOfWeek.THURSDAY));
+            recurringDaysCheckBox15.setSelected(task.getRecurringDays().contains(DayOfWeek.FRIDAY));
+            recurringDaysCheckBox16.setSelected(task.getRecurringDays().contains(DayOfWeek.SATURDAY));
+            recurringDaysCheckBox17.setSelected(task.getRecurringDays().contains(DayOfWeek.SUNDAY));
+        }
 
-        recurringDaysCheckBox11.setSelected(task.getRecurringDays().contains(DayOfWeek.MONDAY));
-        recurringDaysCheckBox12.setSelected(task.getRecurringDays().contains(DayOfWeek.TUESDAY));
-        recurringDaysCheckBox13.setSelected(task.getRecurringDays().contains(DayOfWeek.WEDNESDAY));
-        recurringDaysCheckBox14.setSelected(task.getRecurringDays().contains(DayOfWeek.THURSDAY));
-        recurringDaysCheckBox15.setSelected(task.getRecurringDays().contains(DayOfWeek.FRIDAY));
-        recurringDaysCheckBox16.setSelected(task.getRecurringDays().contains(DayOfWeek.SATURDAY));
-        recurringDaysCheckBox17.setSelected(task.getRecurringDays().contains(DayOfWeek.SUNDAY));
 
         if(task.getStartDate() == null) startDatePicker.setValue(task.getStartDate());
         else startDatePicker.setValue(LocalDate.now());
@@ -114,6 +124,7 @@ public class TaskInfoController {
         endHourComboBox.setItems(hours);
         startMinuteComboBox.setItems(minutes);
         endMinuteComboBox.setItems(minutes);
+        SetUpCancelButton();
     }
 
     private void saveTask(Task task) {
@@ -154,6 +165,7 @@ public class TaskInfoController {
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
         DeBugConsole.log("任務資訊已被更改");
         WaterTest.getInstance().refreshTaskList();
+        ((Stage)saveButton.getScene().getWindow()).close();
     }
 
     public void setTaskinitialize(Task task) {
@@ -172,10 +184,21 @@ public class TaskInfoController {
 
     }
     public void UpdateStarttimeLabel(Task task){
+        URL url = getClass().getResource("/images/InfoBackGround.png");
+        System.out.println(url);
         StarttimeLabel.setText("開始：" + task.getStartDateString() + " 時間" + task.getStartTimeString());
     }
     public void UpdateEndtimeLabel(Task task){
         EndtimeLabel.setText("結束：" + task.getEndDateString() + " 時間" + task.getEndTimeString());
+    }
+    private void SetUpCancelButton() {
+        normalCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel.png").toExternalForm());
+        pressedCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel_Pressed.png").toExternalForm());
+        cancelImageView.setImage(normalCancelImage);
+
+        // 按下時換圖
+        cancelButton.setOnMousePressed(e -> cancelImageView.setImage(pressedCancelImage));
+        cancelButton.setOnMouseReleased(e -> cancelImageView.setImage(normalCancelImage));
     }
 
 }
