@@ -223,32 +223,32 @@ public class TaskManager {
                     try (PreparedStatement updateStmt = connection.prepareStatement(updateTaskSQL)) {
                         // 更新欄位
                         updateStmt.setString(1, task.getDescription());
-                        if (task.getStartDate() != null) {
+                        if (task.getStartDate() != null) {//start date
                             updateStmt.setDate(2, java.sql.Date.valueOf(task.getStartDate()));
                         } else {
                             updateStmt.setNull(2, java.sql.Types.DATE);
                         }
 
-                        if (task.getStartTimeString() != null) {
-                            updateStmt.setString(3, task.getStartTimeString());
+                        if (task.getStartTime() != null) { // start time
+                            updateStmt.setTime(3, java.sql.Time.valueOf(task.getStartTime()));
                         } else {
                             updateStmt.setNull(3, java.sql.Types.VARCHAR);
                         }
 
-                        if (task.getEndDate() != null) {
+                        if (task.getEndDate() != null) {// end date
                             updateStmt.setDate(4, java.sql.Date.valueOf(task.getEndDate()));
                         } else {
                             updateStmt.setNull(4, java.sql.Types.DATE);
                         }
 
-                        if (task.getEndTimeString() != null) {
-                            updateStmt.setString(5, task.getEndTimeString());
+                        if (task.getEndTime() != null) {//end time
+                            updateStmt.setTime(5, java.sql.Time.valueOf(task.getEndTime()));
                         } else {
                             updateStmt.setNull(5, java.sql.Types.VARCHAR);
                         }
 
-                        updateStmt.setInt(6, task.getStatus().getCode());
-                        updateStmt.setInt(7, task.getType().getCode());
+                        updateStmt.setInt(6, task.getStatus().getCode()); //status
+                        updateStmt.setInt(7, task.getType().getCode()); //type
 
                         // 如果任務類型是 Experience，將 recurring_day 設為 NULL
                         if (task.getType() == Task.Type.Experience) {
@@ -277,8 +277,8 @@ public class TaskManager {
                             insertStmt.setNull(4, java.sql.Types.DATE);
                         }
 
-                        if (task.getStartTimeString() != null) {
-                            insertStmt.setString(5, task.getStartTimeString());
+                        if (task.getStartTime() != null) {
+                            insertStmt.setTime(3, java.sql.Time.valueOf(task.getStartTime()));
                         } else {
                             insertStmt.setNull(5, java.sql.Types.VARCHAR);
                         }
@@ -289,8 +289,8 @@ public class TaskManager {
                             insertStmt.setNull(6, java.sql.Types.DATE);
                         }
 
-                        if (task.getEndTimeString() != null) {
-                            insertStmt.setString(7, task.getEndTimeString());
+                        if (task.getEndTime() != null) {
+                            insertStmt.setTime(3, java.sql.Time.valueOf(task.getEndTime()));
                         } else {
                             insertStmt.setNull(7, java.sql.Types.VARCHAR);
                         }
