@@ -3,13 +3,17 @@ package org;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -25,18 +29,35 @@ public class DesktopPet extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // 角色圖片
         Image petImage = new Image(getClass().getResource("/images/chiikawa.gif").toExternalForm());
         ImageView petView = new ImageView(petImage);
-
-        // 🔽 預設縮小（例如80%大小）
         petView.setScaleX(0.2);
         petView.setScaleY(0.2);
 
-        StackPane root = new StackPane(petView);
+        
+        Label speechLabel = new Label("你好呀！");
+        speechLabel.setStyle(
+                "-fx-background-color: white; -fx-text-fill: black; -fx-padding: 8 12; -fx-background-radius: 12;");
+
+        
+        Polygon triangle = new Polygon();
+        triangle.getPoints().addAll(
+                0.0, 0.0,
+                10.0, 0.0,
+                5.0, 7.0);
+        triangle.setFill(Color.WHITE);
+
+        
+        VBox speechBubble = new VBox(speechLabel, triangle);
+        speechBubble.setAlignment(Pos.CENTER);
+        speechBubble.setTranslateY(-80); 
+        speechBubble.setVisible(false);
+        speechBubble.setOpacity(0);
+
+        StackPane root = new StackPane(petView, speechBubble);
         root.setStyle("-fx-background-color: transparent;");
 
-        Scene scene = new Scene(root, Color.TRANSPARENT);
+        Scene scene = new Scene(root, 300, 300, Color.TRANSPARENT);
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setAlwaysOnTop(true);
@@ -44,7 +65,6 @@ public class DesktopPet extends Application {
         primaryStage.setX(300);
         primaryStage.setY(300);
 
-        // 拖曳功能
         scene.setOnMousePressed((MouseEvent event) -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
@@ -54,27 +74,37 @@ public class DesktopPet extends Application {
             primaryStage.setY(event.getScreenY() - yOffset);
         });
 
+        petView.setPickOnBounds(true);
+        petView.setOnMouseClicked(event -> {
+            speechLabel.setText("嗨嗨～");
+            speechBubble.setVisible(true);
+            speechBubble.setOpacity(1.0);
+
+            Timeline showBubble = new Timeline(
+                    new KeyFrame(Duration.seconds(0), e -> speechBubble.setOpacity(1.0)),
+                    new KeyFrame(Duration.seconds(2), e -> speechBubble.setOpacity(0.0)));
+            showBubble.setOnFinished(e -> speechBubble.setVisible(false));
+            showBubble.play();
+        });
+
         primaryStage.show();
 
-        // 取得螢幕範圍
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(32), e -> {
             double currentX = primaryStage.getX();
 
-            // 邊界碰撞反彈
             if (currentX <= screenBounds.getMinX()) {
                 movingRight = true;
             } else if (currentX + primaryStage.getWidth() >= screenBounds.getMaxX()) {
                 movingRight = false;
             }
 
-            // ➡️ 根據方向決定水平翻轉
             if (movingRight) {
-                petView.setScaleX(-0.2); // ➡️ 水平翻轉 + 縮小
+                petView.setScaleX(-0.2);
                 primaryStage.setX(currentX + speed);
             } else {
-                petView.setScaleX(0.2);  // ⬅️ 回到正常 + 縮小
+                petView.setScaleX(0.2);
                 primaryStage.setX(currentX - speed);
             }
         }));
@@ -87,3 +117,4 @@ public class DesktopPet extends Application {
         launch(args);
     }
 }
+
