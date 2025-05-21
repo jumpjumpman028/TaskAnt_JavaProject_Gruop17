@@ -158,6 +158,10 @@ public class TaskInfoController {
         task.setName(newName);
         task.setDescription(newDescription);
         task.setStatus(newStatus);
+        if(newStartDate != null && newEndDate != null && newStartDate.isBefore(newEndDate)){
+            task.setStartDate(newStartDate);
+            task.setEndDate(newEndDate);
+        }
         task.setStartDate(newStartDate);
         task.setEndDate(newEndDate);
         if(newStartHour != null && newStartMinute != null)
@@ -210,8 +214,14 @@ public class TaskInfoController {
         cancelImageView.setImage(normalCancelImage);
         cancelButton.setOnAction(event -> onCancelClicked());
         // 按下時換圖
-        cancelButton.setOnMousePressed(e -> cancelImageView.setImage(pressedCancelImage));
-        cancelButton.setOnMouseReleased(e -> cancelImageView.setImage(normalCancelImage));
+        cancelButton.setOnMousePressed(e -> {
+            cancelImageView.setImage(pressedCancelImage);
+            saveButton.setStyle("-fx-text-fill: transparent;");
+            });
+        cancelButton.setOnMouseReleased(e -> {
+            cancelImageView.setImage(normalCancelImage);
+            saveButton.setStyle("");
+        });
     }
     @FXML
     private void onCancelClicked() {

@@ -1,6 +1,7 @@
 package org.Task;
 import org.DeBugConsole;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
@@ -173,18 +174,21 @@ public class Task {
         return startTime.format(formatter);
     }
     public void setStartDate(LocalDate startDate){
-        this.startDate = startDate;
+            if(endDate != null && startDate.isBefore(endDate))
+            this.startDate = startDate;
+            else throw new DateTimeException("SetStartDateIsFail");
     }
     public void setEndDate(LocalDate endDate){
-        this.endDate = endDate;
+            if(startDate != null && endDate.isAfter(startDate))
+            this.endDate = endDate;
+            else throw new DateTimeException("SetEndDateIsFail");
     }
 
     public void setStartTime(LocalTime startTime) {
-        if(endTime != null && startTime.isAfter(endTime)){
-            DeBugConsole.log("setStartTime is Error!,startTime is after endTime");
-            return;
-        }
-        this.startTime = startTime;
+        if(endTime != null && startTime.isBefore(endTime))
+            this.startTime = startTime;
+        else throw new DateTimeException("SetStartTimeFail");
+
     }
 
     public LocalTime getEndTime() {
@@ -199,11 +203,10 @@ public class Task {
         return endTime.format(formatter);
     }
     public void setEndTime(LocalTime endTime) {
-        if(startTime != null && endTime.isBefore(startTime)){
-            DeBugConsole.log("setEndTime is Error!,endTime is before startTime");
-            return;
-        }
-        this.endTime = endTime;
+        if(startTime != null && endTime.isAfter(startTime))
+            this.endTime = endTime;
+        else throw new DateTimeException("SetEndTimeFail");
+
     }
     private static LocalTime convertStringToLocalTime(String timeString) {
         try {
