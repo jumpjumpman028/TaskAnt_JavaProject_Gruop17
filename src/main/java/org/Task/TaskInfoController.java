@@ -167,6 +167,7 @@ public class TaskInfoController {
         task.setRecurringDays(newRecurringDays);
 
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
+        TaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
         WaterTest.getInstance().refreshTaskList();
         ((Stage)saveButton.getScene().getWindow()).close();
