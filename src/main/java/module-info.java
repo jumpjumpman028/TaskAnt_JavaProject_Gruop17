@@ -29,6 +29,8 @@ module org{
     requires com.zaxxer.hikari;
     requires com.fasterxml.jackson.core;
     requires org.checkerframework.checker.qual;
+    //JSON
+    requires com.fasterxml.jackson.databind; // 添加 Jackson 的依賴
     opens org to javafx.fxml;
     exports org;
     exports org.Task;
