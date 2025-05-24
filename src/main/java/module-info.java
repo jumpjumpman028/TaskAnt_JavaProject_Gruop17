@@ -35,4 +35,6 @@ module org{
     exports org;
     exports org.Task;
     opens org.Task to javafx.fxml;
+    exports org.TeamTask;
+    opens org.TeamTask to javafx.fxml;
 }
