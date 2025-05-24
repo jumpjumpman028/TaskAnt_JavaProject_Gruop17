@@ -1,95 +1,63 @@
 package org.TeamTask;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.DatabaseConnectionPool;
 import org.UserInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TeamManager {
 
     private List<Team> teamList = new ArrayList<>();
     private static final TeamManager instance = new TeamManager();
+    private static final ObjectMapper objectMapper = new ObjectMapper(); // 用於 JSON 處理
 
     // 單例模式
     public static TeamManager getInstance() {
         return instance;
     }
 
-    // 從資料庫抓取 Team 資料
-    public boolean fetchTeamsFromDatabase() {
-        String query = "SELECT * FROM teams WHERE user_id = ?";
+    // 從資料庫抓取 Team 資料並過濾出包含當前使用者的 Team
+    public void fetchTeamsFromDatabase() {
+        String selectSQL = "SELECT team_id, team_name, team_code, team_members FROM teams";
+
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(selectSQL)) {
 
-            preparedStatement.setInt(1, UserInfo.userID);
+            List<Team> loadedTeams = new ArrayList<>();
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                // 清空本地 teamList，避免重複添加
-                teamList.clear();
+            while (resultSet.next()) {
+                int teamId = resultSet.getInt("team_id");
+                String teamName = resultSet.getString("team_name");
+                String teamCode = resultSet.getString("team_code");
+                String teamMembersJson = resultSet.getString("team_members");
 
-                while (resultSet.next()) {
-                    int teamId = resultSet.getInt("team_id");
-                    String teamCode = resultSet.getString("team_code");
-                    String teamName = resultSet.getString("team_name");
+                // 將 JSON 字串轉換為 List<Integer>
+                List<Integer> teamMembers = Team.teamMembersFromJson(teamMembersJson);
 
-                    // 處理 team_members 資料（假設資料庫中 team_members 是以逗號分隔的字串存儲）
-                    String teamMembersStr = resultSet.getString("team_members");
-                    List<String> teamMembers = teamMembersStr != null && !teamMembersStr.isEmpty()
-                            ? Arrays.asList(teamMembersStr.split(","))
-                            : new ArrayList<>();
-
-                    // 創建 Team 物件並添加到列表
-                    Team team = new Team(teamId, teamCode, teamName, teamMembers);
-                    teamList.add(team);
-                }
-
-                System.out.println("成功從資料庫抓取 Team，共有 " + teamList.size() + " 個 Team");
-                return true;
-            }
-        } catch (SQLException e) {
-            System.err.println("從資料庫抓取 Team 時發生錯誤：" + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // 創建新 Team 並插入資料庫
-    public void createTeam(String teamCode, String teamName, List<String> teamMembers) {
-        String insertSQL = "INSERT INTO teams (user_id, team_code, team_name, team_members) VALUES (?, ?, ?, ?)";
-        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
-
-            preparedStatement.setInt(1, UserInfo.userID);
-            preparedStatement.setString(2, teamCode);
-            preparedStatement.setString(3, teamName);
-
-            // 將 teamMembers 轉換為逗號分隔的字串
-            String teamMembersStr = String.join(",", teamMembers);
-            preparedStatement.setString(4, teamMembersStr);
-
-            preparedStatement.executeUpdate();
-
-            // 獲取自動生成的 team_id
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int teamId = generatedKeys.getInt(1);
-
-                    // 同步到本地 teamList
-                    teamList.add(new Team(teamId, teamCode, teamName, teamMembers));
+                // 檢查 UserInfo.userID 是否在 teamMembers 中
+                if (teamMembers != null && teamMembers.contains(UserInfo.userID)) {
+                    // 如果包含該使用者，創建 Team 物件並加入到 teamList
+                    Team team = new Team(teamId, teamName, teamCode, teamMembers);
+                    loadedTeams.add(team);
                 }
             }
 
-            System.out.println("成功創建 Team 並插入資料庫！");
+            // 更新 teamList
+            this.teamList = loadedTeams;
+
+            System.out.println("成功載入包含當前使用者的 Teams: " + teamList.size());
+
         } catch (SQLException e) {
-            System.err.println("創建 Team 時發生錯誤：" + e.getMessage());
+            System.err.println("從資料庫載入 Teams 時發生錯誤：" + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    // 獲取本地 Team 列表
+    // 取得 teamList
     public List<Team> getTeamList() {
         return teamList;
     }
