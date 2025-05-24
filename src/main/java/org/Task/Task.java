@@ -99,7 +99,12 @@ public class Task {
             DeBugConsole.log("已將任務 "+name+" 調至完成");
         }
         if(status == Status.IN_PROGRESS && this.status == Status.TODO ){
-            setStartDate(LocalDate.now());
+            if(startDate == null){
+                setStartDate(LocalDate.now());
+            }
+            if(startTime == null){
+                setStartTime(LocalTime.now());
+            }
             try{
                 TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(this);
             }catch (Exception e){

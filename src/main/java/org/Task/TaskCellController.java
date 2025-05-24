@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,7 +21,7 @@ public class TaskCellController {
     @FXML private Label starttimeLabel;
     @FXML private Label endtimeLabel;
     @FXML private Label statusLabel;
-    @FXML private HBox root;
+    @FXML private StackPane root;
 
     private Task task;
     private String hoverColor;

@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
@@ -64,7 +65,7 @@ public class WaterTest implements SceneInterface {
         for (Task task : tasks) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCell.fxml"));
-                HBox cell = loader.load();
+                StackPane cell = loader.load();
                 TaskCellController controller = loader.getController();
                 controller.setTask(task);
                 taskListPane.getChildren().add(cell);

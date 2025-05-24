@@ -1,30 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="402.0" spacing="20" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Task.TaskCellController">
-    <children>
-        <Label fx:id="nameLabel" maxWidth="120" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="101.0" style="-fx-font-weight: bold; -fx-text-overrun: ellipsis;" text="任務名稱" />
-      <VBox prefHeight="31.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="starttimeLabel" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="132.0" text="時間資訊" textFill="WHITE" wrapText="true">
+<StackPane fx:id="root" prefHeight="35.0" prefWidth="357.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Task.TaskCellController">
+   <children>
+      <ImageView fitHeight="35.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" scaleX="4.58" scaleY="1.1">
+         <image>
+            <Image url="@../images/UIboardSmallstone.png" />
+         </image>
+          <clip>
+              <Rectangle height="35" width="80.5" x="1.5" y="0" />
+          </clip>
+      </ImageView>
+      <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="402.0" spacing="20" style="-fx-background-color: rgba(255,255,255,0); -fx-text-stroke: black;-fx-text-stroke-width: 2px;">
+          <children>
+              <Label fx:id="nameLabel" alignment="CENTER" maxWidth="120" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="88.0" text="任務名稱" wrapText="true">
+               <font>
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font></Label>
+            <VBox prefHeight="31.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="starttimeLabel" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="132.0" text="時間資訊" wrapText="true">
+                     <font>
+                        <Font name="Georgia" size="12.0" />
+                     </font>
+                  </Label>
+                    <Label fx:id="endtimeLabel" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="185.0" text="時間資訊" wrapText="true">
+                     <font>
+                        <Font name="Georgia" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+              <Label fx:id="statusLabel" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="88.0" style="-fx-text-fill: green; -fx-text-stroke: black;-fx-text-stroke-width: 2px;" text="狀態">
                <font>
                   <Font name="Consolas" size="12.0" />
                </font>
             </Label>
-              <Label fx:id="endtimeLabel" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="24.0" prefWidth="186.0" text="時間資訊" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="Consolas" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
-        <Label fx:id="statusLabel" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="104.0" style="-fx-text-fill: green;" text="狀態">
-         <font>
-            <Font name="Consolas" size="12.0" />
-         </font></Label>
-    </children>
-</HBox>
+          </children>
+      </HBox>
+   </children>
+</StackPane>

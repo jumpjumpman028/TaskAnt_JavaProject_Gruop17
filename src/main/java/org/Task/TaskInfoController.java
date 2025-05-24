@@ -7,11 +7,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.DeBugConsole;
 import org.WaterTest;
 
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class TaskInfoController {
     @FXML private ImageView cancelImageView;
     private Image normalCancelImage;
     private Image pressedCancelImage;
+    @FXML private Label ErrorLabel;
 
 
     //@FXML private Label recurringDaysLabel;
@@ -132,6 +135,7 @@ public class TaskInfoController {
     }
 
     private void saveTask(Task task) {
+        boolean Error = false;
         // 1. 取得欄位內容
         String newName = NameTextField.getText();
         String newDescription = descriptionTextArea.getText();
@@ -158,23 +162,36 @@ public class TaskInfoController {
         task.setName(newName);
         task.setDescription(newDescription);
         task.setStatus(newStatus);
-        if(newStartDate != null && newEndDate != null && newStartDate.isBefore(newEndDate)){
-            task.setStartDate(newStartDate);
-            task.setEndDate(newEndDate);
+        try {
+            if (newStartDate != null && newEndDate != null && newStartDate.isBefore(newEndDate)) {
+                task.setStartDate(newStartDate);
+                task.setEndDate(newEndDate);
+            }
+            Error = false;
+        }catch (DateTimeException DT){
+            ErrorLabel.setText("開始與結束日期錯誤或不合規定");
+            Error = true;
         }
-        task.setStartDate(newStartDate);
-        task.setEndDate(newEndDate);
-        if(newStartHour != null && newStartMinute != null)
-            task.setStartTime(java.time.LocalTime.of(newStartHour, newStartMinute));
-        if(newEndHour != null && newEndMinute != null)
-            task.setEndTime(java.time.LocalTime.of(newEndHour, newEndMinute));
+        try {
+            if (newStartHour != null && newStartMinute != null)
+                task.setStartTime(java.time.LocalTime.of(newStartHour, newStartMinute));
+            if (newEndHour != null && newEndMinute != null)
+                task.setEndTime(java.time.LocalTime.of(newEndHour, newEndMinute));
+            Error = false;
+        }catch (DateTimeException DT){
+            ErrorLabel.setText(("開始與結束時間錯誤或不合規定"));
+            Error = true;
+        }
         task.setRecurringDays(newRecurringDays);
 
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
         TaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
         WaterTest.getInstance().refreshTaskList();
-        ((Stage)saveButton.getScene().getWindow()).close();
+        if(!Error){
+            ((Stage)saveButton.getScene().getWindow()).close();
+        }
+
     }
 
     public void setTaskinitialize(Task task) {
@@ -206,8 +223,12 @@ public class TaskInfoController {
         saveImageView.setImage(normalSaveImage);
         saveButton.setOnAction(event -> onCancelClicked());
         // 按下時換圖
-        saveButton.setOnMousePressed(e -> saveImageView.setImage(pressedSaveImage));
-        saveButton.setOnMouseReleased(e -> saveImageView.setImage(normalSaveImage));
+        saveButton.setOnMousePressed(e -> {saveImageView.setImage(pressedSaveImage);
+            saveButton.setText("");
+        });
+        saveButton.setOnMouseReleased(e -> {saveImageView.setImage(normalSaveImage);
+            saveButton.setText("儲存");
+        });
     }
     private void SetUpCancelButton() {
         normalCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel.png").toExternalForm());
@@ -217,11 +238,10 @@ public class TaskInfoController {
         // 按下時換圖
         cancelButton.setOnMousePressed(e -> {
             cancelImageView.setImage(pressedCancelImage);
-            saveButton.setStyle("-fx-text-fill: transparent;");
+
             });
         cancelButton.setOnMouseReleased(e -> {
             cancelImageView.setImage(normalCancelImage);
-            saveButton.setStyle("");
         });
     }
     @FXML
