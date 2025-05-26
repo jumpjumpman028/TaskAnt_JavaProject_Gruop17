@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,7 +22,6 @@ public class DesktopPet extends Application {
 
     private double xOffset = 0;
     private double yOffset = 0;
-
     private double speed = 2;
     private boolean movingRight = true;
 
@@ -34,12 +32,10 @@ public class DesktopPet extends Application {
         petView.setScaleX(0.2);
         petView.setScaleY(0.2);
 
-        
         Label speechLabel = new Label("你好呀！");
         speechLabel.setStyle(
                 "-fx-background-color: white; -fx-text-fill: black; -fx-padding: 8 12; -fx-background-radius: 12;");
 
-        
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(
                 0.0, 0.0,
@@ -47,10 +43,9 @@ public class DesktopPet extends Application {
                 5.0, 7.0);
         triangle.setFill(Color.WHITE);
 
-        
         VBox speechBubble = new VBox(speechLabel, triangle);
         speechBubble.setAlignment(Pos.CENTER);
-        speechBubble.setTranslateY(-80); 
+        speechBubble.setTranslateY(-80);
         speechBubble.setVisible(false);
         speechBubble.setOpacity(0);
 
@@ -65,11 +60,11 @@ public class DesktopPet extends Application {
         primaryStage.setX(300);
         primaryStage.setY(300);
 
-        scene.setOnMousePressed((MouseEvent event) -> {
+        scene.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
         });
-        scene.setOnMouseDragged((MouseEvent event) -> {
+        scene.setOnMouseDragged(event -> {
             primaryStage.setX(event.getScreenX() - xOffset);
             primaryStage.setY(event.getScreenY() - yOffset);
         });
@@ -91,7 +86,7 @@ public class DesktopPet extends Application {
 
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(32), e -> {
+        Timeline moveTimeline = new Timeline(new KeyFrame(Duration.millis(32), e -> {
             double currentX = primaryStage.getX();
 
             if (currentX <= screenBounds.getMinX()) {
@@ -108,9 +103,30 @@ public class DesktopPet extends Application {
                 primaryStage.setX(currentX - speed);
             }
         }));
+        moveTimeline.setCycleCount(Timeline.INDEFINITE);
+        moveTimeline.play();
 
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        // 先馬上提醒一次
+        showReminder(speechLabel, speechBubble);
+
+        // 每5分鐘提醒一次
+        Timeline reminderTimeline = new Timeline(
+                new KeyFrame(Duration.minutes(5), e -> showReminder(speechLabel, speechBubble)));
+        reminderTimeline.setCycleCount(Timeline.INDEFINITE);
+        reminderTimeline.play();
+    }
+
+    private void showReminder(Label speechLabel, VBox speechBubble) {
+        speechLabel.setText("該休息一下囉！");
+        speechBubble.setVisible(true);
+        speechBubble.setOpacity(1.0);
+
+        Timeline hideTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(3), e -> {
+                    speechBubble.setOpacity(0.0);
+                    speechBubble.setVisible(false);
+                }));
+        hideTimeline.play();
     }
 
     public static void main(String[] args) {
