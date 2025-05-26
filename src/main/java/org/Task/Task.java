@@ -22,8 +22,9 @@ public class Task {
     private LocalDate endDate;  //結束日期
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
-        public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
-        //制式化任務範例
+
+    public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
+        //重複性任務範例
         this.name = name;
         this.description = description;
         this.assignee = assignee;
