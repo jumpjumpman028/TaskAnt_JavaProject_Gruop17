@@ -1,11 +1,19 @@
 package org.Task;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.DatabaseConnectionPool;
 import org.DeBugConsole;
 import org.GoogleCalendarAuthorization;
 import org.UserInfo;
 
 import java.awt.*;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -129,7 +137,10 @@ public class TaskManager {
         DeBugConsole.log("TaskManager請求更改 "+ task.getName() +" 的狀態");
         task.setStatus(newStatus);
     }
+    public void setTaskList(ArrayList<Task> taskList) {
+        this.taskList = taskList;
 
+    }
     public List<Task> getTaskList() {
         return taskList;
     }
@@ -442,5 +453,27 @@ public class TaskManager {
         // 如果查詢失敗或發生異常，返回 -1 表示錯誤
         return -1;
     }
+    public static void ShowInfo(Task task, Stage ownerStage){
+        try {
+            FXMLLoader loader = new FXMLLoader(instance.getClass().getResource("/org/TaskInfo.fxml"));
+            Parent root = loader.load();
+            TaskInfoController controller = loader.getController();
+            controller.setTask(task); // 傳遞任務資料
 
+            Stage infoStage  = new Stage();
+            infoStage.initStyle(StageStyle.UNDECORATED);
+            infoStage.setScene(new Scene(root));
+            infoStage.initOwner(ownerStage);
+
+            // 這裡設定新視窗的位置與大小與主視窗一樣
+            infoStage.setX(ownerStage.getX());
+            infoStage.setY(ownerStage.getY());
+            infoStage.getScene().setFill(Color.TRANSPARENT);
+            infoStage.getScene().getStylesheets().add(instance.getClass().getResource("/styles/textArea.css").toExternalForm());
+            infoStage.initModality(Modality.APPLICATION_MODAL); // 視窗為模態
+            infoStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

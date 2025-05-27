@@ -30,11 +30,14 @@ module org{
     requires com.fasterxml.jackson.core;
     requires org.checkerframework.checker.qual;
     //JSON
-    requires com.fasterxml.jackson.databind; // 添加 Jackson 的依賴
+    requires com.fasterxml.jackson.databind;
+    requires jdk.compiler; // 添加 Jackson 的依賴
     opens org to javafx.fxml;
     exports org;
     exports org.Task;
     opens org.Task to javafx.fxml;
     exports org.TeamTask;
     opens org.TeamTask to javafx.fxml;
+    exports org.Node;
+    opens org.Node to javafx.fxml;
 }

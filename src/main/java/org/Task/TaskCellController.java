@@ -70,22 +70,7 @@ public class TaskCellController {
             root.getStyleClass().remove("hover-hbox");
         });
         root.setOnMouseClicked(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/TaskInfo.fxml"));
-                Parent root = loader.load();
-                TaskInfoController controller = loader.getController();
-                controller.setTask(this.task); // 傳遞任務資料
-
-                Stage stage = new Stage();
-                stage.initStyle(StageStyle.TRANSPARENT);
-                stage.setScene(new Scene(root));
-                stage.getScene().setFill(Color.TRANSPARENT);
-                stage.getScene().getStylesheets().add(getClass().getResource("/styles/textArea.css").toExternalForm());
-                stage.initModality(Modality.APPLICATION_MODAL); // 視窗為模態
-                stage.showAndWait();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            TaskManager.ShowInfo(task, (Stage) root.getScene().getWindow());
 
         });
     }

@@ -1,6 +1,14 @@
 package org.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.DeBugConsole;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,7 +17,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 public class Task {
+    public static int setID = 0;
 
     private int ID = -1 ;
     private String name;
@@ -22,6 +33,12 @@ public class Task {
     private LocalDate endDate;  //結束日期
     private LocalTime startTime;    //開始執行時間
     private LocalTime endTime;  //結束執行時間
+
+    // NodeMap
+    private Integer parentId; // 上一個節點的ID，或叫 prevId
+    public Integer getParentId() { return parentId; }
+    public void setParentId(Integer id) { this.parentId = id; }
+
         public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
         //制式化任務範例
         this.name = name;
@@ -34,6 +51,7 @@ public class Task {
         this.endTime = endTime;
         this.recurringDays = recurringDays;
         this.type = type;
+        ID = setID++;
     }
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime) {
         //一次性任務範例
@@ -47,7 +65,7 @@ public class Task {
         this.endDate = null;
         this.endTime = null;
         this.recurringDays = null;
-
+        ID = setID++;
     }
 
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays) {
@@ -62,7 +80,7 @@ public class Task {
         this.status = status;
         this.type = type;
         this.recurringDays = recurringDays;
-
+        ID = setID++;
     }
 
     public String getName() {
@@ -314,6 +332,7 @@ public class Task {
         }
         private final int code;
     }
+
     @Override
     public String toString() {
         return String.format("name=%s description=%s assignee=%s startTime=%s endTime=%s type=%s", name, description, assignee, startTime, endTime, type);

@@ -7,8 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.DeBugConsole;
 import org.WaterTest;
 
@@ -49,6 +51,9 @@ public class TaskInfoController {
     private Image normalCancelImage;
     private Image pressedCancelImage;
     @FXML private Label ErrorLabel;
+    @FXML private AnchorPane rootPane;
+    private double rootPaneXOffset = 0;
+    private double rootPaneYOffset = 0;
 
 
     //@FXML private Label recurringDaysLabel;
@@ -121,6 +126,19 @@ public class TaskInfoController {
 
         Platform.runLater(() -> {
             assigneeLabel.requestFocus();
+            Stage stage = (Stage) assigneeLabel.getScene().getWindow();
+            stage.setMaximized(false);
+            stage.setResizable(false);
+        });
+        rootPane.setOnMousePressed(event -> {
+            rootPaneXOffset = event.getSceneX();
+            rootPaneYOffset = event.getSceneY();
+        });
+
+        rootPane.setOnMouseDragged(event -> {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setX(event.getScreenX() - rootPaneXOffset);
+            stage.setY(event.getScreenY() - rootPaneYOffset);
         });
         ObservableList<Integer> hours = FXCollections.observableArrayList();
         for (int i = 0; i < 24; i++) hours.add(i);
@@ -132,6 +150,7 @@ public class TaskInfoController {
         endMinuteComboBox.setItems(minutes);
         SetUpCancelButton();
         SetUpSaveButton();
+
     }
 
     private void saveTask(Task task) {
@@ -211,7 +230,6 @@ public class TaskInfoController {
     }
     public void UpdateStarttimeLabel(Task task){
         URL url = getClass().getResource("/images/InfoBackGround.png");
-        System.out.println(url);
         StarttimeLabel.setText("開始：" + task.getStartDateString() + " 時間" + task.getStartTimeString());
     }
     public void UpdateEndtimeLabel(Task task){

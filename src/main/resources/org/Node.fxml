@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="root" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Node.NodeController">
+   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+      <image>
+         <Image url="@../images/UIboard.png" />
+      </image>
+   </ImageView>
+    <ImageView fx:id="icon" fitHeight="42.0" fitWidth="158.0" nodeOrientation="INHERIT" translateY="-10.0" StackPane.alignment="TOP_CENTER">
+      <image>
+         <Image url="@../images/IRONYTITLE.png" />
+      </image>
+      <cursor>
+         <Cursor fx:constant="DEFAULT" />
+      </cursor>
+   </ImageView>
+   <ImageView fx:id="exclamationIconChange" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="-20.0" visible="false" StackPane.alignment="TOP_RIGHT">
+      <image>
+         <Image url="@../images/Exclamation_Yellow.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="exclamationIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="-20.0" StackPane.alignment="TOP_RIGHT">
+      <image>
+         <Image url="@../images/Exclamation_Gray.png" />
+      </image>
+   </ImageView>
+    <Text fx:id="label" style="-fx-font-size: 16px;" text="節點名稱" StackPane.alignment="TOP_CENTER">
+      <font>
+         <Font name="System Bold Italic" size="12.0" />
+      </font></Text>
+   <Text fx:id="startTimeLabel" style="-fx-font-size: 16px;" text="節點名稱" translateY="-20.0" wrappingWidth="173.0" StackPane.alignment="CENTER">
+      <font>
+         <Font name="System Bold Italic" size="12.0" />
+      </font>
+   </Text>
+   <Text fx:id="endTimeLabel" style="-fx-font-size: 16px;" text="節點名稱" translateY="10.0" wrappingWidth="172.0" StackPane.alignment="CENTER">
+      <font>
+         <Font name="System Bold Italic" size="12.0" />
+      </font>
+   </Text>
+</StackPane>

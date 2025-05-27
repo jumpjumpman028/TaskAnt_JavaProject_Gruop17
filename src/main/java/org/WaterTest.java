@@ -3,6 +3,7 @@ package org;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -76,7 +77,6 @@ public class WaterTest implements SceneInterface {
 
     }
 
-
     private HBox createTaskCell(Task task) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCell.fxml"));
@@ -88,6 +88,10 @@ public class WaterTest implements SceneInterface {
             e.printStackTrace();
             return new HBox(); // 回傳空 HBox 防呆
         }
+    }
+    @FXML
+    private void switchToNodeMap(ActionEvent event) throws Exception {
+        MainApplication.switchScene("NodeMapView.fxml");
     }
 
     @Override

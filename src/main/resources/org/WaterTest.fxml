@@ -7,15 +7,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.WaterTest">
+<AnchorPane prefHeight="416.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.WaterTest">
    <children>
-      <ImageView fitHeight="307.0" fitWidth="420.0" pickOnBounds="true" preserveRatio="true" scaleY="1.45" x="185.0" y="60.0">
+      <Button fx:id="switchToNodeMap" layoutX="30.0" layoutY="170.0" mnemonicParsing="false" onAction="#switchToNodeMap" prefHeight="30.0" prefWidth="100.0" text="前往任務節點" />
+      <ImageView fitHeight="283.0" fitWidth="440.0" layoutX="46.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" scaleY="1.45" x="185.0" y="60.0">
          <image>
             <Image url="@../images/UIboard.png" />
          </image>
       </ImageView>
       <Button fx:id="addEventButton" defaultButton="true" layoutX="30.0" layoutY="43.0" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="40.0" prefWidth="100.0" text="新增事件" />
-      <VBox fx:id="taskListPane" layoutX="217.0" layoutY="49.0" prefHeight="307.0" prefWidth="357.0" spacing="5">
+      <VBox fx:id="taskListPane" layoutX="264.0" layoutY="55.0" prefHeight="307.0" prefWidth="357.0" spacing="5">
          <effect>
             <Blend />
          </effect></VBox>
