@@ -33,4 +33,22 @@ public class TeamTask extends Task {
     public int getTeamID() {
         return teamID;
     }
+
+    @Override
+    public String toString() {
+        return "TeamTask{" +
+                "teamID=" + teamID +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", assignee='" + getAssignee() + '\'' +
+                ", startDate=" + getStartDate() +
+                ", startTime=" + getStartTime() +
+                ", endDate=" + getEndDate() +
+                ", endTime=" + getEndTime() +
+                ", status=" + getStatus() +
+                ", type=" + getType() +
+                ", recurringDays=" + getRecurringDays() +
+                '}';
+    }
+
 }
