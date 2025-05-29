@@ -26,6 +26,11 @@ public class LoginSystem implements SceneInterface {
         DeBugConsole.log("UnloadEvent " +getClass().getName());
     }
 
+    @Override
+    public void FreshEvent() {
+
+    }
+
     // 資料庫連接參數
     private static final String DB_URL = "jdbc:mysql://yamanote.proxy.rlwy.net:44528/taskant_userinfo";
     private static final String DB_USER = "root";

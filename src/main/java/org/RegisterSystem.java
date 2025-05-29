@@ -23,6 +23,11 @@ public class RegisterSystem implements SceneInterface{
 
     }
 
+    @Override
+    public void FreshEvent() {
+
+    }
+
     // 資料庫連接參數
 
     @FXML

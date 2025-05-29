@@ -20,8 +20,8 @@ public class NodeController {
     public void setTask(Task task) {
         this.task = task;
         setLabel(task.getName());
-        startTimeLabel.setText("開始時間:" + task.getStartDateString() + " " + task.getStartTime());
-        endTimeLabel.setText("結束時間:" + task.getEndDateString() + " " + task.getEndTime());
+        startTimeLabel.setText(task.getStartDateString() + " " + task.getStartTime());
+        endTimeLabel.setText(task.getEndDateString() + " " + task.getEndTime());
 
     }
     public void setLabel(String text) {
@@ -37,5 +37,5 @@ public class NodeController {
             exclamationIconChange.setVisible(false);
         });
     }
-    // 你也可以加上 setEllipseColor(), setShape(), setStroke(), setRadius() 等方法
+
 }

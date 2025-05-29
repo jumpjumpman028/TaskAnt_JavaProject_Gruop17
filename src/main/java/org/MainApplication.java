@@ -13,7 +13,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        switchScene("login.fxml");
+        switchScene("WaterTest.fxml");
         primaryStage.setTitle("TaskAnt");
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
@@ -40,7 +40,7 @@ public class MainApplication extends Application {
 
     public static void main(String[] args) {
         try{
-            GoogleCalendarAuthorization.getCalendarService();
+            //GoogleCalendarAuthorization.CheckGoogleAuth();
         }catch (Exception e){
             System.out.println(e);
         }

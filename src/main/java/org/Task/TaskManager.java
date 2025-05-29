@@ -7,10 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.DatabaseConnectionPool;
-import org.DeBugConsole;
-import org.GoogleCalendarAuthorization;
-import org.UserInfo;
+import org.*;
+import org.Node.NodeMapView;
 
 import java.awt.*;
 import java.io.IOException;
@@ -131,11 +129,6 @@ public class TaskManager {
 
             AddTask(new Task(taskName, description, "使用者", startDate, startTime, endDate, endTime, recurringDays, taskType));
         }
-    }
-
-    public void updateStatus(Task task, Task.Status newStatus) {
-        DeBugConsole.log("TaskManager請求更改 "+ task.getName() +" 的狀態");
-        task.setStatus(newStatus);
     }
     public void setTaskList(ArrayList<Task> taskList) {
         this.taskList = taskList;
@@ -417,9 +410,10 @@ public class TaskManager {
         }
         try {
             if (task.getStatus() == Task.Status.IN_PROGRESS) {
-                GoogleCalendarAuthorization calendarAuthorization = new GoogleCalendarAuthorization();
-                calendarAuthorization.addTaskToGoogleCalendar(task);
+                GoogleCalendarAuthorization.addTaskToGoogleCalendarForNextRecurringDays(task);
                 System.out.println("Task added to Google Calendar: " + task.getName());
+            }else if(task.getStatus() == Task.Status.COMPLETED){
+                GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
             }
         } catch (Exception e) {
             throw new Exception("CheckAndUpdateTaskInGoogleCalendar 有錯" + e.getMessage());
@@ -432,6 +426,21 @@ public class TaskManager {
             DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
         }
 
+    }
+    public void DeleteTask(Task task) {
+        // 先刪除 Google Calendar 事件
+        try {
+            GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
+        } catch (Exception e) {
+            System.err.println("刪除 Google Calendar 事件失敗：" + e.getMessage());
+            e.printStackTrace();
+        }
+        // 再從本地列表移除
+        taskList.remove(task);
+        DeBugConsole.log("刪除task");
+        ///這邊寫得有夠爛 但暫時這樣 原本想用interface的fresh，但有點怪
+        if(WaterTest.getInstance() != null) WaterTest.getInstance().refreshTaskList();
+        if(NodeMapView.GetInstance() != null) NodeMapView.GetInstance().FreshEvent();
     }
 
     public int getNextTaskNumberForUser(int userId) {
@@ -453,13 +462,14 @@ public class TaskManager {
         // 如果查詢失敗或發生異常，返回 -1 表示錯誤
         return -1;
     }
+
+    /// 方便 但ShowInfo不應該在這裡
     public static void ShowInfo(Task task, Stage ownerStage){
         try {
             FXMLLoader loader = new FXMLLoader(instance.getClass().getResource("/org/TaskInfo.fxml"));
             Parent root = loader.load();
             TaskInfoController controller = loader.getController();
             controller.setTask(task); // 傳遞任務資料
-
             Stage infoStage  = new Stage();
             infoStage.initStyle(StageStyle.UNDECORATED);
             infoStage.setScene(new Scene(root));
@@ -476,4 +486,5 @@ public class TaskManager {
             e.printStackTrace();
         }
     }
+
 }

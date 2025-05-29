@@ -85,7 +85,6 @@ public class EventFormController implements Initializable {
                 errorLabel.setText(ErrorMsg);
             }else{
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
-
                 TaskManager.getInstance().CreateTask(name,desc,startDate,startHour,startMinute,endDate,endHour,endMinute,getSelectedDays(),taskType);
                 stage.close();
             }

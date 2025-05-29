@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,9 +21,8 @@ import org.Task.TaskManager;
 import java.util.List;
 
 public class WaterTest implements SceneInterface {
-
-    @FXML private ScrollPane ScrollPane;
     @FXML private VBox taskListPane;
+    @FXML private ScrollPane ScrollPane;
     public static WaterTest instance;
     public WaterTest() {
         instance = this;
@@ -76,19 +76,6 @@ public class WaterTest implements SceneInterface {
         }
 
     }
-
-    private HBox createTaskCell(Task task) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCell.fxml"));
-            HBox cell = loader.load();
-            TaskCellController controller = loader.getController();
-            controller.setTask(task);
-            return cell;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new HBox(); // 回傳空 HBox 防呆
-        }
-    }
     @FXML
     private void switchToNodeMap(ActionEvent event) throws Exception {
         MainApplication.switchScene("NodeMapView.fxml");
@@ -100,9 +87,28 @@ public class WaterTest implements SceneInterface {
         DeBugConsole.log("LoadEvent " + getClass().getName());
 
     }
+    @FXML
+    private void initialize() {
+        // 設置 ScrollPane 背景透明
+        ScrollPane.setStyle("-fx-background-color: transparent;");
+
+        // 設置 Viewport 背景透明
+        Node viewport = ScrollPane.lookup(".viewport");
+        if (viewport != null) {
+            viewport.setStyle("-fx-background-color: transparent;");
+        }
+
+        // 設置 VBox 背景透明
+        taskListPane.setStyle("-fx-background-color: transparent;");
+    }
 
     @Override
     public void UnloadEvent() {
         DeBugConsole.log("UnloadEvent " + getClass().getName());
+    }
+
+    @Override
+    public void FreshEvent() {
+
     }
 }

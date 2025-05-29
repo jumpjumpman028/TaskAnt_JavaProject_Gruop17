@@ -9,9 +9,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.DeBugConsole;
+import org.GoogleCalendarAuthorization;
+import org.SceneInterface;
 import org.WaterTest;
 
 import java.net.URL;
@@ -54,13 +57,17 @@ public class TaskInfoController {
     @FXML private AnchorPane rootPane;
     private double rootPaneXOffset = 0;
     private double rootPaneYOffset = 0;
+    private Stage ownerStage;
+    private Task currentTask;
 
+    @FXML private Button deleteButton;
 
-    //@FXML private Label recurringDaysLabel;
+    private String hoverColor;
 
-        private String hoverColor;
+    @FXML private Text saveText;
+
     public void setTask(Task task) {
-        saveButton.setOnAction(event -> saveTask(task));
+        this.currentTask = task;
         setTaskinitialize(task);
         NameTextField.setText(task.getName());
         UpdateStarttimeLabel(task);
@@ -95,9 +102,9 @@ public class TaskInfoController {
 
 
         if(task.getStartDate() == null) startDatePicker.setValue(task.getStartDate());
-        else startDatePicker.setValue(LocalDate.now());
+        else startDatePicker.setValue(task.getStartDate());
         if(task.getEndDate() == null) endDatePicker.setValue(task.getEndDate());
-        else endDatePicker.setValue(LocalDate.now());
+        else endDatePicker.setValue(task.getStartDate());
 
         if(task.getStartTime() == null) {
             startHourComboBox.getSelectionModel().selectFirst();
@@ -150,6 +157,7 @@ public class TaskInfoController {
         endMinuteComboBox.setItems(minutes);
         SetUpCancelButton();
         SetUpSaveButton();
+        SetUpDeleteButton();
 
     }
 
@@ -204,6 +212,11 @@ public class TaskInfoController {
         task.setRecurringDays(newRecurringDays);
 
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
+        try{
+            if(task.getStatus() != Task.Status.COMPLETED) syncTaskToGoogleCalendar(task);
+        }catch (Exception GA){
+            DeBugConsole.log("TaskInfoController"+ GA.getMessage());
+        }
         TaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
         WaterTest.getInstance().refreshTaskList();
@@ -239,13 +252,14 @@ public class TaskInfoController {
         normalSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium.png").toExternalForm());
         pressedSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium_Pressed.png").toExternalForm());
         saveImageView.setImage(normalSaveImage);
-        saveButton.setOnAction(event -> onCancelClicked());
+        saveButton.setOnAction(event -> saveTask(currentTask));
         // 按下時換圖
         saveButton.setOnMousePressed(e -> {saveImageView.setImage(pressedSaveImage);
-            saveButton.setText("");
+            saveText.setTranslateY(saveText.getTranslateY()+8);
+            // 如果沒有更改Button的text便不會有按兩下的問題
+            //saveButton.setText("");
         });
         saveButton.setOnMouseReleased(e -> {saveImageView.setImage(normalSaveImage);
-            saveButton.setText("儲存");
         });
     }
     private void SetUpCancelButton() {
@@ -262,9 +276,22 @@ public class TaskInfoController {
             cancelImageView.setImage(normalCancelImage);
         });
     }
+    private void SetUpDeleteButton(){
+        deleteButton.setOnAction(event -> {
+           TaskManager.getInstance().DeleteTask(currentTask);
+           onCancelClicked();
+        });
+    }
+
+
     @FXML
     private void onCancelClicked() {
         ((Stage)cancelButton.getScene().getWindow()).close();
     }
-
+    public static void syncTaskToGoogleCalendar(Task task) throws Exception {
+        if (!task.getGoogleEventIds().isEmpty()) {
+            GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
+        }
+        GoogleCalendarAuthorization.addTaskToGoogleCalendarForNextRecurringDays(task);
+    }
 }

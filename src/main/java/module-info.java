@@ -22,6 +22,7 @@ module org{
     requires com.google.api.client.extensions.java6.auth;
     requires com.google.api.client.extensions.jetty.auth;
     requires google.api.services.calendar.v3.rev411;
+    requires com.google.api.client.json.gson;
     // JSON 解析
     // sql
     requires java.sql;

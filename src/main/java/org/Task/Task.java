@@ -1,14 +1,6 @@
 package org.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.DeBugConsole;
 
-import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,10 +9,28 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Task {
-    public static int setID = 0;
+    public static int setID = 1;
+
+    //GoogleCanlendar ID
+    private Set<String> googleEventIds = new HashSet<>();
+    public Set<String> getGoogleEventIds() {
+        return googleEventIds;
+    }
+
+    public void addGoogleEventId(String id) {
+        if (id != null) this.googleEventIds.add(id);
+    }
+    public void removeGoogleEventId(String id) {
+        this.googleEventIds.remove(id);
+    }
+
+    public void clearGoogleEventIds() {
+        this.googleEventIds.clear();
+    }
 
     private int ID = -1 ;
     private String name;
@@ -35,9 +45,16 @@ public class Task {
     private LocalTime endTime;  //結束執行時間
 
     // NodeMap
-    private Integer parentId; // 上一個節點的ID，或叫 prevId
+    private Integer parentId = null; // 上一個節點的ID，或叫 prevId
+
     public Integer getParentId() { return parentId; }
     public void setParentId(Integer id) { this.parentId = id; }
+    private double x;
+    public double getX() {return x;}
+    public void setX(double x) {this.x = x;}
+    private double y;
+    public double getY() {return y;}
+    public void setY(double y) {this.y = y;}
 
         public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
         //制式化任務範例
@@ -115,6 +132,12 @@ public class Task {
         if(status == Status.COMPLETED && this.status == Status.IN_PROGRESS){
             setEndDate( LocalDate.now());
             DeBugConsole.log("已將任務 "+name+" 調至完成");
+            try{
+                TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(this);
+            }catch (Exception e){
+                DeBugConsole.log(e.getMessage());
+            }
+
         }
         if(status == Status.IN_PROGRESS && this.status == Status.TODO ){
             if(startDate == null){
@@ -149,7 +172,6 @@ public class Task {
             int bitIndex = day.getValue() - 1; // 0~6
             result |= (1 << bitIndex);
         }
-        DeBugConsole.log( Integer.toString(result) );
         return result;
     }
     public static List<DayOfWeek> intToRecurringDays(int value) {
@@ -169,7 +191,7 @@ public class Task {
         return startDate;
     }
     public String getStartDateString() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             if(startDate == null){
                 return "無開始日期";
             }
@@ -180,7 +202,7 @@ public class Task {
         return endDate;
     }
     public String getEndDateString() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             if(endDate == null){
                 return "無結束日期";
             }
@@ -262,6 +284,8 @@ public class Task {
             }
             return false;
     }
+
+
 
 
     public enum Status {

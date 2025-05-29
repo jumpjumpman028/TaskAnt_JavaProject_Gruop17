@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.Node.NodeMapView">
-    <Pane fx:id="nodeMapPane" prefWidth="800" prefHeight="600"/>
-    <Button text="返回" layoutX="10" layoutY="10" onAction="#onBack"/>
+<AnchorPane fx:id="rootPane" prefHeight="363.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Node.NodeMapView" stylesheets="@../styles/ScrollPane.css">
+   <ImageView fitHeight="352.0" fitWidth="521.0" layoutX="94.0" pickOnBounds="true" preserveRatio="true" translateX="260.0">
+      <image>
+         <Image url="@../images/InfoBackGround.png" />
+      </image>
+   </ImageView>
+    <Pane fx:id="nodeMapPane" layoutX="371.0" layoutY="19.0" prefHeight="312.0" prefWidth="489.0">
+      <children>
+          <Group fx:id="nodeGroup" />
+      </children></Pane>
+   <ScrollPane hbarPolicy="NEVER" layoutY="107.0" prefHeight="252.0" prefWidth="353.0">
+        <content>
+            <VBox fx:id="unassignedBox" layoutY="107.0" prefHeight="197.0" prefWidth="198.0" />
+        </content>
+   </ScrollPane>
+
+    <Button layoutX="14.0" layoutY="12.0" onAction="#onBack" prefHeight="27.0" prefWidth="47.0" text="返回" />
+   <Button fx:id="reFresh" layoutX="90.0" layoutY="12.0" onAction="#reFresh" prefHeight="27.0" prefWidth="47.0" text="刷新" />
+   <ImageView fitHeight="179.0" fitWidth="254.0" layoutX="35.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/IRONYTITLE.png" />
+      </image>
+   </ImageView>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="51.0" prefHeight="56.0" prefWidth="250.0" text="未分配" textAlignment="CENTER">
+      <font>
+         <Font name="Georgia Bold Italic" size="24.0" />
+      </font>
+   </Label>
 </AnchorPane>

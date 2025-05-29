@@ -55,6 +55,9 @@ public class TaskCellController {
         }
 
     }
+    private void refreshScene() {
+
+    }
 
     public void initialize() {
         // 滑鼠移入時添加 hover 樣式
