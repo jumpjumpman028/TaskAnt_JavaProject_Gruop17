@@ -108,7 +108,7 @@ public class TeamTaskManager {
         // SQL 語句：檢查任務是否存在
         String checkTaskExistsSQL = "SELECT COUNT(*) FROM teamtasks WHERE team_id = ? AND task_name = ?";
         // SQL 語句：更新任務
-        String updateTaskSQL = "UPDATE teamtasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ? WHERE team_id = ? AND task_name = ?";
+        String updateTaskSQL = "UPDATE teamtasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ? WHERE team_id = ? AND task_name = ? AND task_id = ?";
         // SQL 語句：插入新任務
         String insertTaskSQL = "INSERT INTO teamtasks (team_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -168,6 +168,7 @@ public class TeamTaskManager {
 
                         updateStmt.setInt(9, task.getTeamID()); // team_id
                         updateStmt.setString(10, task.getName()); // task_name
+                        updateStmt.setInt(11, task.getID());//task_id
 
                         updateStmt.executeUpdate();
                         System.out.println("任務已更新：" + task.getName());
@@ -227,29 +228,38 @@ public class TeamTaskManager {
         }
     }
 
-    // 將 teamTaskList 中的任務同步到資料庫
-//    public void updateTeamTaskToDatabase() {
-//        String upsertSQL = "INSERT INTO team_tasks (team_id, task_id) VALUES (?, ?) " +
-//                "ON DUPLICATE KEY UPDATE team_id = VALUES(team_id), task_id = VALUES(task_id)";
-//
-//        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(upsertSQL)) {
-//
-//            for (TeamTask teamTask : teamTaskList) {
-//                preparedStatement.setInt(1, teamTask.getTeamID());
-//                preparedStatement.setInt(2, teamTask.getID());
-//
-//                preparedStatement.addBatch(); // 將操作加入批次
-//            }
-//
-//            int[] updateCounts = preparedStatement.executeBatch(); // 執行批次操作
-//            System.out.println("成功更新或新增 " + updateCounts.length + " 條 Team 任務到資料庫！");
-//
-//        } catch (SQLException e) {
-//            System.err.println("更新或新增 Team 任務到資料庫時發生錯誤：" + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+    //刪除任務
+    public boolean deleteDataFromDatabase(TeamTask task) {
+        String deleteTaskSQL = "DELETE FROM teamtasks WHERE team_id = ? AND task_name = ? AND task_id = ?";
+
+        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteTaskSQL)) {
+
+            int teamID =  task.getTeamID();
+            String taskName = task.getName();
+            int taskID = task.getID();
+            // 設置參數
+            preparedStatement.setInt(1, teamID); // 使用者 ID
+            preparedStatement.setString(2, taskName); // 任務名稱
+            preparedStatement.setInt(3, taskID); // 任務 ID
+
+            // 執行刪除操作
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // 從本地 taskList 中移除對應的任務
+                teamTaskList.remove(task);
+                System.out.println("任務已成功刪除：" + taskName);
+                return true;
+            } else {
+                System.out.println("未找到該任務，刪除失敗：" + taskName);
+            }
+        } catch (SQLException e) {
+            System.err.println("從資料庫刪除任務時發生錯誤：" + e.getMessage());
+            e.printStackTrace();
+        }
+        return false; // 刪除失敗
+    }
 
 
 

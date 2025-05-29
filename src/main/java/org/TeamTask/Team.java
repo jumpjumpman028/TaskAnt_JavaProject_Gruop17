@@ -11,22 +11,28 @@ public class Team {
     private String teamName;            // 團隊名稱
     private List<Integer> teamMembers;   // 團隊成員
     private int memberCount;            // 成員數量
+    private String leader;
+    private String description;
 
 
     //用於創建已存在任務加入TeamList
-    public Team(int teamId,String teamName,String teamCode, List<Integer> teamMembers) {
+    public Team(int teamId,String teamName,String teamCode, List<Integer> teamMembers, String leader , String description) {
         this.teamId = teamId;
         this.teamCode = teamCode; // 如果未提供 teamCode，自動生成
         this.teamName = teamName;
         this.teamMembers = teamMembers;
         this.memberCount = teamMembers.size();
+        this.leader = leader;
+        this.description = description;
     }
     //用於創建新任務
-    public Team(String teamName, List<Integer> teamMembers) {
+    public Team(String teamName, List<Integer> teamMembers,String leader, String description) {
         this.teamCode = generateRandomTeamCode();
         this.teamName = teamName;
         this.teamMembers = teamMembers;
         this.memberCount = teamMembers != null ? teamMembers.size() : 0;
+        this.leader = leader;
+        this.description = description;
     }
 
     // 自動生成長度為 6 的隨機字串作為 teamCode
@@ -60,6 +66,14 @@ public class Team {
         return teamName;
     }
 
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
@@ -75,6 +89,10 @@ public class Team {
 
     public int getMemberCount() {
         return memberCount;
+    }
+
+    public String getLeader() {
+        return this.leader;
     }
 
     // 靜態方法：從 JSON 字串轉換為 teamMembers 屬性

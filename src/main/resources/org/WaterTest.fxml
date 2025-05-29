@@ -9,17 +9,26 @@
 
 <AnchorPane prefHeight="416.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.WaterTest">
    <children>
-      <Button fx:id="switchToNodeMap" layoutX="30.0" layoutY="170.0" mnemonicParsing="false" onAction="#switchToNodeMap" prefHeight="30.0" prefWidth="100.0" text="前往任務節點" />
       <ImageView fitHeight="283.0" fitWidth="440.0" layoutX="46.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" scaleY="1.45" x="185.0" y="60.0">
          <image>
             <Image url="@../images/UIboard.png" />
          </image>
       </ImageView>
-      <Button fx:id="addEventButton" defaultButton="true" layoutX="30.0" layoutY="43.0" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="40.0" prefWidth="100.0" text="新增事件" />
       <VBox fx:id="taskListPane" layoutX="264.0" layoutY="55.0" prefHeight="307.0" prefWidth="357.0" spacing="5">
          <effect>
             <Blend />
          </effect></VBox>
-      <Button layoutX="30.0" layoutY="109.0" mnemonicParsing="false" onAction="#reloadTasks" prefHeight="30.0" prefWidth="100.0" text="重新載入" />
+      <Button mnemonicParsing="false" text="Button" />
+      <VBox layoutX="55.0" layoutY="55.0" prefHeight="244.0" prefWidth="120.0" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#reloadTasks" prefHeight="30.0" prefWidth="110.0" text="重新載入" />
+            <Button fx:id="switchToNodeMap" mnemonicParsing="false" onAction="#switchToNodeMap" prefHeight="30.0" prefWidth="110.0" text="前往任務節點" />
+            <Button fx:id="addEventButton" defaultButton="true" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="30.0" prefWidth="110.0" text="新增任務" />
+            <Button mnemonicParsing="false" onAction="#goToTeamMenu" prefHeight="30.0" prefWidth="110.0" text="查看我的團隊" />
+         </children>
+         <effect>
+            <Blend />
+         </effect>
+      </VBox>
    </children>
 </AnchorPane>

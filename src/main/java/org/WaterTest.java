@@ -94,6 +94,11 @@ public class WaterTest implements SceneInterface {
         MainApplication.switchScene("NodeMapView.fxml");
     }
 
+    @FXML
+    private void goToTeamMenu() throws Exception{
+        MainApplication.switchScene("TeamMenu.fxml");
+    }
+
     @Override
     public void LoadEvent() {
         reloadTasks();
