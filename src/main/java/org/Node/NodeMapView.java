@@ -79,7 +79,7 @@ public class NodeMapView implements SceneInterface {
     }
 
     private void drawLines() {
-        nodeMapPane.getChildren().removeIf(n -> n instanceof NodeConnection);
+        nodeGroup.getChildren().removeIf(n -> n instanceof NodeConnection);
 
         for (Task task : tasks) {
             Integer parentId = task.getParentId();
