@@ -278,7 +278,8 @@ public class TaskInfoController {
     }
     private void SetUpDeleteButton(){
         deleteButton.setOnAction(event -> {
-           TaskManager.getInstance().DeleteTask(currentTask);
+           TaskManager.getInstance().deleteDataFromDatabase(currentTask);
+           WaterTest.getInstance().reloadTasks();
            onCancelClicked();
         });
     }

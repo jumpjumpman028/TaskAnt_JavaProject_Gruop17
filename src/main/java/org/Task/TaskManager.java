@@ -7,10 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.DatabaseConnectionPool;
-import org.DeBugConsole;
-import org.GoogleCalendarAuthorization;
-import org.UserInfo;
+import org.*;
+import org.Node.NodeMapView;
 
 import java.awt.*;
 import java.io.IOException;

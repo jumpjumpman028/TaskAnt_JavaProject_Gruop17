@@ -33,6 +33,9 @@ public class TeamMenu implements SceneInterface {
         DeBugConsole.log("UnloadEvent " +getClass().getName());
     }
 
+    @Override
+    public void FreshEvent() {}
+
     @FXML
     private void createATeam(){
         try {
