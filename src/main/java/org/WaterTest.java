@@ -31,7 +31,7 @@ public class WaterTest implements SceneInterface {
         return instance;
     }
     @FXML
-    private void reloadTasks(){
+    public void reloadTasks(){
         TaskManager.getInstance().FetchDataFromDatabase();
         refreshTaskList();
 

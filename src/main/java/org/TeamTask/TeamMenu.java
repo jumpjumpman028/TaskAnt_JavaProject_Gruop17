@@ -34,9 +34,7 @@ public class TeamMenu implements SceneInterface {
     }
 
     @Override
-    public void FreshEvent() {
-
-    }
+    public void FreshEvent() {}
 
     @FXML
     private void createATeam(){
