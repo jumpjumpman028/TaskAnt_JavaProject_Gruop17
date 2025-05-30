@@ -18,6 +18,7 @@ import org.MainApplication;
 
 
 public class TeamInfo {
+    public static int TeamID;
     private Team team;
     @FXML
     private AnchorPane rootPane;
@@ -45,7 +46,7 @@ public class TeamInfo {
 
     private double rootPaneXOffset = 0;
     private double rootPaneYOffset = 0;
-    public static int TeamID;
+
     public void initialize() {
         // 初始化按鈕圖片
         setupSaveButton();
@@ -59,7 +60,7 @@ public class TeamInfo {
     }
 
     public void setTeam(Team team) {
-        team = team;
+        TeamID = team.getTeamId();
         teamNameLabel.setText(team.getTeamName());
         InviteCode.setText(team.getTeamCode());
         teamLeaderLabel.setText(team.getLeader());
@@ -100,12 +101,11 @@ public class TeamInfo {
     }
 
     private void goToTeamTaskView() {
-        try{
-            MainApplication.switchScene("TeamTaskView");
-        }catch (Exception e){
-            DeBugConsole.log(e.getMessage());
+        try {
+            MainApplication.switchScene("TeamTaskView.fxml");
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-
         closeWindow();
     }
 
