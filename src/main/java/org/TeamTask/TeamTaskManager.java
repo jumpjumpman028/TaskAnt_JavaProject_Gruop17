@@ -95,7 +95,9 @@ public class TeamTaskManager {
             preparedStatement.setDouble(11, teamTask.getX());//x
             preparedStatement.setDouble(12, teamTask.getY());//y
             preparedStatement.setString(13, Task.GoogleEventIDToJson(teamTask.getGoogleEventIds()));//裡面放JSON
-            preparedStatement.setInt(14, teamTask.getParentId());//parent_id
+
+            if(teamTask.getParentId() == null) preparedStatement.setNull(14,  java.sql.Types.INTEGER);//parent_id
+            else preparedStatement.setInt(14, teamTask.getParentId());//parent_id
             // 執行插入操作
             int rowsAffected = preparedStatement.executeUpdate();
 

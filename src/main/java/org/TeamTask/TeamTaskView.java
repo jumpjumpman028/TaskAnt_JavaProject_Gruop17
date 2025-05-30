@@ -6,12 +6,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.MainApplication;
 import org.SceneInterface;
 import org.Task.Task;
+import org.Task.TaskCellController;
 import org.Task.TaskManager;
 import org.TeamTask.TeamTaskManager;
 
@@ -21,52 +23,62 @@ import java.util.List;
 public class TeamTaskView implements SceneInterface{
 
     @FXML private VBox taskListPane;
-    @FXML private Button backButton;
-    @FXML private Button addTaskButton;
+
 
     private int teamId; // 當前 Team 的 ID
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
-        loadTeamTasks();
+        reloadTasks();
     }
 
-    private void loadTeamTasks() {//載入該TEAM的任務
+    @FXML
+    public void reloadTasks() {//載入該TEAM的任務
         // 清空列表
         taskListPane.getChildren().clear();
 
         // 從 TeamTaskManager 獲取該 Team 的任務
         List<TeamTask> teamTasks = TeamTaskManager.getInstance().getTasksByTeamId(teamId);//todo:還沒測試功能有沒有問題
 
+
         // 動態生成任務項目
         for (TeamTask task : teamTasks) {
-            Button taskButton = new Button(task.getName());
-            taskButton.setOnAction(event -> openTaskDetail(task));
-            taskListPane.getChildren().add(taskButton);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamTaskCell.fxml"));
+                StackPane cell = loader.load();
+                TeamTaskCell controller = loader.getController();
+                controller.setTeamTask(task);
+                taskListPane.getChildren().add(cell);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void openTaskDetail(TeamTask task) {
-        TeamTaskManager.getInstance().ShowInfo(task, (Stage) taskListPane.getScene().getWindow());
-        // 打開任務詳情或執行其他操作
-        System.out.println("打開任務詳情: " + task.getName());
-    }
+//    private void openTaskDetail(TeamTask task) {
+//        TeamTaskManager.getInstance().ShowInfo(task, (Stage) taskListPane.getScene().getWindow());
+//        // 打開任務詳情或執行其他操作
+//        System.out.println("打開任務詳情: " + task.getName());
+//    }
 
     @FXML
-    private void goBack() throws Exception {
+    private void backToMenu() throws Exception {
         // 返回上一頁
         MainApplication.switchScene("TeamMenu.fxml");
     }
+
     @FXML private void initialize() {
         setTeamId(TeamInfo.TeamID);
-        addTaskButton.setOnAction(event -> {
-            AddTeamTask();
-        });
+        reloadTasks();
     }
+
+
+
+    @FXML
     private void AddTeamTask() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamTaskForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/TeamTaskForm.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);

@@ -76,6 +76,7 @@ public class TeamTaskForm implements Initializable {
                     startTime = LocalTime.of(startHour, startMinute);
                 }
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
+                System.out.println("TeamID is " + TeamID);
                 TeamTaskManager.getInstance().addTeamTaskToDatabase(new TeamTask(TeamID,name,desc,UserInfo.username,startDate,startTime,null,null,null,TeamTask.Type.Experience));
                 stage.close();
             }
@@ -103,6 +104,7 @@ public class TeamTaskForm implements Initializable {
                     endTime = LocalTime.of(endHour, endMinute);
                 }
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
+                System.out.println("TeamID is " + TeamID);
                 TeamTaskManager.getInstance().addTeamTaskToDatabase(new TeamTask(TeamID,name,desc,UserInfo.username,startDate,startTime,endDate,endTime,getSelectedDays(),taskType));//todo:改為teamTaskMaanager.addTask
                 stage.close();
             }

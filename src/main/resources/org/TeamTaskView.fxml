@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TeamTask.TeamTaskView">
-    <children>
-        <!-- 返回按鈕 -->
-        <Button fx:id="backButton" text="返回" layoutX="10" layoutY="10" onAction="#goBack" />
-
-        <!-- 新增任務按鈕 -->
-        <Button fx:id="addTaskButton" text="新增任務" layoutX="550" layoutY="10" onAction="#addTask" />
-
-        <!-- 任務列表 -->
-        <VBox fx:id="taskListPane" layoutX="50" layoutY="50" prefWidth="600" prefHeight="400" spacing="10">
-            <!-- 動態加載任務 -->
-        </VBox>
-    </children>
+<AnchorPane prefHeight="416.0" prefWidth="654.0" style="-fx-background-color: transparent;" stylesheets="@../styles/ScrollPane.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TeamTask.TeamTaskView">
+    <ImageView fitHeight="283.0" fitWidth="440.0" layoutX="46.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" scaleY="1.45" x="185.0" y="60.0">
+        <image>
+            <Image url="@../images/UIboard.png" />
+        </image>
+    </ImageView>
+    <Button mnemonicParsing="false" onAction="#backToMenu" text="回首頁" />
+    <VBox layoutX="55.0" layoutY="55.0" prefHeight="244.0" prefWidth="120.0" spacing="10.0">
+        <children>
+            <Button mnemonicParsing="false" onAction="#reloadTasks" prefHeight="30.0" prefWidth="110.0" text="重新載入" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#AddTeamTask" prefHeight="30.0" prefWidth="110.0" text="新增任務" />
+        </children>
+        <effect>
+            <Blend />
+        </effect>
+    </VBox>
+    <ScrollPane fx:id="ScrollPane" hbarPolicy="NEVER" layoutX="255.0" layoutY="44.0" prefHeight="331.0" prefWidth="371.0" style="-fx-background-color: transparent;">
+        <content>
+            <VBox fx:id="taskListPane" layoutX="264.0" layoutY="55.0" prefHeight="317.0" prefWidth="370.0" spacing="5" style="-fx-background-color: transparent;">
+            </VBox>
+        </content>
+    </ScrollPane>
 </AnchorPane>
