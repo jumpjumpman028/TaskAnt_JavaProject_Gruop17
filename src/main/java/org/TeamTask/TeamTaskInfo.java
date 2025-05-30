@@ -23,6 +23,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+///  此任務所列出的詳細信息
+
 public class TeamTaskInfo{
     @FXML private TextField NameTextField;
     @FXML private Label StarttimeLabel;

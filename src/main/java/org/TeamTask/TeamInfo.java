@@ -14,6 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.MainApplication;
 
+///  TeamInfo 可以前往 詳細有關於Team的資訊， 跟TaskInfo差不多
+
+
 
 public class TeamInfo {
     public static int TeamID;
