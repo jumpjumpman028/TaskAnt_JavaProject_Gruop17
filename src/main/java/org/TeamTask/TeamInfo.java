@@ -11,7 +11,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+///  TeamInfo 可以前往 詳細有關於Team的資訊， 跟TaskInfo差不多
 
 
 public class TeamInfo {

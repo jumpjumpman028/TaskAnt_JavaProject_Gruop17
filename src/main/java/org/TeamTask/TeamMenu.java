@@ -18,7 +18,7 @@ import org.Task.TaskCellController;
 import org.Task.TaskManager;
 
 import java.util.List;
-
+/// 查看所有參與的團隊
 public class TeamMenu implements SceneInterface {
     @FXML private VBox teamListPane;
 

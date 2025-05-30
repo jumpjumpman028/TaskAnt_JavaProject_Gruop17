@@ -3,6 +3,7 @@ package org.TeamTask;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.MainApplication;
 import org.Task.Task;
 import org.Task.TaskManager;
@@ -10,8 +11,8 @@ import org.TeamTask.TeamTaskManager;
 
 import java.io.IOException;
 import java.util.List;
-
-public class TeamTaskView{
+///  從TeamInfo中 點入 關於此Team中的所有Task
+public class TeamTaskView {
 
     @FXML private VBox taskListPane;
     @FXML private Button backButton;
@@ -40,7 +41,7 @@ public class TeamTaskView{
     }
 
     private void openTaskDetail(TeamTask task) {
-        TeamTaskManager.getInstance().ShowInfo();
+        TeamTaskManager.getInstance().ShowInfo(task, (Stage) taskListPane.getScene().getWindow());
         // 打開任務詳情或執行其他操作
         System.out.println("打開任務詳情: " + task.getName());
     }
