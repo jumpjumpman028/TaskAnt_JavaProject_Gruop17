@@ -97,8 +97,6 @@ public class TeamInfo {
     }
 
     private void goToTeamTaskView() {
-
-
         closeWindow();
     }
 

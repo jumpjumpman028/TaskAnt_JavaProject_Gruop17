@@ -236,13 +236,16 @@ public class TaskInfoController {
         }
 
     }
+    // 設定開始時間的文字
     public void UpdateStarttimeLabel(Task task){
         URL url = getClass().getResource("/images/InfoBackGround.png");
         StarttimeLabel.setText("開始：" + task.getStartDateString() + " 時間" + task.getStartTimeString());
     }
+    // 設定終止時間的文字
     public void UpdateEndtimeLabel(Task task){
         EndtimeLabel.setText("結束：" + task.getEndDateString() + " 時間" + task.getEndTimeString());
     }
+    ///  設定儲存按鍵
     private void SetUpSaveButton(){
         normalSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium.png").toExternalForm());
         pressedSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium_Pressed.png").toExternalForm());
@@ -257,6 +260,7 @@ public class TaskInfoController {
         saveButton.setOnMouseReleased(e -> {saveImageView.setImage(normalSaveImage);
         });
     }
+    ///  設定取消按鍵
     private void SetUpCancelButton() {
         normalCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel.png").toExternalForm());
         pressedCancelImage = new Image(getClass().getResource("/images/TextBTN_Cancel_Pressed.png").toExternalForm());
