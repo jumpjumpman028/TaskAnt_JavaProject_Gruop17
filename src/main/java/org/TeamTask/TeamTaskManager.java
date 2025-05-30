@@ -1,9 +1,18 @@
 package org.TeamTask;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.DatabaseConnectionPool;
 import org.Task.Task;
+import org.Task.TaskInfoController;
 import org.UserInfo;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -389,6 +398,30 @@ public class TeamTaskManager {
             }
         }
         return tasksForTeam;
+    }
+
+    public static void ShowInfo(TeamTask task, Stage ownerStage){
+        try {
+            FXMLLoader loader = new FXMLLoader(instance.getClass().getResource("/org/TeamTaskInfo.fxml"));
+            Parent root = loader.load();
+            TeamTaskInfo controller = loader.getController();
+            controller.setTeamTask(task); // 傳遞任務資料
+
+            Stage infoStage  = new Stage();
+            infoStage.initStyle(StageStyle.UNDECORATED);
+            infoStage.setScene(new Scene(root));
+            infoStage.initOwner(ownerStage);
+
+            // 這裡設定新視窗的位置與大小與主視窗一樣
+            infoStage.setX(ownerStage.getX());
+            infoStage.setY(ownerStage.getY());
+            infoStage.getScene().setFill(Color.TRANSPARENT);
+            infoStage.getScene().getStylesheets().add(instance.getClass().getResource("/styles/textArea.css").toExternalForm());
+            infoStage.initModality(Modality.APPLICATION_MODAL); // 視窗為模態
+            infoStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 生成 SQL IN 子句的佔位符

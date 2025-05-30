@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane fx:id="root" prefHeight="35.0" prefWidth="357.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TeamTask.TeamTaskCell">
+    <children>
+        <ImageView fitHeight="35.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" scaleX="4.58" scaleY="1.1">
+            <image>
+                <Image url="@../images/UIboardSmallstone.png" />
+            </image>
+            <clip>
+                <Rectangle height="35" width="80.5" x="1.5" y="0" />
+            </clip>
+        </ImageView>
+        <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="402.0" spacing="20" style="-fx-background-color: rgba(255,255,255,0); -fx-text-stroke: black;-fx-text-stroke-width: 2px;">
+            <children>
+                <Label fx:id="nameLabel" alignment="CENTER" maxWidth="231.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="117.0" text="任務名稱" wrapText="true">
+                    <font>
+                        <Font name="Georgia Bold Italic" size="13.0" />
+                    </font></Label>
+                <VBox prefHeight="35.0" prefWidth="138.0">
+                    <children>
+                        <Label fx:id="starttimeLabel" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="15.0" prefWidth="150.0" text="時間資訊" wrapText="true">
+                            <font>
+                                <Font name="Georgia" size="12.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="endtimeLabel" contentDisplay="TOP" maxWidth="259.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="123.0" text="時間資訊" wrapText="true">
+                            <font>
+                                <Font name="Georgia" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <Label fx:id="statusLabel" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="87.0" style="-fx-text-fill: green; -fx-text-stroke: black;-fx-text-stroke-width: 2px;" text="狀態">
+                    <font>
+                        <Font name="Consolas" size="12.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </children>
+</StackPane>
