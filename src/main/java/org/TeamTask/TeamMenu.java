@@ -127,4 +127,11 @@ public class TeamMenu implements SceneInterface {
             return new HBox(); // 回傳空 HBox 防呆
         }
     }
+
+    private void openTeamTaskView(int teamId) {
+        SceneSwitcher.getInstance().switchTo("TeamTaskView.fxml", controller -> {
+            TeamTaskView viewController = (TeamTaskView) controller;
+            viewController.setTeamId(teamId); // 傳遞 Team ID
+        });
+    }
 }

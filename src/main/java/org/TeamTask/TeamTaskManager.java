@@ -380,6 +380,17 @@ public class TeamTaskManager {
 
         return true;
     }
+
+    public List<TeamTask> getTasksByTeamId(int teamId) {
+        List<TeamTask> tasksForTeam = new ArrayList<>();
+        for (TeamTask task : teamTaskList) {
+            if (task.getTeamID() == teamId) {
+                tasksForTeam.add(task);
+            }
+        }
+        return tasksForTeam;
+    }
+
     // 生成 SQL IN 子句的佔位符
     private String generatePlaceholders(int count) {
         return String.join(",", java.util.Collections.nCopies(count, "?"));

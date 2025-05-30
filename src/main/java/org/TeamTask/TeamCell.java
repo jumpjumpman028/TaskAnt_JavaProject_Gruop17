@@ -51,13 +51,13 @@ public class TeamCell {
             }
         });
 
-//        // 滑鼠移出時移除 hover 樣式
-//        root.setOnMouseExited(e -> {
-//            root.getStyleClass().remove("hover-hbox");
-//        });
-//        root.setOnMouseClicked(event -> {
-//            TeamManager.ShowInfo(team, (Stage) root.getScene().getWindow());
-//
-//        });
+        // 滑鼠移出時移除 hover 樣式
+        root.setOnMouseExited(e -> {
+            root.getStyleClass().remove("hover-hbox");
+        });
+        root.setOnMouseClicked(event -> {
+            TeamManager.ShowInfo(team, (Stage) root.getScene().getWindow());
+
+        });
     }
 }
