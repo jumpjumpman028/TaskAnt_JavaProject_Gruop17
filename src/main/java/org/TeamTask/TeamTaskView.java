@@ -24,12 +24,12 @@ public class TeamTaskView{
         loadTeamTasks();
     }
 
-    private void loadTeamTasks() {
+    private void loadTeamTasks() {//載入該TEAM的任務
         // 清空列表
         taskListPane.getChildren().clear();
 
         // 從 TeamTaskManager 獲取該 Team 的任務
-        List<TeamTask> teamTasks = TeamTaskManager.getInstance().getTasksByTeamId(teamId);
+        List<TeamTask> teamTasks = TeamTaskManager.getInstance().getTasksByTeamId(teamId);//todo:還沒測試功能有沒有問題
 
         // 動態生成任務項目
         for (TeamTask task : teamTasks) {
@@ -39,7 +39,7 @@ public class TeamTaskView{
         }
     }
 
-    private void openTaskDetail(TeamTask task) {
+    private void openTaskDetail(TeamTask task) {//todo:就像watertest點開任務依樣
         // 打開任務詳情或執行其他操作
         System.out.println("打開任務詳情: " + task.getName());
     }

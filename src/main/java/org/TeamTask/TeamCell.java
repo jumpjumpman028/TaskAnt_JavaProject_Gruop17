@@ -55,7 +55,7 @@ public class TeamCell {
         root.setOnMouseExited(e -> {
             root.getStyleClass().remove("hover-hbox");
         });
-        root.setOnMouseClicked(event -> {
+        root.setOnMouseClicked(event -> { //todo:showInfo改成開啟TeamTaskView畫面 會顯示點進去的那個Team裡面所有的任務，畫面跟WaterTest差不多
             TeamManager.ShowInfo(team, (Stage) root.getScene().getWindow());
 
         });

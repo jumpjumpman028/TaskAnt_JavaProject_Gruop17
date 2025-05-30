@@ -1,4 +1,4 @@
 package org.TeamTask;
 
-public class TeamTaskCell {
+public class TeamTaskCell { //todo: teamtaskview-> teamtaskcell -> teamtaskinfo
 }
