@@ -56,6 +56,7 @@ public class TeamInfo {
     }
 
     public void setTeam(Team team) {
+        team = team;
         teamNameLabel.setText(team.getTeamName());
         InviteCode.setText(team.getTeamCode());
         teamLeaderLabel.setText(team.getLeader());
@@ -69,7 +70,7 @@ public class TeamInfo {
 
         saveButton.setOnMousePressed(e -> saveImageView.setImage(pressedSaveImage));
         saveButton.setOnMouseReleased(e -> saveImageView.setImage(normalSaveImage));
-        saveButton.setOnAction(event -> createTeamTask());
+        saveButton.setOnAction(event -> goToTeamTaskView());
     }
 
     private void setupCancelButton() {
@@ -95,7 +96,7 @@ public class TeamInfo {
         });
     }
 
-    private void createTeamTask() {
+    private void goToTeamTaskView() {
         closeWindow();
     }
 

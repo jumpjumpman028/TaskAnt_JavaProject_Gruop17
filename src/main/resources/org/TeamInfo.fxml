@@ -66,9 +66,9 @@
                         </Label>
                      </children>
                   </HBox>
-                        <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="54.0" prefWidth="126.0" styleClass="image-button" textAlignment="CENTER" textFill="#752702">
+                        <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="80.0" prefWidth="126.0" styleClass="image-button" textAlignment="CENTER" textFill="#752702">
                             <graphic>
-                                <ImageView fx:id="saveImageView" fitHeight="42.0" fitWidth="92.0" pickOnBounds="true">
+                                <ImageView fx:id="saveImageView" fitHeight="64.0" fitWidth="103.0" pickOnBounds="true">
                                     <image>
                                         <Image url="@../images/TextBTN_Medium.png" />
                                     </image>
@@ -80,7 +80,7 @@
                         </Button>
                     </children>
                 </FlowPane>
-            <Text fx:id="saveText" fill="#cfa795" mouseTransparent="true" stroke="BLACK" strokeType="OUTSIDE" text="新增任務" translateX="4.0" translateY="-89.0" wrappingWidth="91.0">
+            <Text fx:id="saveText" fill="#cfa795" mouseTransparent="true" stroke="BLACK" strokeType="OUTSIDE" text="查看團隊任務任務" translateX="5.0" translateY="-94.0" wrappingWidth="91.0">
                <font>
                   <Font name="Georgia Bold Italic" size="20.0" />
                </font>
