@@ -74,7 +74,7 @@ public class WaterTest implements SceneInterface {
                 e.printStackTrace();
             }
         }
-
+        TaskManager.getInstance().CheckAllTaskTimeInProcess();
     }
     @FXML
     private void switchToNodeMap(ActionEvent event) throws Exception {

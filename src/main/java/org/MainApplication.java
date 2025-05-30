@@ -13,7 +13,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws Exception {
         // 初始化主應用程式的主舞台
         primaryStage = stage;
-        switchScene("WaterTest.fxml");
+        switchScene("Login.fxml");
         primaryStage.setTitle("TaskAnt");
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
@@ -48,7 +48,7 @@ public class MainApplication extends Application {
 
 public static void main(String[] args) {
         try{
-            //GoogleCalendarAuthorization.CheckGoogleAuth();
+            GoogleCalendarAuthorization.CheckGoogleAuth();
         }catch (Exception e){
             System.out.println(e);
         }
