@@ -12,10 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -49,6 +46,8 @@ public class NodeMapView implements SceneInterface {
     private static Parent draggingNode = null;
     private List<Task> tasks;
     @FXML private Button saveButton;
+
+    /// Bug 如果節點盡數拖入Node中，重新載入後Node將會突出畫布，重新將Node
     @FXML
     public void initialize() {
         tasks = TaskManager.getInstance().getTaskList();
@@ -58,7 +57,10 @@ public class NodeMapView implements SceneInterface {
         setupNodeMapPaneMouseReleased();
         saveButton.setOnMouseClicked(event -> Save());
         Platform.runLater(this::drawLines);
+
     }
+
+
     private void onTaskDropped(Parent draggedNode, Parent targetNode) {
 
         // 1. 取得對應的 Task
@@ -93,7 +95,7 @@ public class NodeMapView implements SceneInterface {
                     NodeConnection connection = new NodeConnection(parentNode, selfNode);
                     if(nodeToTaskMap.get(parentNode).getStatus() == Task.Status.COMPLETED) {
                         connection.setStroke(Color.GREEN);
-                    }else if ( nodeToTaskMap.get( nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId())).getParentId().equals(nodeToTaskMap.get(selfNode).getParentId())){
+                    }else if (nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId()) != null &&  nodeToTaskMap.get( nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId())).getParentId().equals(nodeToTaskMap.get(selfNode).getParentId())){
                         connection.setStroke(Color.RED);
                     }else connection.setStroke(Color.GRAY);
                     connection.setStrokeWidth(2);
@@ -204,7 +206,6 @@ public class NodeMapView implements SceneInterface {
             double sceneX = event.getSceneX();
             double sceneY = event.getSceneY();
             Bounds vboxBounds = unassignedBox.localToScene(unassignedBox.getBoundsInLocal());
-            Bounds paneBounds = nodeMapPane.localToScene(nodeMapPane.getBoundsInLocal());
 
             if (vboxBounds.contains(sceneX, sceneY)) {
                 // 拖回未分配區
