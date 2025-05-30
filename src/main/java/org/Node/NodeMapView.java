@@ -47,14 +47,16 @@ public class NodeMapView implements SceneInterface {
     private Map<Parent, Task> nodeToTaskMap = new HashMap<>();
     private static Parent draggingNode = null;
     private List<Task> tasks;
+    @FXML private Button saveButton;
     @FXML
     public void initialize() {
         tasks = TaskManager.getInstance().getTaskList();
-        GetUnassignedBox();
+        GetUnassignedBoxAndNodeGroup();
         //setupCanvasDragDrop();
-        drawLines();
         refreshUnassignedBox();
         setupNodeMapPaneMouseReleased();
+        drawLines();
+        saveButton.setOnMouseClicked(event -> Save());
     }
     private void onTaskDropped(Parent draggedNode, Parent targetNode) {
 
@@ -85,6 +87,7 @@ public class NodeMapView implements SceneInterface {
         for (Task task : tasks) {
             Integer parentId = task.getParentId();
             // 如果 parentId 存在，且 parentId 對應的節點在 nodeViewMap
+            DeBugConsole.log("我的父親是" + parentId + "是否在畫布中" + nodeViewMap.containsKey(parentId));
             if (parentId != null && parentId > 0 && nodeViewMap.containsKey(parentId)) {
                 Parent parentNode = nodeViewMap.get(parentId);
                 Parent selfNode = nodeViewMap.get(task.getID());
@@ -92,22 +95,29 @@ public class NodeMapView implements SceneInterface {
                     NodeConnection connection = new NodeConnection(parentNode, selfNode);
                     if(nodeToTaskMap.get(parentNode).getStatus() == Task.Status.COMPLETED) {
                         connection.setStroke(Color.GREEN);
-                    }
-                    else connection.setStroke(Color.GRAY);
+                    }else if ( nodeToTaskMap.get( nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId())).getParentId().equals(nodeToTaskMap.get(selfNode).getParentId())){
+                        connection.setStroke(Color.RED);
+                    }else connection.setStroke(Color.GRAY);
                     connection.setStrokeWidth(2);
                     nodeGroup.getChildren().add(1, connection); // 放最底層
                 }
-            } else if (parentId != null && parentId != 0) {
-                // parentId 對應的節點不在畫布上，設為未分配
-                task.setParentId(0); // 或改成 null
             }
+            //else if (parentId != null && parentId != 0) {
+//                // parentId 對應的節點不在畫布上，設為未分配
+//                //task.setParentId(0); // 或改成 null
+//            }
         }
     }
 
-    private void GetUnassignedBox(){
+    private void GetUnassignedBoxAndNodeGroup(){
         for (Task task : tasks) {
+            DeBugConsole.log(task.getParentId() + " " + task.getID());
+            DeBugConsole.log(task.getX() + " " + task.getY());
             if (task.getParentId() == null) { // 或用你的判斷條件
                 unassignedTasks.add(task);
+            }else{
+                CreateNode(task,task.getX(),task.getY());
+                drawLines();
             }
         }
     }
@@ -160,33 +170,8 @@ public class NodeMapView implements SceneInterface {
                 // 從 unassigned 移到畫布
                 unassignedTasks.remove(task);
                 refreshUnassignedBox();
-
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Node.fxml"));
-                    Parent node = loader.load();
-                    NodeController nodeController = loader.getController();
-                    nodeController.setTask(task);
-
-                    // 設定座標
-                    javafx.geometry.Point2D localPoint = nodeGroup.sceneToLocal(event.getSceneX(), event.getSceneY());
-                    //double localX = nodeMapPane.sceneToLocal(sceneX, sceneY).getX();
-                    //double localY = nodeMapPane.sceneToLocal(sceneX, sceneY).getY();
-                    node.setLayoutX(localPoint.getX());
-                    node.setLayoutY(localPoint.getY());
-                    nodeGroup.getChildren().add(node);
-
-                    // 設 parentId
-                    task.setParentId(0);
-
-                    // 註冊拖曳事件
-                    setupNodeEvents(node, task);
-                    nodeViewMap.put(task.getID(), node);
-                    nodeToTaskMap.put(node, task);
-                    DeBugConsole.log("獲得nodeTask");
-                    nodePositionMap.put(task.getID(), new Point2D.Double(localPoint.getX(), localPoint.getY()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                CreateNode(task,event.getSceneX(),event.getSceneY());
+                task.setParentId(0);
                 drawLines();
             }
             // 歸零
@@ -209,6 +194,9 @@ public class NodeMapView implements SceneInterface {
                 double dy = event.getSceneY() - data[1];
                 node.setLayoutX(data[2] + dx);
                 node.setLayoutY(data[3] + dy);
+                task.setX(event.getSceneX());
+                task.setY(event.getSceneY());
+
             }
         });
         node.setOnMouseReleased(event -> {
@@ -228,10 +216,6 @@ public class NodeMapView implements SceneInterface {
                     unassignedTasks.add(task);
                 }
                 refreshUnassignedBox();
-                drawLines();
-            } else if (paneBounds.contains(sceneX, sceneY)) {
-                // 只是在畫布上移動
-                nodePositionMap.put(task.getID(), new Point2D.Double(node.getLayoutX(), node.getLayoutY()));
                 drawLines();
             }
         });
@@ -306,16 +290,48 @@ public class NodeMapView implements SceneInterface {
 
     @Override
     public void LoadEvent() {
-
+        //TaskManager.getInstance().FetchDataFromDatabase();
+        ///不要碰 線會不見啦 ㄍㄍㄍㄢㄢㄢ
     }
 
     @Override
     public void UnloadEvent() {
-
+        Save();
     }
 
     @Override
     public void FreshEvent() {
         refreshScene();
+    }
+    private void Save(){
+        TaskManager.getInstance().UploadDataToDatabase();
+    }
+    private void   CreateNode(Task task, double x, double y){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Node.fxml"));
+            Parent node = loader.load();
+            NodeController nodeController = loader.getController();
+            nodeController.setTask(task);
+
+            // 設定座標
+            javafx.geometry.Point2D localPoint = nodeGroup.sceneToLocal(x,y);
+            //double localX = nodeMapPane.sceneToLocal(sceneX, sceneY).getX();
+            //double localY = nodeMapPane.sceneToLocal(sceneX, sceneY).getY();
+            node.setLayoutX(localPoint.getX());
+            node.setLayoutY(localPoint.getY());
+            nodeGroup.getChildren().add(node);
+
+            // 設 parentId
+
+
+            // 註冊拖曳事件
+            setupNodeEvents(node, task);
+            nodeViewMap.put(task.getID(), node);
+            nodeToTaskMap.put(node, task);
+            DeBugConsole.log("獲得nodeTask");
+            nodePositionMap.put(task.getID(), new Point2D.Double(localPoint.getX(), localPoint.getY()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

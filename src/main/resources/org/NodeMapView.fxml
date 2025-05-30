@@ -15,6 +15,7 @@
 
     <Button layoutX="14.0" layoutY="12.0" onAction="#onBack" prefHeight="27.0" prefWidth="47.0" text="返回" />
    <Button fx:id="reFresh" layoutX="90.0" layoutY="12.0" onAction="#reFresh" prefHeight="27.0" prefWidth="47.0" text="刷新" />
+   <Button fx:id="saveButton" layoutX="162.0" layoutY="12.0" prefHeight="27.0" prefWidth="47.0" text="儲存" />
    <ScrollPane hbarPolicy="NEVER" layoutY="107.0" prefHeight="252.0" prefWidth="353.0">
         <content>
             <VBox fx:id="unassignedBox" layoutY="107.0" prefHeight="250.0" prefWidth="352.0" />

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
@@ -35,14 +36,14 @@
       <font>
          <Font name="System Bold Italic" size="12.0" />
       </font></Text>
-   <Text fx:id="startTimeLabel" style="-fx-font-size: 16px;" text="節點名稱" translateY="-20.0" wrappingWidth="107.0" StackPane.alignment="CENTER">
+   <Label fx:id="startTimeLabel" alignment="TOP_LEFT" prefHeight="31.0" prefWidth="113.0" text="Label" translateY="15.0" wrapText="true">
       <font>
-         <Font name="System Bold Italic" size="10.0" />
+         <Font name="Georgia Bold Italic" size="12.0" />
       </font>
-   </Text>
-   <Text fx:id="endTimeLabel" style="-fx-font-size: 16px;" text="節點名稱" wrappingWidth="111.0" StackPane.alignment="CENTER">
+   </Label>
+   <Label fx:id="endTimeLabel" alignment="TOP_LEFT" prefHeight="31.0" prefWidth="113.0" text="Label" translateY="45.0" wrapText="true">
       <font>
-         <Font name="System Bold Italic" size="8.0" />
+         <Font name="Georgia Bold Italic" size="12.0" />
       </font>
-   </Text>
+   </Label>
 </StackPane>

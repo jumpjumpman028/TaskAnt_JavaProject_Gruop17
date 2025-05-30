@@ -106,18 +106,11 @@ public class TaskInfoController {
         if(task.getEndDate() == null) endDatePicker.setValue(task.getEndDate());
         else endDatePicker.setValue(task.getStartDate());
 
-        if(task.getStartTime() == null) {
-            startHourComboBox.getSelectionModel().selectFirst();
-            startMinuteComboBox.getSelectionModel().selectFirst();
-        }
-        else {
+        if(task.getStartTime() != null) {
             startHourComboBox.getSelectionModel().select(task.getStartTime().getHour());
             startMinuteComboBox.getSelectionModel().select(task.getStartTime().getMinute());
         }
-        if(task.getEndTime() == null){
-            endHourComboBox.getSelectionModel().selectFirst();
-            endMinuteComboBox.getSelectionModel().selectFirst();
-        }else{
+        if(task.getEndTime() != null){
             endHourComboBox.getSelectionModel().select(task.getEndTime().getHour());
             endMinuteComboBox.getSelectionModel().select(task.getEndTime().getMinute());
         }

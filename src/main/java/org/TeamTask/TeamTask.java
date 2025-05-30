@@ -6,6 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 public class TeamTask extends Task {
     private int teamID;
@@ -23,9 +24,9 @@ public class TeamTask extends Task {
 
     }
 
-    public TeamTask(int teamID, String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays) {
+    public TeamTask(int teamID, String name, String description, String assignee, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, Status status, Type type, List<DayOfWeek> recurringDays, double x, double y, Set<String> googleEventIds, Integer parentId,int ID) {
         //資料庫抓下來的所有任務
-        super(name, description, assignee, startDate, startTime, endDate, endTime, status, type, recurringDays);
+        super(name, description, assignee, startDate, startTime, endDate, endTime, status, type, recurringDays,x,y,googleEventIds,parentId,ID);
         this.teamID = teamID;
 
     }

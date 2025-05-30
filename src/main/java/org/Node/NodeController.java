@@ -8,6 +8,8 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import org.Task.Task;
 import org.Task.TaskManager;
+import  javafx.scene.control.Label;
+import java.awt.*;
 
 public class NodeController {
     private Task task;
@@ -15,13 +17,13 @@ public class NodeController {
     @FXML private Text label;
     @FXML private ImageView exclamationIcon;
     @FXML private ImageView exclamationIconChange;
-    @FXML private Text startTimeLabel;
-    @FXML private Text endTimeLabel;
+    @FXML private Label startTimeLabel;
+    @FXML private Label endTimeLabel;
     public void setTask(Task task) {
         this.task = task;
         setLabel(task.getName());
-        startTimeLabel.setText(task.getStartDateString() + " " + task.getStartTime());
-        endTimeLabel.setText(task.getEndDateString() + " " + task.getEndTime());
+        startTimeLabel.setText("開始時日:" + task.getStartDateString() + " " + task.getStartTime());
+        endTimeLabel.setText("結束時日:" + task.getEndDateString() + " " + task.getEndTime());
 
     }
     public void setLabel(String text) {

@@ -24,6 +24,7 @@ import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -95,10 +96,12 @@ public class TaskManager {
                 }else{
                     preparedStatement.setInt(10, task.getRecurringDaysInt());
                 }
-                preparedStatement.setDouble(11, task.);//x
-                preparedStatement.setDouble(12, task.);//y
-                preparedStatement.setString(13, task.);//裡面放JSON
-                preparedStatement.setInt(14, task.);//parent_id
+                preparedStatement.setDouble(11, task.getX());//x
+                preparedStatement.setDouble(12, task.getY());//y
+                preparedStatement.setString(13, Task.GoogleEventIDToJson(task.getGoogleEventIds()));//裡面放JSON
+                if(task.getParentId() == null) {
+                    preparedStatement.setNull(14, java.sql.Types.INTEGER);
+                }else preparedStatement.setInt(14, task.getParentId());//parent_id
 
 
                 preparedStatement.executeUpdate();
@@ -188,12 +191,13 @@ public class TaskManager {
 
                     double y = resultSet.getDouble("y");
 
-                    //List<String> tokens = 你的轉LIST函式(resultSet.getString("googele"));
+                    Set<String> tokens = Task.GoogleEventIDFromJson(resultSet.getString("google"));
 
-                    int parentID = resultSet.getInt("parent_id");
+                    Integer parentID = (Integer) resultSet.getObject("parent_id");
 
+                    int ID = resultSet.getInt("task_id");
                     // 創建 Task 物件並設置屬性
-                    Task task = new Task(taskName, taskDescription, UserInfo.username, startDate, startTime, endDate, endTime, status, type, recurringDays, x, y, tokens, parentID);
+                    Task task = new Task(taskName, taskDescription, UserInfo.username, startDate, startTime, endDate, endTime, status, type, recurringDays, x, y, tokens, parentID,ID);
                     task.setStatus(status);
                     task.setType(type);
 
@@ -276,8 +280,11 @@ public class TaskManager {
 
                         updateStmt.setDouble(9, task.getX());
                         updateStmt.setDouble(10, task.getY());
-                        //updateStmt.setString(11,轉LIST);
-                        updateStmt.setInt(12, task.getParentId());
+                        updateStmt.setString(11,Task.GoogleEventIDToJson(task.getGoogleEventIds()));
+                        if(task.getParentId() != null) {
+                            updateStmt.setInt(12, task.getParentId());
+                        }else
+                            updateStmt.setNull(12, java.sql.Types.INTEGER);
 
                         updateStmt.setInt(13, UserInfo.userID); // user_id
                         updateStmt.setString(14, task.getName()); // task_name
@@ -328,10 +335,10 @@ public class TaskManager {
                             insertStmt.setInt(10, task.getRecurringDaysInt());
                         }
 
-                        insertStmt.setDouble(11, task.);//x
-                        insertStmt.setDouble(12, task.);//y
-                        insertStmt.setString(13, task.);//裡面放JSON
-                        insertStmt.setInt(14, task.);//parent_id
+                        insertStmt.setDouble(11, task.getX());//x
+                        insertStmt.setDouble(12, task.getY());//y
+                        insertStmt.setString(13, Task.GoogleEventIDToJson(task.getGoogleEventIds()));//裡面放JSON
+                        insertStmt.setInt(14, task.getParentId());//parent_id
 
                         insertStmt.executeUpdate();
                         System.out.println("任務已新增：" + task.getName());

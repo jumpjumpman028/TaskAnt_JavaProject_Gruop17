@@ -1,4 +1,6 @@
 package org.Task;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.DeBugConsole;
 
 import java.time.DateTimeException;
@@ -13,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Task {
-    public static int setID = 1;
+    //public static int setID = 1;
 
     //GoogleCanlendar ID
     private Set<String> googleEventIds = new HashSet<>();
@@ -26,10 +28,6 @@ public class Task {
     }
     public void removeGoogleEventId(String id) {
         this.googleEventIds.remove(id);
-    }
-
-    public void clearGoogleEventIds() {
-        this.googleEventIds.clear();
     }
 
     private int ID = -1 ;
@@ -55,7 +53,7 @@ public class Task {
     private double y;
     public double getY() {return y;}
     public void setY(double y) {this.y = y;}
-
+    // x y ParentID (有可能是null)  googleEventIds <String>set
         public Task(String name, String description, String assignee,LocalDate startDate , LocalTime startTime,LocalDate endDate, LocalTime endTime,List<DayOfWeek> recurringDays,Type type) {
         //制式化任務範例
         this.name = name;
@@ -68,7 +66,9 @@ public class Task {
         this.endTime = endTime;
         this.recurringDays = recurringDays;
         this.type = type;
-        ID = setID++;
+        this.x = 0.0;
+        this.y = 0.0;
+        this.parentId = null;
     }
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime) {
         //一次性任務範例
@@ -82,10 +82,12 @@ public class Task {
         this.endDate = null;
         this.endTime = null;
         this.recurringDays = null;
-        ID = setID++;
+        this.x = 0.0;
+        this.y = 0.0;
+        this.parentId = null;
     }
 
-    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays) {
+    public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays,double x,double y,Set<String> googleEventIds, Integer parentId,int ID) {
         //資料庫抓下來的所有任務
         this.name = name;
         this.description = description;
@@ -97,7 +99,11 @@ public class Task {
         this.status = status;
         this.type = type;
         this.recurringDays = recurringDays;
-        ID = setID++;
+        this.x = x;
+        this.y = y;
+        this.parentId = parentId;
+        this.googleEventIds = googleEventIds;
+        this.ID = ID;
     }
 
     public String getName() {
@@ -251,11 +257,14 @@ public class Task {
         return endTime.format(formatter);
     }
     public void setEndTime(LocalTime endTime) {
-        if(startTime != null && endTime.isAfter(startTime))
+        if(startTime != null && endTime != null && endTime.isAfter(startTime))
             this.endTime = endTime;
         else if( startTime == null){
           setStartTime(LocalTime.now());
-        } else throw new DateTimeException("SetEndTimeFail");
+        } else if( endTime == null){
+            return;
+        }
+        else throw new DateTimeException("SetStartTimeFail");
 
     }
     private static LocalTime convertStringToLocalTime(String timeString) {
@@ -360,6 +369,33 @@ public class Task {
             }
         }
         private final int code;
+    }
+
+    /// Static
+    // 靜態方法：從 JSON 字串轉換為 teamMembers 屬性
+    public static Set<String> GoogleEventIDFromJson(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // 將 JSON 字串轉換為 List<Integer>
+            if(json != null && !json.isEmpty())
+            return objectMapper.readValue(json, new TypeReference<Set<String>>() {});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // 如果發生錯誤，返回 null
+        }
+        return null;
+    }
+
+    // 將 teamMembers 屬性轉換為 JSON 字串
+    public static String GoogleEventIDToJson(Set<String> GoogleEventIDs) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // 將 List<int> 轉換為 JSON 字串
+            return objectMapper.writeValueAsString(GoogleEventIDs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "[]"; // 如果發生錯誤，返回空陣列的 JSON
+        }
     }
 
     @Override

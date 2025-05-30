@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TeamTaskManager {
 
@@ -36,8 +37,8 @@ public class TeamTaskManager {
         teamTaskList.add(teamTask);
 
         // SQL 插入語句，包含所有欄位
-        String insertSQL = "INSERT INTO teamtasks (team_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO teamtasks (team_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day, x, y, google, parent_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
@@ -82,6 +83,10 @@ public class TeamTaskManager {
             }else{
                 preparedStatement.setInt(10, teamTask.getRecurringDaysInt());
             }
+            preparedStatement.setDouble(11, teamTask.getX());//x
+            preparedStatement.setDouble(12, teamTask.getY());//y
+            preparedStatement.setString(13, Task.GoogleEventIDToJson(teamTask.getGoogleEventIds()));//裡面放JSON
+            preparedStatement.setInt(14, teamTask.getParentId());//parent_id
             // 執行插入操作
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -108,9 +113,9 @@ public class TeamTaskManager {
         // SQL 語句：檢查任務是否存在
         String checkTaskExistsSQL = "SELECT COUNT(*) FROM teamtasks WHERE team_id = ? AND task_name = ?";
         // SQL 語句：更新任務
-        String updateTaskSQL = "UPDATE teamtasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ? WHERE team_id = ? AND task_name = ? AND task_id = ?";
+        String updateTaskSQL = "UPDATE teamtasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ?, x = ?, y = ?, google = ?, parent_id = ? WHERE team_id = ? AND task_name = ? AND task_id = ?";
         // SQL 語句：插入新任務
-        String insertTaskSQL = "INSERT INTO teamtasks (team_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertTaskSQL = "INSERT INTO teamtasks (team_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day, x, y, google, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
             for (TeamTask task : teamTaskList) {
@@ -166,9 +171,13 @@ public class TeamTaskManager {
                             updateStmt.setInt(8, task.getRecurringDaysInt());
                         }
 
-                        updateStmt.setInt(9, task.getTeamID()); // team_id
-                        updateStmt.setString(10, task.getName()); // task_name
-                        updateStmt.setInt(11, task.getID());//task_id
+                        updateStmt.setDouble(9, task.getX());
+                        updateStmt.setDouble(10, task.getY());
+                        updateStmt.setInt(12, task.getParentId());
+
+                        updateStmt.setInt(13, task.getTeamID()); // getTeamID
+                        updateStmt.setString(14, task.getName()); // task_name
+                        updateStmt.setInt(15, task.getID());
 
                         updateStmt.executeUpdate();
                         System.out.println("任務已更新：" + task.getName());
@@ -214,6 +223,10 @@ public class TeamTaskManager {
                         } else {
                             insertStmt.setInt(10, task.getRecurringDaysInt());
                         }
+                        insertStmt.setDouble(11, task.getX());//x
+                        insertStmt.setDouble(12, task.getY());//y
+                        insertStmt.setString(13, Task.GoogleEventIDToJson(task.getGoogleEventIds()));//裡面放JSON
+                        insertStmt.setInt(14, task.getParentId());//parent_id
 
                         insertStmt.executeUpdate();
                         System.out.println("任務已新增：" + task.getName());
@@ -343,9 +356,17 @@ public class TeamTaskManager {
                     // 處理 recurringDays
                     int recurringDaysInt = resultSet.getInt("recurring_day");
                     List<java.time.DayOfWeek> recurringDays = Task.intToRecurringDays(recurringDaysInt);
+                    double x = resultSet.getDouble("x");
 
+                    double y = resultSet.getDouble("y");
+
+                    Set<String> tokens = Task.GoogleEventIDFromJson(resultSet.getString("google"));
+
+                    int parentID = resultSet.getInt("parent_id");
+
+                    int id = resultSet.getInt("task_id");
                     // 創建 TeamTask 物件
-                    TeamTask teamTask = new TeamTask(fetchedTeamID, name, description, "assignee", startDate, startTime, endDate, endTime, status, type, recurringDays);
+                    TeamTask teamTask = new TeamTask(fetchedTeamID, name, description, "assignee", startDate, startTime, endDate, endTime, status, type, recurringDays, x, y, tokens, parentID,id);
 
                     teamTaskList.add(teamTask);
                 }
