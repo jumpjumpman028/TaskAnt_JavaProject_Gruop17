@@ -194,8 +194,8 @@ public class NodeMapView implements SceneInterface {
                 double dy = event.getSceneY() - data[1];
                 node.setLayoutX(data[2] + dx);
                 node.setLayoutY(data[3] + dy);
-                task.setX(event.getSceneX());
-                task.setY(event.getSceneY());
+                task.setX(data[2] + dx);
+                task.setY(data[3] + dy);
 
             }
         });
