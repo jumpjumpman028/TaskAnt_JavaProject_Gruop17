@@ -96,8 +96,6 @@ public class TeamInfo {
     }
 
     private void createTeamTask() {
-
-
         closeWindow();
     }
 

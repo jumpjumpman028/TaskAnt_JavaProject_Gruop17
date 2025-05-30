@@ -39,7 +39,8 @@ public class TeamTaskView{
         }
     }
 
-    private void openTaskDetail(TeamTask task) {//todo:就像watertest點開任務依樣
+    private void openTaskDetail(TeamTask task) {
+        TeamTaskManager.getInstance().ShowInfo();
         // 打開任務詳情或執行其他操作
         System.out.println("打開任務詳情: " + task.getName());
     }

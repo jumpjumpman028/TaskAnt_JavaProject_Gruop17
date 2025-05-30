@@ -74,23 +74,23 @@ public class TeamTaskInfo{
         UpdateEndtimeLabel(task);
         statusLabel.setText("任務情形 : " );
 
-        statusComboBox.getItems().addAll(Task.Status.values());
-        statusComboBox.setCellFactory(lv -> new ListCell<Task.Status>() {
+        statusComboBox.getItems().addAll(TeamTask.Status.values());
+        statusComboBox.setCellFactory(lv -> new ListCell<TeamTask.Status>() {
             @Override
-            protected void updateItem(Task.Status item, boolean empty) {
+            protected void updateItem(TeamTask.Status item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty || item == null ? null : item.GetString());
             }
         });
-        statusComboBox.setButtonCell(new ListCell<Task.Status>() {
+        statusComboBox.setButtonCell(new ListCell<TeamTask.Status>() {
             @Override
-            protected void updateItem(Task.Status item, boolean empty) {
+            protected void updateItem(TeamTask.Status item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty || item == null ? null : item.GetString());
             }
         });
         statusComboBox.getSelectionModel().select(task.getStatus());
-        if(task.getType() != Task.Type.Experience){
+        if(task.getType() != TeamTask.Type.Experience){
             recurringDaysCheckBox11.setSelected(task.getRecurringDays().contains(DayOfWeek.MONDAY));
             recurringDaysCheckBox12.setSelected(task.getRecurringDays().contains(DayOfWeek.TUESDAY));
             recurringDaysCheckBox13.setSelected(task.getRecurringDays().contains(DayOfWeek.WEDNESDAY));
@@ -154,12 +154,12 @@ public class TeamTaskInfo{
 
     }
 
-    private void saveTask(Task task) {
+    private void saveTask(TeamTask task) {
         boolean Error = false;
         // 1. 取得欄位內容
         String newName = NameTextField.getText();
         String newDescription = descriptionTextArea.getText();
-        Task.Status newStatus = statusComboBox.getValue();
+        TeamTask.Status newStatus = statusComboBox.getValue();
         // 日期和時間
         LocalDate newStartDate = startDatePicker.getValue();
         LocalDate newEndDate = endDatePicker.getValue();
@@ -208,11 +208,11 @@ public class TeamTaskInfo{
         task.setStatus(newStatus);
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
         try{
-            if(task.getStatus() != Task.Status.COMPLETED) syncTaskToGoogleCalendar(task);
+            if(task.getStatus() != TeamTask.Status.COMPLETED) syncTaskToGoogleCalendar(task);
         }catch (Exception GA){
             DeBugConsole.log("TaskInfoController"+ GA.getMessage());
         }
-        TaskManager.getInstance().UploadDataToDatabase();
+        TeamTaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
         WaterTest.getInstance().refreshTaskList();
         if(!Error){
@@ -221,10 +221,10 @@ public class TeamTaskInfo{
 
     }
 
-    public void setTaskinitialize(Task task) {
+    public void setTaskinitialize(TeamTask task) {
         CheckStatusdinamic(task);
     }
-    public void CheckStatusdinamic(Task task) {
+    public void CheckStatusdinamic(TeamTask task) {
         if ("完成".equals(task.getStatus().GetString())) {
             hoverColor = "#00FF7F"; // 已完成任務顯示綠色
         } else if ("進行中".equals(task.getStatus().GetString())) {
@@ -236,11 +236,11 @@ public class TeamTaskInfo{
         }
 
     }
-    public void UpdateStarttimeLabel(Task task){
+    public void UpdateStarttimeLabel(TeamTask task){
         URL url = getClass().getResource("/images/InfoBackGround.png");
         StarttimeLabel.setText("開始：" + task.getStartDateString() + " 時間" + task.getStartTimeString());
     }
-    public void UpdateEndtimeLabel(Task task){
+    public void UpdateEndtimeLabel(TeamTask task){
         EndtimeLabel.setText("結束：" + task.getEndDateString() + " 時間" + task.getEndTimeString());
     }
     private void SetUpSaveButton(){
@@ -283,7 +283,7 @@ public class TeamTaskInfo{
     private void onCancelClicked() {
         ((Stage)cancelButton.getScene().getWindow()).close();
     }
-    public static void syncTaskToGoogleCalendar(Task task) throws Exception {
+    public static void syncTaskToGoogleCalendar(TeamTask task) throws Exception {
         if (!task.getGoogleEventIds().isEmpty()) {
             GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
         }
