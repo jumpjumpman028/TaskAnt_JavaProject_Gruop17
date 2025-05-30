@@ -1,5 +1,6 @@
 package org.Node;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -55,15 +56,13 @@ public class NodeMapView implements SceneInterface {
         //setupCanvasDragDrop();
         refreshUnassignedBox();
         setupNodeMapPaneMouseReleased();
-        drawLines();
         saveButton.setOnMouseClicked(event -> Save());
+        Platform.runLater(this::drawLines);
     }
     private void onTaskDropped(Parent draggedNode, Parent targetNode) {
 
-        System.out.println("onTaskDropped called!");
         // 1. 取得對應的 Task
         Task draggedTask = nodeToTaskMap.get(draggedNode);
-        DeBugConsole.log("使用nodeTask");
         Task targetTask = nodeToTaskMap.get(targetNode);
 
         // 2. 設定 parentId
@@ -87,7 +86,6 @@ public class NodeMapView implements SceneInterface {
         for (Task task : tasks) {
             Integer parentId = task.getParentId();
             // 如果 parentId 存在，且 parentId 對應的節點在 nodeViewMap
-            DeBugConsole.log("我的父親是" + parentId + "是否在畫布中" + nodeViewMap.containsKey(parentId));
             if (parentId != null && parentId > 0 && nodeViewMap.containsKey(parentId)) {
                 Parent parentNode = nodeViewMap.get(parentId);
                 Parent selfNode = nodeViewMap.get(task.getID());
@@ -170,7 +168,10 @@ public class NodeMapView implements SceneInterface {
                 // 從 unassigned 移到畫布
                 unassignedTasks.remove(task);
                 refreshUnassignedBox();
-                CreateNode(task,event.getSceneX(),event.getSceneY());
+                javafx.geometry.Point2D lp = nodeGroup.sceneToLocal(sceneX, sceneY);
+                CreateNode(task, lp.getX(),lp.getY());
+                task.setX(lp.getX());
+                task.setY(lp.getY());
                 task.setParentId(0);
                 drawLines();
             }
@@ -314,24 +315,45 @@ public class NodeMapView implements SceneInterface {
             nodeController.setTask(task);
 
             // 設定座標
-            javafx.geometry.Point2D localPoint = nodeGroup.sceneToLocal(x,y);
             //double localX = nodeMapPane.sceneToLocal(sceneX, sceneY).getX();
             //double localY = nodeMapPane.sceneToLocal(sceneX, sceneY).getY();
-            node.setLayoutX(localPoint.getX());
-            node.setLayoutY(localPoint.getY());
+            node.setLayoutX(x);
+            node.setLayoutY(y);
             nodeGroup.getChildren().add(node);
 
             // 設 parentId
-
+            System.out.printf(
+                            "Task %d 進入 createNode：參數 x=%.1f, y=%.1f；轉換後 node=(%.1f,%.1f)%n",
+                    task.getID(), x, y, node.getLayoutX(), node.getLayoutY()
+            );
 
             // 註冊拖曳事件
             setupNodeEvents(node, task);
             nodeViewMap.put(task.getID(), node);
             nodeToTaskMap.put(node, task);
-            DeBugConsole.log("獲得nodeTask");
-            nodePositionMap.put(task.getID(), new Point2D.Double(localPoint.getX(), localPoint.getY()));
+            nodePositionMap.put(task.getID(), new Point2D.Double(x, y));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+    @FXML private void onResetAllNodes() {
+        // 1. 把每個節點都搬到 (0,0)
+        for (Map.Entry<Integer, Parent> entry : nodeViewMap.entrySet()) {
+            Parent node = entry.getValue();
+            // 把畫布座標清零
+            node.setLayoutX(0);
+            node.setLayoutY(0);
+            // 2. 同步更新 Task model
+            Task t = nodeToTaskMap.get(node);
+            if (t != null) {
+                t.setX(0);
+                t.setY(0);
+                // 如果你有用 nodePositionMap 也要同步
+                nodePositionMap.put(t.getID(), new Point2D.Double(0, 0));
+            }
+        }
+        // 3. 重新畫線（如果需要）
+        drawLines();
     }
 }

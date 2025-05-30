@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.shape.Rectangle?>
 <AnchorPane fx:id="rootPane" prefHeight="363.0" prefWidth="888.0" stylesheets="@../styles/ScrollPane.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Node.NodeMapView">
 
     <Button layoutX="14.0" layoutY="12.0" onAction="#onBack" prefHeight="27.0" prefWidth="47.0" text="返回" />
@@ -29,7 +28,7 @@
    </ImageView>
     <Pane fx:id="nodeMapPane" layoutX="371.0" layoutY="19.0" prefHeight="312.0" prefWidth="489.0">
       <children>
-          <Group fx:id="nodeGroup" >
+          <Group fx:id="nodeGroup">
           </Group>
       </children></Pane>
    <ImageView fitHeight="179.0" fitWidth="254.0" layoutX="35.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
@@ -42,4 +41,5 @@
          <Font name="Georgia Bold Italic" size="24.0" />
       </font>
    </Label>
+   <Button layoutX="230.0" layoutY="12.0" onAction="#onResetAllNodes" prefHeight="27.0" prefWidth="76.0" text="重製坐標" />
 </AnchorPane>
