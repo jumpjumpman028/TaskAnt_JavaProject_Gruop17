@@ -1,9 +1,13 @@
 package org.TeamTask;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.MainApplication;
 import org.SceneInterface;
@@ -53,7 +57,34 @@ public class TeamTaskView implements SceneInterface{
         // 返回上一頁
         MainApplication.switchScene("TeamMenu.fxml");
     }
+    @FXML private void initialize() {
+        setTeamId(TeamInfo.TeamID);
+        addTaskButton.setOnAction(event -> {
+            AddTeamTask();
+        });
+    }
+    private void AddTeamTask() {
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamTaskForm.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+
+            scene.getStylesheets().add(getClass().getResource("/styles/EventForm.css").toExternalForm());
+
+
+            Stage stage = new Stage();
+            stage.setTitle("新增事件");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void LoadEvent() {
 

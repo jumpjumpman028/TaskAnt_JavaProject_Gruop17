@@ -11,10 +11,12 @@ import javafx.stage.Stage;
 import org.DeBugConsole;
 import org.Task.Task;
 import org.Task.TaskManager;
+import org.UserInfo;
 
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 public class TeamTaskForm implements Initializable {
@@ -50,9 +52,12 @@ public class TeamTaskForm implements Initializable {
     @FXML private CheckBox friCheck;
     @FXML private CheckBox satCheck;
     @FXML private CheckBox sunCheck;
-
+    private int TeamID;
     private Map<CheckBox, DayOfWeek> dayCheckMap;
-
+    /// TeamTaskView 前來
+    public  void SetTeamID(int TeamID) {
+        this.TeamID = TeamID;
+    }
     @FXML
     private void ConfirmData(){ //
         if(oneTimePane.isVisible()){
@@ -65,12 +70,15 @@ public class TeamTaskForm implements Initializable {
             if(ErrorMsg != null){
                 errorLabel.setText(ErrorMsg);
             }else{
+                LocalTime startTime = null;
+                LocalTime endTime = null;
+                if (startHour != null && startMinute != null) {
+                    startTime = LocalTime.of(startHour, startMinute);
+                }
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
-                TeamTaskManager.getInstance().addTeamTaskToDatabase(new TeamTask(name,desc,startDate,startHour,startMinute,null,null,null,null, TeamTask.Type.Experience));
+                TeamTaskManager.getInstance().addTeamTaskToDatabase(new TeamTask(TeamID,name,desc,UserInfo.username,startDate,startTime,null,null,null,TeamTask.Type.Experience));
                 stage.close();
             }
-
-
         } else if (repeatPane.isVisible()) {
             String name = repeatTaskName.getText();
             String desc = repeatTaskDesc.getText();
@@ -86,8 +94,16 @@ public class TeamTaskForm implements Initializable {
             if(ErrorMsg != null){
                 errorLabel.setText(ErrorMsg);
             }else{
+                LocalTime startTime = null;
+                LocalTime endTime = null;
+                if (startHour != null && startMinute != null) {
+                    startTime = LocalTime.of(startHour, startMinute);
+                }
+                if (endHour != null && endMinute != null) {
+                    endTime = LocalTime.of(endHour, endMinute);
+                }
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
-                TaskManager.getInstance().CreateTask(name,desc,startDate,startHour,startMinute,endDate,endHour,endMinute,getSelectedDays(),taskType);//todo:改為teamTaskMaanager.addTask
+                TeamTaskManager.getInstance().addTeamTaskToDatabase(new TeamTask(TeamID,name,desc,UserInfo.username,startDate,startTime,endDate,endTime,getSelectedDays(),taskType));//todo:改為teamTaskMaanager.addTask
                 stage.close();
             }
         }
