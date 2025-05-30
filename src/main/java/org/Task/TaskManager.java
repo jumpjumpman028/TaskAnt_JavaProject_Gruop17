@@ -52,7 +52,7 @@ public class TaskManager {
             }
 
             // 插入資料庫
-            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time , status, type, recurring_day) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time , status, type, recurring_day, x, y, google, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(insertTaskSQL)) {
 
@@ -95,6 +95,11 @@ public class TaskManager {
                 }else{
                     preparedStatement.setInt(10, task.getRecurringDaysInt());
                 }
+                preparedStatement.setDouble(11, task.);//x
+                preparedStatement.setDouble(12, task.);//y
+                preparedStatement.setString(13, task.);//裡面放JSON
+                preparedStatement.setInt(14, task.);//parent_id
+
 
                 preparedStatement.executeUpdate();
                 System.out.println("任務已成功新增至資料庫！");
@@ -179,8 +184,16 @@ public class TaskManager {
                     int recurringDaysInt = resultSet.getInt("recurring_day");
                     List<DayOfWeek> recurringDays = Task.intToRecurringDays(recurringDaysInt);
 
+                    double x = resultSet.getDouble("x");
+
+                    double y = resultSet.getDouble("y");
+
+                    //List<String> tokens = 你的轉LIST函式(resultSet.getString("googele"));
+
+                    int parentID = resultSet.getInt("parent_id");
+
                     // 創建 Task 物件並設置屬性
-                    Task task = new Task(taskName, taskDescription, UserInfo.username, startDate, startTime, endDate, endTime, status, type, recurringDays);
+                    Task task = new Task(taskName, taskDescription, UserInfo.username, startDate, startTime, endDate, endTime, status, type, recurringDays, x, y, tokens, parentID);
                     task.setStatus(status);
                     task.setType(type);
 
@@ -203,9 +216,9 @@ public class TaskManager {
         // SQL 語句：檢查任務是否存在
         String checkTaskExistsSQL = "SELECT COUNT(*) FROM tasks WHERE user_id = ? AND task_name = ?";
         // SQL 語句：更新任務
-        String updateTaskSQL = "UPDATE tasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ? WHERE user_id = ? AND task_name = ? AND task_id = ?";
+        String updateTaskSQL = "UPDATE tasks SET task_description = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?, status = ?, type = ?, recurring_day = ?, x = ?, y = ?, google = ?, parent_id = ? WHERE user_id = ? AND task_name = ? AND task_id = ?";
         // SQL 語句：插入新任務
-        String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time, status, type, recurring_day, x, y, google, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection()) {
             for (Task task : taskList) {
@@ -261,9 +274,14 @@ public class TaskManager {
                             updateStmt.setInt(8, task.getRecurringDaysInt());
                         }
 
-                        updateStmt.setInt(9, UserInfo.userID); // user_id
-                        updateStmt.setString(10, task.getName()); // task_name
-                        updateStmt.setInt(11, task.getID());
+                        updateStmt.setDouble(9, task.getX());
+                        updateStmt.setDouble(10, task.getY());
+                        //updateStmt.setString(11,轉LIST);
+                        updateStmt.setInt(12, task.getParentId());
+
+                        updateStmt.setInt(13, UserInfo.userID); // user_id
+                        updateStmt.setString(14, task.getName()); // task_name
+                        updateStmt.setInt(15, task.getID());
 
                         updateStmt.executeUpdate();
                         System.out.println("任務已更新：" + task.getName());
@@ -309,6 +327,11 @@ public class TaskManager {
                         } else {
                             insertStmt.setInt(10, task.getRecurringDaysInt());
                         }
+
+                        insertStmt.setDouble(11, task.);//x
+                        insertStmt.setDouble(12, task.);//y
+                        insertStmt.setString(13, task.);//裡面放JSON
+                        insertStmt.setInt(14, task.);//parent_id
 
                         insertStmt.executeUpdate();
                         System.out.println("任務已新增：" + task.getName());
