@@ -167,10 +167,11 @@ public class NodeMapView implements SceneInterface {
                     nodeController.setTask(task);
 
                     // 設定座標
-                    double localX = nodeMapPane.sceneToLocal(sceneX, sceneY).getX();
-                    double localY = nodeMapPane.sceneToLocal(sceneX, sceneY).getY();
-                    node.setLayoutX(localX);
-                    node.setLayoutY(localY);
+                    javafx.geometry.Point2D localPoint = nodeGroup.sceneToLocal(event.getSceneX(), event.getSceneY());
+                    //double localX = nodeMapPane.sceneToLocal(sceneX, sceneY).getX();
+                    //double localY = nodeMapPane.sceneToLocal(sceneX, sceneY).getY();
+                    node.setLayoutX(localPoint.getX());
+                    node.setLayoutY(localPoint.getY());
                     nodeGroup.getChildren().add(node);
 
                     // 設 parentId
@@ -180,7 +181,7 @@ public class NodeMapView implements SceneInterface {
                     setupNodeEvents(node, task);
                     nodeViewMap.put(task.getID(), node);
                     nodeToTaskMap.put(node, task);
-                    nodePositionMap.put(task.getID(), new Point2D.Double(localX, localY));
+                    nodePositionMap.put(task.getID(), new Point2D.Double(localPoint.getX(), localPoint.getY()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -216,7 +217,7 @@ public class NodeMapView implements SceneInterface {
 
             if (vboxBounds.contains(sceneX, sceneY)) {
                 // 拖回未分配區
-                nodeMapPane.getChildren().remove(node);
+                nodeGroup.getChildren().remove(node);
                 nodeViewMap.remove(task.getID());
                 nodeToTaskMap.remove(node);
                 nodePositionMap.remove(task.getID());
