@@ -24,6 +24,7 @@ import org.Task.Task;
 import org.Task.TaskCellController;
 import org.Task.TaskManager;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class NodeMapView implements SceneInterface {
 
     @FXML private Pane nodeMapPane;
     @FXML private VBox unassignedBox;
-    @FXML private Group nodeGroup;
+    @FXML private Pane nodeGroup;
     private double lastMouseX, lastMouseY;
     private ObservableList<Task> unassignedTasks = FXCollections.observableArrayList();
     private Map<Integer, Parent> nodeViewMap = new HashMap<>();
@@ -95,7 +96,7 @@ public class NodeMapView implements SceneInterface {
                     NodeConnection connection = new NodeConnection(parentNode, selfNode);
                     if(nodeToTaskMap.get(parentNode).getStatus() == Task.Status.COMPLETED) {
                         connection.setStroke(Color.GREEN);
-                    }else if (nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId()) != null &&  nodeToTaskMap.get( nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId())).getParentId().equals(nodeToTaskMap.get(selfNode).getParentId())){
+                    }else if (nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId()) != null &&  nodeToTaskMap.get( nodeViewMap.get(nodeToTaskMap.get(selfNode).getParentId())).getParentId().equals(nodeToTaskMap.get(selfNode).getID())){
                         connection.setStroke(Color.RED);
                     }else connection.setStroke(Color.GRAY);
                     connection.setStrokeWidth(2);
