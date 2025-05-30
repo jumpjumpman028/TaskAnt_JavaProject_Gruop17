@@ -248,7 +248,7 @@ public class TeamManager {
         return false; // 刪除失敗
     }
 
-    public static void ShowInfo(Team team, Stage ownerStage){
+    public static void ShowInfo(Team team, Stage ownerStage){ //todo: 切換到TeamTaskView
         try {
             FXMLLoader loader = new FXMLLoader(instance.getClass().getResource("/org/TeamInfo.fxml"));
             Parent root = loader.load();

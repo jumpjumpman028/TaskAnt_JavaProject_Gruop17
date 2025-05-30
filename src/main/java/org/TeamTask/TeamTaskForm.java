@@ -54,7 +54,7 @@ public class TeamTaskForm implements Initializable {
     private Map<CheckBox, DayOfWeek> dayCheckMap;
 
     @FXML
-    private void ConfirmData(){
+    private void ConfirmData(){ //
         if(oneTimePane.isVisible()){
             String name = oneTaskName.getText();
             String desc = oneTaskDesc.getText();
@@ -87,7 +87,7 @@ public class TeamTaskForm implements Initializable {
                 errorLabel.setText(ErrorMsg);
             }else{
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
-                TaskManager.getInstance().CreateTask(name,desc,startDate,startHour,startMinute,endDate,endHour,endMinute,getSelectedDays(),taskType);
+                TaskManager.getInstance().CreateTask(name,desc,startDate,startHour,startMinute,endDate,endHour,endMinute,getSelectedDays(),taskType);//todo:改為teamTaskMaanager.addTask
                 stage.close();
             }
         }

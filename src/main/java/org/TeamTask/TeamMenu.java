@@ -128,10 +128,10 @@ public class TeamMenu implements SceneInterface {
         }
     }
 
-    private void openTeamTaskView(int teamId) {
-        SceneSwitcher.getInstance().switchTo("TeamTaskView.fxml", controller -> {
-            TeamTaskView viewController = (TeamTaskView) controller;
-            viewController.setTeamId(teamId); // 傳遞 Team ID
-        });
-    }
+//    private void openTeamTaskView(int teamId) {
+//        SceneSwitcher.getInstance().switchTo("TeamTaskView.fxml", controller -> {
+//            TeamTaskView viewController = (TeamTaskView) controller;
+//            viewController.setTeamId(teamId); // 傳遞 Team ID
+//        });
+//    }
 }
