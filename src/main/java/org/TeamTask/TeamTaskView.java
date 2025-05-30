@@ -1,10 +1,12 @@
 package org.TeamTask;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.MainApplication;
+import org.SceneInterface;
 import org.Task.Task;
 import org.Task.TaskManager;
 import org.TeamTask.TeamTaskManager;
@@ -12,7 +14,7 @@ import org.TeamTask.TeamTaskManager;
 import java.io.IOException;
 import java.util.List;
 ///  從TeamInfo中 點入 關於此Team中的所有Task
-public class TeamTaskView {
+public class TeamTaskView implements SceneInterface{
 
     @FXML private VBox taskListPane;
     @FXML private Button backButton;
@@ -50,6 +52,21 @@ public class TeamTaskView {
     private void goBack() throws Exception {
         // 返回上一頁
         MainApplication.switchScene("TeamMenu.fxml");
+    }
+
+    @Override
+    public void LoadEvent() {
+
+    }
+
+    @Override
+    public void UnloadEvent() {
+
+    }
+
+    @Override
+    public void FreshEvent() {
+
     }
 
 //    @FXML

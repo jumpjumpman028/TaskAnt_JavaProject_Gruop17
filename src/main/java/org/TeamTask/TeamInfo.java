@@ -11,6 +11,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.DeBugConsole;
+import org.MainApplication;
+
 ///  TeamInfo 可以前往 詳細有關於Team的資訊， 跟TaskInfo差不多
 
 
@@ -42,7 +45,7 @@ public class TeamInfo {
 
     private double rootPaneXOffset = 0;
     private double rootPaneYOffset = 0;
-
+    public static int TeamID;
     public void initialize() {
         // 初始化按鈕圖片
         setupSaveButton();
@@ -97,6 +100,12 @@ public class TeamInfo {
     }
 
     private void goToTeamTaskView() {
+        try{
+            MainApplication.switchScene("TeamTaskView");
+        }catch (Exception e){
+            DeBugConsole.log(e.getMessage());
+        }
+
         closeWindow();
     }
 
