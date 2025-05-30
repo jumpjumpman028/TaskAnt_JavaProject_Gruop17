@@ -469,7 +469,7 @@ public class TaskManager {
      * @throws Exception
      */
     public void CheckAndUpdateTaskInGoogleCalendar(Task task) throws Exception {
-        //TODO:時間到，需要上傳資料至GoogleCalender，
+        //時間到，需要上傳資料至GoogleCalender，
         if(task.getType() == Task.Type.Experience){
             return;
         }
@@ -483,9 +483,15 @@ public class TaskManager {
         } catch (Exception e) {
             throw new Exception("CheckAndUpdateTaskInGoogleCalendar 有錯" + e.getMessage());
         }
-
     }
-    public void CheckLocalDateTimeInProcess(Task task) {
+    public void CheckAllTaskTimeInProcess() {
+        for (Task task : taskList) {
+            CheckLocalDateTimeInProcess(task);
+        }
+    }
+
+    private void CheckLocalDateTimeInProcess(Task task) {
+        //TODO:通知任務已開啟
         if(task.getStatus() == Task.Status.TODO && task.isTaskOnTimeCheck()){
             task.setStatus(Task.Status.IN_PROGRESS);
             DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");

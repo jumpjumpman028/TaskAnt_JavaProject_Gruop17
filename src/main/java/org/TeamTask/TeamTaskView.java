@@ -50,12 +50,12 @@ public class TeamTaskView{
         MainApplication.switchScene("TeamMenu.fxml");
     }
 
-    @FXML
-    private void addTask() {
-        // 打開新增任務窗口
-        SceneSwitcher.getInstance().openModal("EventForm.fxml", controller -> {
-            EventFormController formController = (EventFormController) controller;
-            formController.setTeamId(teamId); // 傳遞 Team ID
-        });
-    }
+//    @FXML
+//    private void addTask() {
+//        // 打開新增任務窗口
+//        SceneSwitcher.getInstance().openModal("EventForm.fxml", controller -> {
+//            EventFormController formController = (EventFormController) controller;
+//            formController.setTeamId(teamId); // 傳遞 Team ID
+//        });
+//    }
 }
