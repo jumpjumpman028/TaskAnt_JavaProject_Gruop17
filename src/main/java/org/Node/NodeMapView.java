@@ -61,6 +61,7 @@ public class NodeMapView implements SceneInterface {
         System.out.println("onTaskDropped called!");
         // 1. 取得對應的 Task
         Task draggedTask = nodeToTaskMap.get(draggedNode);
+        DeBugConsole.log("使用nodeTask");
         Task targetTask = nodeToTaskMap.get(targetNode);
 
         // 2. 設定 parentId
@@ -181,6 +182,7 @@ public class NodeMapView implements SceneInterface {
                     setupNodeEvents(node, task);
                     nodeViewMap.put(task.getID(), node);
                     nodeToTaskMap.put(node, task);
+                    DeBugConsole.log("獲得nodeTask");
                     nodePositionMap.put(task.getID(), new Point2D.Double(localPoint.getX(), localPoint.getY()));
                 } catch (Exception e) {
                     e.printStackTrace();

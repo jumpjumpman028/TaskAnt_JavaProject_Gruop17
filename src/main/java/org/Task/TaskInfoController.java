@@ -186,9 +186,7 @@ public class TaskInfoController {
         if (recurringDaysCheckBox17.isSelected()) newRecurringDays.add(DayOfWeek.SUNDAY);
 
         // 2. 更新 Task 物件
-        task.setName(newName);
-        task.setDescription(newDescription);
-        task.setStatus(newStatus);
+
         try {
             if (newStartDate != null && newEndDate != null && newStartDate.isBefore(newEndDate)) {
                 task.setStartDate(newStartDate);
@@ -197,6 +195,7 @@ public class TaskInfoController {
             Error = false;
         }catch (DateTimeException DT){
             ErrorLabel.setText("開始與結束日期錯誤或不合規定");
+            DeBugConsole.log(DT.getMessage());
             Error = true;
         }
         try {
@@ -207,10 +206,13 @@ public class TaskInfoController {
             Error = false;
         }catch (DateTimeException DT){
             ErrorLabel.setText(("開始與結束時間錯誤或不合規定"));
+            DeBugConsole.log(DT.getMessage());
             Error = true;
         }
         task.setRecurringDays(newRecurringDays);
-
+        task.setName(newName);
+        task.setDescription(newDescription);
+        task.setStatus(newStatus);
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
         try{
             if(task.getStatus() != Task.Status.COMPLETED) syncTaskToGoogleCalendar(task);
@@ -278,7 +280,6 @@ public class TaskInfoController {
     }
     private void SetUpDeleteButton(){
         deleteButton.setOnAction(event -> {
-           TaskManager.getInstance().deleteDataFromDatabase(currentTask);
            WaterTest.getInstance().reloadTasks();
            onCancelClicked();
         });
