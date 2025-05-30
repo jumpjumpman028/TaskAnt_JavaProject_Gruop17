@@ -11,7 +11,7 @@ import org.TeamTask.TeamTaskManager;
 import java.io.IOException;
 import java.util.List;
 
-public class TeamTaskView{
+public class TeamTaskView {
 
     @FXML private VBox taskListPane;
     @FXML private Button backButton;

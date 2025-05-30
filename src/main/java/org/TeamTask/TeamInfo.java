@@ -1,5 +1,6 @@
 package org.TeamTask;
 
+import com.almasb.fxgl.app.MainWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,10 +12,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import org.MainApplication;
 
 
 public class TeamInfo {
+    public static int TeamID;
     private Team team;
     @FXML
     private AnchorPane rootPane;
@@ -56,7 +58,7 @@ public class TeamInfo {
     }
 
     public void setTeam(Team team) {
-        team = team;
+        TeamID = team.getTeamId();
         teamNameLabel.setText(team.getTeamName());
         InviteCode.setText(team.getTeamCode());
         teamLeaderLabel.setText(team.getLeader());
@@ -97,6 +99,11 @@ public class TeamInfo {
     }
 
     private void goToTeamTaskView() {
+        try {
+            MainApplication.switchScene("TeamTaskView.fxml");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         closeWindow();
     }
 
