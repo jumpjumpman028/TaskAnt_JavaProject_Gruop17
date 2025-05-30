@@ -324,7 +324,7 @@ public class TaskManager {
     }
 
     //刪除任務
-    public boolean deleteDataFromDatabase(Task task) {
+    private boolean deleteDataFromDatabase(Task task) {
         String deleteTaskSQL = "DELETE FROM tasks WHERE user_id = ? AND task_name = ? AND task_id = ?";
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
@@ -466,6 +466,7 @@ public class TaskManager {
         // 先刪除 Google Calendar 事件
         try {
             GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
+            deleteDataFromDatabase(task);
         } catch (Exception e) {
             System.err.println("刪除 Google Calendar 事件失敗：" + e.getMessage());
             e.printStackTrace();

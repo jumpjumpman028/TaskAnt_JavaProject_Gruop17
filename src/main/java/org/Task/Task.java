@@ -232,6 +232,9 @@ public class Task {
     public void setStartTime(LocalTime startTime) {
         if(endTime != null && startTime.isBefore(endTime))
             this.startTime = startTime;
+        else if( endTime == null){
+
+        }
         else throw new DateTimeException("SetStartTimeFail");
 
     }
@@ -250,7 +253,9 @@ public class Task {
     public void setEndTime(LocalTime endTime) {
         if(startTime != null && endTime.isAfter(startTime))
             this.endTime = endTime;
-        else throw new DateTimeException("SetEndTimeFail");
+        else if( startTime == null){
+          setStartTime(LocalTime.now());
+        } else throw new DateTimeException("SetEndTimeFail");
 
     }
     private static LocalTime convertStringToLocalTime(String timeString) {
