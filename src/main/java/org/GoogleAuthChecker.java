@@ -5,24 +5,20 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.util.store.FileDataStoreFactory;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.Collections;
 
 public class GoogleAuthChecker {
 
     private static final String TOKENS_DIRECTORY_PATH = "tokens"; // 憑證資料夾
-    private static final String CREDENTIALS_FILE_PATH = "/path/to/credentials.json"; // 你的 client_secret 檔案
 
     public static void main(String[] args) throws Exception {
         boolean valid = checkCredential();
         if (!valid) {
             deleteTokenDirectory();
-            System.out.println("憑證已過期或無效，已自動刪除，請重新授權。");
+            DeBugConsole.log("憑證已過期或無效，已自動刪除，請重新授權。");
         } else {
-            System.out.println("憑證有效。");
+            DeBugConsole.log("成功登入");
         }
     }
 
@@ -32,9 +28,10 @@ public class GoogleAuthChecker {
             FileDataStoreFactory dataStoreFactory = new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH));
 
             // 讀取 credentials.json
-            Reader reader = new FileReader(CREDENTIALS_FILE_PATH);
+            InputStream in = GoogleAuthChecker.class.getResourceAsStream("/credentials.json");
+            if (in == null) throw new Exception("找不到 credentials.json");
             GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(
-                    com.google.api.client.json.gson.GsonFactory.getDefaultInstance(), reader);
+                    com.google.api.client.json.gson.GsonFactory.getDefaultInstance(), new InputStreamReader(in));
 
             GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                     com.google.api.client.googleapis.javanet.GoogleNetHttpTransport.newTrustedTransport(),

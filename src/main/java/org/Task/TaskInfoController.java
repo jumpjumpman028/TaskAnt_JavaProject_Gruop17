@@ -101,10 +101,8 @@ public class TaskInfoController {
         }
 
 
-        if(task.getStartDate() == null) startDatePicker.setValue(task.getStartDate());
-        else startDatePicker.setValue(task.getStartDate());
-        if(task.getEndDate() == null) endDatePicker.setValue(task.getEndDate());
-        else endDatePicker.setValue(task.getStartDate());
+        startDatePicker.setValue(task.getStartDate());
+        endDatePicker.setValue(task.getEndDate());
 
         if(task.getStartTime() != null) {
             startHourComboBox.getSelectionModel().select(task.getStartTime().getHour());
@@ -155,7 +153,6 @@ public class TaskInfoController {
     }
 
     private void saveTask(Task task) {
-        boolean Error = false;
         // 1. 取得欄位內容
         String newName = NameTextField.getText();
         String newDescription = descriptionTextArea.getText();
@@ -185,23 +182,26 @@ public class TaskInfoController {
                 task.setStartDate(newStartDate);
                 task.setEndDate(newEndDate);
             }
-            Error = false;
         }catch (DateTimeException DT){
             ErrorLabel.setText("開始與結束日期錯誤或不合規定");
             DeBugConsole.log(DT.getMessage());
-            Error = true;
+            return;
         }
         try {
             if (newStartHour != null && newStartMinute != null)
                 task.setStartTime(java.time.LocalTime.of(newStartHour, newStartMinute));
             if (newEndHour != null && newEndMinute != null)
                 task.setEndTime(java.time.LocalTime.of(newEndHour, newEndMinute));
-            Error = false;
         }catch (DateTimeException DT){
             ErrorLabel.setText(("開始與結束時間錯誤或不合規定"));
             DeBugConsole.log(DT.getMessage());
-            Error = true;
+            return;
         }
+        if(newStatus == Task.Status.COMPLETED && task.getStatus() == Task.Status.TODO){
+                ErrorLabel.setText("你尚未開始任務，請先開始任務");
+                return;
+        }
+
         task.setRecurringDays(newRecurringDays);
         task.setName(newName);
         task.setDescription(newDescription);
@@ -215,9 +215,9 @@ public class TaskInfoController {
         TaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
         WaterTest.getInstance().refreshTaskList();
-        if(!Error){
-            ((Stage)saveButton.getScene().getWindow()).close();
-        }
+
+        ((Stage)saveButton.getScene().getWindow()).close();
+
 
     }
 
@@ -277,7 +277,7 @@ public class TaskInfoController {
     }
     private void SetUpDeleteButton(){
         deleteButton.setOnAction(event -> {
-           WaterTest.getInstance().reloadTasks();
+           TaskManager.getInstance().DeleteTask(currentTask);
            onCancelClicked();
         });
     }
@@ -291,6 +291,6 @@ public class TaskInfoController {
         if (!task.getGoogleEventIds().isEmpty()) {
             GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
         }
-        GoogleCalendarAuthorization.addTaskToGoogleCalendarForNextRecurringDays(task);
+        TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(task);
     }
 }

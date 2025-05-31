@@ -69,6 +69,7 @@ public class Task {
         this.x = 0.0;
         this.y = 0.0;
         this.parentId = null;
+        googleEventIds = new HashSet<>();
     }
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime) {
         //一次性任務範例
@@ -85,6 +86,7 @@ public class Task {
         this.x = 0.0;
         this.y = 0.0;
         this.parentId = null;
+        googleEventIds = new HashSet<>();
     }
 
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays,double x,double y,Set<String> googleEventIds, Integer parentId,int ID) {
@@ -135,8 +137,9 @@ public class Task {
     }
 
     public void setStatus(Status status) {
-        if(status == Status.COMPLETED && this.status == Status.IN_PROGRESS){
-            setEndDate( LocalDate.now());
+        if(status == Status.COMPLETED  ){
+            if(endDate == null) setEndDate( LocalDate.now());
+            if(endTime == null) setEndTime( LocalTime.now());
             DeBugConsole.log("已將任務 "+name+" 調至完成");
             try{
                 TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(this);
@@ -225,21 +228,26 @@ public class Task {
         return startTime.format(formatter);
     }
     public void setStartDate(LocalDate startDate){
-            if(endDate != null && startDate.isBefore(endDate))
+            if(endDate != null && (startDate.isBefore(endDate) || startDate.isEqual(endDate)))
             this.startDate = startDate;
+            else if(endDate == null && startDate != null)
+                this.startDate = startDate;
             else throw new DateTimeException("SetStartDateIsFail");
     }
     public void setEndDate(LocalDate endDate){
-            if(startDate != null && endDate.isAfter(startDate))
+        System.out.println("setEndDate" + endDate + startDate);
+            if(startDate != null && (endDate.isAfter(startDate) || endDate.isEqual(startDate)))
             this.endDate = endDate;
+            else if(startDate == null && endDate != null)
+                this.endDate = endDate;
             else throw new DateTimeException("SetEndDateIsFail");
     }
 
     public void setStartTime(LocalTime startTime) {
-        if(endTime != null && startTime.isBefore(endTime))
+        if(endTime != null && (startTime.isBefore(endTime) || endTime.equals(startTime)))
             this.startTime = startTime;
-        else if( endTime == null){
-
+        else if( endTime == null && startTime != null){
+            this.startTime = startTime;
         }
         else throw new DateTimeException("SetStartTimeFail");
 
@@ -257,10 +265,10 @@ public class Task {
         return endTime.format(formatter);
     }
     public void setEndTime(LocalTime endTime) {
-        if(startTime != null && endTime != null && endTime.isAfter(startTime))
+        if(startTime != null && endTime != null && (endTime.isAfter(startTime)|| endTime.equals(startTime)))
             this.endTime = endTime;
-        else if( startTime == null){
-          setStartTime(LocalTime.now());
+        else if( startTime == null && endTime != null){
+          this.endTime = endTime;
         } else if( endTime == null){
             return;
         }

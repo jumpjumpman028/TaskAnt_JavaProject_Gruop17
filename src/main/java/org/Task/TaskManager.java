@@ -1,5 +1,6 @@
 package org.Task;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,14 +44,6 @@ public class TaskManager {
             taskList.add(task);
             CheckLocalDateTimeInProcess(task);
 
-            // 同步到 Google Calendar
-            try {
-                CheckAndUpdateTaskInGoogleCalendar(task);
-            } catch (Exception e) {
-                System.err.println("同步到 Google Calendar 時發生錯誤：" + e.getMessage());
-                e.printStackTrace();
-                // 如果需要，可以記錄到日誌或通知用戶
-            }
 
             // 插入資料庫
             String insertTaskSQL = "INSERT INTO tasks (user_id, task_name, task_description, start_date, start_time, end_date, end_time , status, type, recurring_day, x, y, google, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -495,6 +488,13 @@ public class TaskManager {
         if(task.getStatus() == Task.Status.TODO && task.isTaskOnTimeCheck()){
             task.setStatus(Task.Status.IN_PROGRESS);
             DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
+        }else if(task.getStatus() == Task.Status.IN_PROGRESS && task.getGoogleEventIds().isEmpty()){
+            try{
+                CheckAndUpdateTaskInGoogleCalendar(task);
+            }catch (Exception e){
+                DeBugConsole.log(e.getMessage());
+            }
+
         }
 
     }
@@ -510,9 +510,9 @@ public class TaskManager {
         // 再從本地列表移除
         taskList.remove(task);
         DeBugConsole.log("刪除task");
-        ///這邊寫得有夠爛 但暫時這樣 原本想用interface的fresh，但有點怪
         if(WaterTest.getInstance() != null) WaterTest.getInstance().refreshTaskList();
         if(NodeMapView.GetInstance() != null) NodeMapView.GetInstance().FreshEvent();
+        Platform.runLater(this::UploadDataToDatabase);
     }
 
     public int getNextTaskNumberForUser(int userId) {
