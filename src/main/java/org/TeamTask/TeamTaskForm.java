@@ -55,7 +55,7 @@ public class TeamTaskForm implements Initializable {
     private int TeamID;
     private Map<CheckBox, DayOfWeek> dayCheckMap;
     /// TeamTaskView 前來
-    public  void SetTeamID(int TeamID) {
+    public void SetTeamID(int TeamID) {
         this.TeamID = TeamID;
     }
     @FXML

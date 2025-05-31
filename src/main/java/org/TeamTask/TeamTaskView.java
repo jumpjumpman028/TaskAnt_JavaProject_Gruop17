@@ -36,7 +36,7 @@ public class TeamTaskView implements SceneInterface{
     public void reloadTasks() {//載入該TEAM的任務
         // 清空列表
         taskListPane.getChildren().clear();
-
+        TeamTaskManager.getInstance().fetchTeamTasks();
         // 從 TeamTaskManager 獲取該 Team 的任務
         List<TeamTask> teamTasks = TeamTaskManager.getInstance().getTasksByTeamId(teamId);//todo:還沒測試功能有沒有問題
 
@@ -44,7 +44,7 @@ public class TeamTaskView implements SceneInterface{
         // 動態生成任務項目
         for (TeamTask task : teamTasks) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamTaskCell.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/TeamTaskCell.fxml"));
                 StackPane cell = loader.load();
                 TeamTaskCell controller = loader.getController();
                 controller.setTeamTask(task);
@@ -69,6 +69,7 @@ public class TeamTaskView implements SceneInterface{
 
     @FXML private void initialize() {
         setTeamId(TeamInfo.TeamID);
+        System.out.println("成功設定TeamID: " + TeamInfo.TeamID);
         reloadTasks();
     }
 

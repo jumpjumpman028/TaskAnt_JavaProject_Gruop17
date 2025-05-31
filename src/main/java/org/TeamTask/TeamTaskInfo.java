@@ -126,12 +126,12 @@ public class TeamTaskInfo{
     }
     public void initialize() {
 
-        Platform.runLater(() -> {
-            assigneeLabel.requestFocus();
-            Stage stage = (Stage) assigneeLabel.getScene().getWindow();
-            stage.setMaximized(false);
-            stage.setResizable(false);
-        });
+//        Platform.runLater(() -> {
+//            assigneeLabel.requestFocus();
+//            Stage stage = (Stage) assigneeLabel.getScene().getWindow();
+//            stage.setMaximized(false);
+//            stage.setResizable(false);
+//        });
         rootPane.setOnMousePressed(event -> {
             rootPaneXOffset = event.getSceneX();
             rootPaneYOffset = event.getSceneY();

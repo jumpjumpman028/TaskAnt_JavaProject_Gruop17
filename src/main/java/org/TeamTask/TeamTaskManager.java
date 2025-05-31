@@ -184,6 +184,7 @@ public class TeamTaskManager {
 
                         updateStmt.setDouble(9, task.getX());
                         updateStmt.setDouble(10, task.getY());
+                        updateStmt.setString(11,task.GoogleEventIDToJson(task.getGoogleEventIds()));
                         updateStmt.setInt(12, task.getParentId());
 
                         updateStmt.setInt(13, task.getTeamID()); // getTeamID
@@ -405,6 +406,7 @@ public class TeamTaskManager {
     public static void ShowInfo(TeamTask task, Stage ownerStage){
         try {
             FXMLLoader loader = new FXMLLoader(instance.getClass().getResource("/org/TeamTaskInfo.fxml"));
+
             Parent root = loader.load();
             TeamTaskInfo controller = loader.getController();
             controller.setTeamTask(task); // 傳遞任務資料
