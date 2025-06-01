@@ -1,5 +1,4 @@
 package org;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
@@ -92,28 +91,39 @@ public class DesktopPet {
     }
 
     private void showPetMenu() {
-        // 創建對話框
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("寵物功能選單");
-        alert.setHeaderText("選擇一項功能");
-        alert.setContentText("請選擇您需要的功能：");
+        Stage menuStage = new Stage();
+        menuStage.initStyle(StageStyle.UTILITY);
+        menuStage.setAlwaysOnTop(true);
+        menuStage.setTitle("寵物功能選單");
 
-        // 添加按鈕
-        ButtonType waterTestButton = new ButtonType("跳到 WaterTest", ButtonType.OK.getButtonData());
-        ButtonType cancelButton = new ButtonType("取消", ButtonType.CANCEL.getButtonData());
+        Label label = new Label("請選擇您需要的功能：");
+        label.setStyle("-fx-font-size: 14px;");
 
-        alert.getButtonTypes().setAll(waterTestButton, cancelButton);
-
-        // 處理按鈕點擊事件
-        alert.showAndWait().ifPresent(response -> {
-            if (response == waterTestButton) {
-                try {
-                    MainApplication.switchScene("WaterTest.fxml");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Button waterTestButton = new Button("跳到 WaterTest");
+        waterTestButton.setOnAction(e -> {
+            try {
+                MainApplication.switchScene("WaterTest.fxml");
+                menuStage.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
+
+        Button cancelButton = new Button("取消");
+        cancelButton.setOnAction(e -> menuStage.close());
+
+        VBox layout = new VBox(10, label, waterTestButton, cancelButton);
+        layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-padding: 20px; -fx-background-color: white;");
+
+        Scene scene = new Scene(layout, 250, 150);
+        menuStage.setScene(scene);
+
+        // 視窗顯示在寵物附近
+        menuStage.setX(menuStage.getOwner() == null ? 300 : menuStage.getOwner().getX() + 100);
+        menuStage.setY(menuStage.getOwner() == null ? 300 : menuStage.getOwner().getY() + 100);
+
+        menuStage.show();
     }
 
     private void animatePet(Stage primaryStage, ImageView petView) {
@@ -140,3 +150,4 @@ public class DesktopPet {
         moveTimeline.play();
     }
 }
+
