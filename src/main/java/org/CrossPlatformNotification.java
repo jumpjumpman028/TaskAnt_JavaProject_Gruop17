@@ -2,6 +2,7 @@ package org;
 
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.WritableValue;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -20,16 +21,39 @@ import javafx.util.Duration;
 
 public class CrossPlatformNotification extends Application {
 
+    private static String notificationMessage = "Default Message";
+
+    // 外部呼叫這個方法來顯示通知
+    public static void showNotification(String message) {
+        notificationMessage = message;
+
+        // 如果 JavaFX 已啟動就用 runLater，否則啟動 JavaFX Application Thread
+        if (Platform.isFxApplicationThread()) {
+            new CrossPlatformNotification().start(new Stage());
+        } else {
+            try {
+                Platform.runLater(() -> {
+                    try {
+                        new CrossPlatformNotification().start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IllegalStateException e) {
+                // JavaFX 尚未啟動時的初次啟動
+                new Thread(() -> Application.launch(CrossPlatformNotification.class)).start();
+            }
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) {
-
         Image image = new Image(getClass().getResource("/images/notification.jpg").toExternalForm());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(48);
         imageView.setFitWidth(48);
 
-        // 設定提示文字
-        Label message = new Label("Your teammate just uploaded your task, go take a look!");
+        Label message = new Label(notificationMessage);
         message.setWrapText(true);
         message.setMaxWidth(300);
         message.setStyle("""
@@ -40,7 +64,6 @@ public class CrossPlatformNotification extends Application {
                     -fx-background-radius: 8px;
                 """);
 
-        // 關閉按鈕
         Button closeBtn = new Button("X");
         closeBtn.setStyle("""
                     -fx-background-color: transparent;
@@ -51,7 +74,6 @@ public class CrossPlatformNotification extends Application {
                 """);
         closeBtn.setOnAction(e -> slideOut(primaryStage));
 
-        // 內容容器，加入關閉按鈕
         HBox content = new HBox(10, imageView, message, closeBtn);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setStyle("""
@@ -67,28 +89,22 @@ public class CrossPlatformNotification extends Application {
         Scene scene = new Scene(root, 420, 100);
         scene.setFill(Color.TRANSPARENT);
 
-        // 視窗設定
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setAlwaysOnTop(true);
         primaryStage.setScene(scene);
 
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-
         double targetX = screenBounds.getMaxX() - 440;
         double targetY = screenBounds.getMinY() + 20;
-
-        // 起始位置（在畫面外，右邊）
         double startX = screenBounds.getMaxX();
         double startY = targetY;
 
         primaryStage.setX(startX);
         primaryStage.setY(startY);
-
         primaryStage.show();
 
         slideIn(primaryStage, startX, targetX, startY);
 
-        // 5秒後自動滑出關閉
         PauseTransition wait = new PauseTransition(Duration.seconds(5));
         wait.setOnFinished(e -> slideOut(primaryStage));
         wait.play();
@@ -108,7 +124,7 @@ public class CrossPlatformNotification extends Application {
         };
 
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(0), new KeyValue(writableX, startX)),
+                new KeyFrame(Duration.ZERO, new KeyValue(writableX, startX)),
                 new KeyFrame(Duration.millis(500), new KeyValue(writableX, targetX, Interpolator.EASE_BOTH)));
         timeline.play();
     }
@@ -130,14 +146,11 @@ public class CrossPlatformNotification extends Application {
         };
 
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(0), new KeyValue(writableX, stage.getX())),
+                new KeyFrame(Duration.ZERO, new KeyValue(writableX, stage.getX())),
                 new KeyFrame(Duration.millis(500), new KeyValue(writableX, endX, Interpolator.EASE_BOTH)));
         timeline.setOnFinished(e -> stage.close());
         timeline.play();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
+
 
