@@ -1,7 +1,6 @@
 package org;
 
 import javafx.animation.*;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.WritableValue;
 import javafx.geometry.Pos;
@@ -19,68 +18,57 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class CrossPlatformNotification extends Application {
+public class CrossPlatformNotification {
 
-    private static String notificationMessage = "Default Message";
-
-    // 外部呼叫這個方法來顯示通知
-    public static void showNotification(String message) {
-        notificationMessage = message;
-
-        // 如果 JavaFX 已啟動就用 runLater，否則啟動 JavaFX Application Thread
-        if (Platform.isFxApplicationThread()) {
-            new CrossPlatformNotification().start(new Stage());
-        } else {
+    // 外部呼叫這個方法顯示通知
+    public static void show(String message) {
+        // 在JavaFX Application Thread中執行UI
+        Platform.runLater(() -> {
             try {
-                Platform.runLater(() -> {
-                    try {
-                        new CrossPlatformNotification().start(new Stage());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            } catch (IllegalStateException e) {
-                // JavaFX 尚未啟動時的初次啟動
-                new Thread(() -> Application.launch(CrossPlatformNotification.class)).start();
+                new CrossPlatformNotification().showNotificationStage(message);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
+        });
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    private void showNotificationStage(String message) {
+        Stage primaryStage = new Stage();
+
+        // 這邊請確定圖片路徑正確，或改成你自己的圖片路徑
         Image image = new Image(getClass().getResource("/images/notification.jpg").toExternalForm());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(48);
         imageView.setFitWidth(48);
 
-        Label message = new Label(notificationMessage);
-        message.setWrapText(true);
-        message.setMaxWidth(300);
-        message.setStyle("""
-                    -fx-background-color: white;
-                    -fx-padding: 12px;
-                    -fx-text-fill: black;
-                    -fx-font-size: 14px;
-                    -fx-background-radius: 8px;
+        Label label = new Label(message);
+        label.setWrapText(true);
+        label.setMaxWidth(300);
+        label.setStyle("""
+                -fx-background-color: white;
+                -fx-padding: 12px;
+                -fx-text-fill: black;
+                -fx-font-size: 14px;
+                -fx-background-radius: 8px;
                 """);
 
         Button closeBtn = new Button("X");
         closeBtn.setStyle("""
-                    -fx-background-color: transparent;
-                    -fx-text-fill: black;
-                    -fx-font-weight: bold;
-                    -fx-font-size: 14px;
-                    -fx-padding: 0 6 0 6;
+                -fx-background-color: transparent;
+                -fx-text-fill: black;
+                -fx-font-weight: bold;
+                -fx-font-size: 14px;
+                -fx-padding: 0 6 0 6;
                 """);
         closeBtn.setOnAction(e -> slideOut(primaryStage));
 
-        HBox content = new HBox(10, imageView, message, closeBtn);
+        HBox content = new HBox(10, imageView, label, closeBtn);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setStyle("""
-                    -fx-background-color: white;
-                    -fx-padding: 12px;
-                    -fx-background-radius: 12px;
-                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.5, 0, 2);
+                -fx-background-color: white;
+                -fx-padding: 12px;
+                -fx-background-radius: 12px;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.5, 0, 2);
                 """);
 
         StackPane root = new StackPane(content);
@@ -101,6 +89,7 @@ public class CrossPlatformNotification extends Application {
 
         primaryStage.setX(startX);
         primaryStage.setY(startY);
+
         primaryStage.show();
 
         slideIn(primaryStage, startX, targetX, startY);
@@ -125,7 +114,7 @@ public class CrossPlatformNotification extends Application {
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(writableX, startX)),
-                new KeyFrame(Duration.millis(500), new KeyValue(writableX, targetX, Interpolator.EASE_BOTH)));
+                new KeyFrame(Duration.millis(500), new KeyValue(writableX, targetX)));
         timeline.play();
     }
 
@@ -147,10 +136,11 @@ public class CrossPlatformNotification extends Application {
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(writableX, stage.getX())),
-                new KeyFrame(Duration.millis(500), new KeyValue(writableX, endX, Interpolator.EASE_BOTH)));
+                new KeyFrame(Duration.millis(500), new KeyValue(writableX, endX)));
         timeline.setOnFinished(e -> stage.close());
         timeline.play();
     }
 }
+
 
 
