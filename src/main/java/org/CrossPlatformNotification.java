@@ -43,7 +43,7 @@ public class CrossPlatformNotification {
 
         Label label = new Label(message);
         label.setWrapText(true);
-        label.setMaxWidth(300);
+        label.setMaxWidth(250);
         label.setStyle("""
                 -fx-background-color: white;
                 -fx-padding: 12px;

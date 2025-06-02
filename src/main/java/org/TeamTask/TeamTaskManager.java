@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.CrossPlatformNotification;
 import org.DatabaseConnectionPool;
 import org.Task.Task;
 import org.Task.TaskInfoController;
@@ -102,6 +103,7 @@ public class TeamTaskManager {
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
+                CrossPlatformNotification.show("成功新增團隊任務！");
                 System.out.println("成功新增 TeamTask 到資料庫！");
 
                 // 插入成功後，將該任務加入本地的 teamTaskList
@@ -192,6 +194,7 @@ public class TeamTaskManager {
                         updateStmt.setInt(15, task.getID());
 
                         updateStmt.executeUpdate();
+                        CrossPlatformNotification.show("成功更新團隊任務！");
                         System.out.println("任務已更新：" + task.getName());
                     }
                 } else {
@@ -274,6 +277,7 @@ public class TeamTaskManager {
             if (rowsAffected > 0) {
                 // 從本地 taskList 中移除對應的任務
                 teamTaskList.remove(task);
+                CrossPlatformNotification.show("成功刪除團隊任務！");
                 System.out.println("任務已成功刪除：" + taskName);
                 return true;
             } else {
@@ -382,7 +386,7 @@ public class TeamTaskManager {
 
                     teamTaskList.add(teamTask);
                 }
-
+                CrossPlatformNotification.show("成功載入團隊任務！");
                 System.out.println("成功抓取與當前使用者相關的任務，共有 " + teamTaskList.size() + " 條任務");
             }
         } catch (SQLException e) {

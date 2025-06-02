@@ -98,6 +98,7 @@ public class TaskManager {
 
 
                 preparedStatement.executeUpdate();
+                CrossPlatformNotification.show("任務已成功新增！");
                 System.out.println("任務已成功新增至資料庫！");
             } catch (SQLException e) {
                 System.err.println("新增任務到資料庫時發生錯誤：" + e.getMessage());
@@ -196,7 +197,7 @@ public class TaskManager {
 
                     taskList.add(task);
                 }
-
+                CrossPlatformNotification.show("任務已成功載入！ 共有 " + taskList.size() + " 條任務");
                 System.out.println("成功從資料庫抓取任務，共有 " + taskList.size() + " 條任務");
                 return true;
             }
@@ -284,6 +285,7 @@ public class TaskManager {
                         updateStmt.setInt(15, task.getID());
 
                         updateStmt.executeUpdate();
+                        CrossPlatformNotification.show("任務已成功更新！");
                         System.out.println("任務已更新：" + task.getName());
                     }
                 } else {
@@ -367,6 +369,7 @@ public class TaskManager {
             if (rowsAffected > 0) {
                 // 從本地 taskList 中移除對應的任務
                 taskList.remove(task);
+                CrossPlatformNotification.show("任務已成功刪除！");
                 System.out.println("任務已成功刪除：" + taskName);
                 return true;
             } else {
@@ -394,7 +397,8 @@ public class TaskManager {
                     // 如果任務即將開始（例如提前10分鐘提醒）
                     if (taskStartDateTime.isAfter(now) && taskStartDateTime.isBefore(now.plusMinutes(10))) {
                         // 發送通知
-                        sendNotification("任務即將開始", "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+                        CrossPlatformNotification.show("任務即將開始"+ "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+
 
                         // 更新任務狀態為進行中
                         task.setStatus(Task.Status.IN_PROGRESS);
@@ -410,7 +414,7 @@ public class TaskManager {
                     // 如果任務即將結束（例如提前10分鐘提醒）
                     if (taskEndDateTime.isAfter(now) && taskEndDateTime.isBefore(now.plusMinutes(10))) {
                         // 發送通知
-                        sendNotification("任務即將結束", "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+                        CrossPlatformNotification.show("任務即將結束"+ "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
                     }
                 }
             }

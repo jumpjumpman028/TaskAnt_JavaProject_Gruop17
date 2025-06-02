@@ -113,4 +113,9 @@ public class TeamInfo {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    public void deleteTeam(){
+
+    }
 }

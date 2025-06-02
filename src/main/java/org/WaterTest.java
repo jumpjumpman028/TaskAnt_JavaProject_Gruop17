@@ -92,6 +92,18 @@ public class WaterTest implements SceneInterface {
         DeBugConsole.log("LoadEvent " + getClass().getName());
 
     }
+
+    @FXML
+    public void  logOut() {
+        try{
+            MainApplication.switchScene("Login.fxml");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
     @FXML
     private void initialize() {
         // 設置 ScrollPane 背景透明

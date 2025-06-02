@@ -275,7 +275,9 @@ public class TeamTaskInfo{
     }
     private void SetUpDeleteButton(){
         deleteButton.setOnAction(event -> {
-            WaterTest.getInstance().reloadTasks();
+            TeamTaskManager.getInstance().deleteDataFromDatabase(currentTask);
+            TeamTaskView.getInstance().reloadTasks();
+
             onCancelClicked();
         });
     }

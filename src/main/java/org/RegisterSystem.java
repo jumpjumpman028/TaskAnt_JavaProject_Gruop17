@@ -1,10 +1,13 @@
 package org;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -76,10 +79,21 @@ public class RegisterSystem implements SceneInterface{
                     insertStmt.executeUpdate();
                     showRegisterStatus.setText("Register successful!");
                     showRegisterStatus.setTextFill(Color.GREEN);
+                    PauseTransition pause = new PauseTransition(Duration.seconds(1)); // 2秒的延遲
+                    pause.setOnFinished(event -> {
+                        try {
+                            MainApplication.switchScene("Login.fxml");
+                        } catch (Exception ex) {
+                            showRegisterStatus.setText("Error opening register page");
+                            showRegisterStatus.setTextFill(Color.RED);
+                        }
+                    });
+                    pause.play();
                 }
             } catch (SQLException e) {
                 showRegisterStatus.setText("Database error: " + e.getMessage());
                 showRegisterStatus.setTextFill(Color.RED);
+
             }
         }
     }
