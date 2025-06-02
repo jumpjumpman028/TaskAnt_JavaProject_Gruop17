@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.CrossPlatformNotification;
 
 public class JoinTeam {
     @FXML private Label errorLabel;
@@ -24,6 +25,7 @@ public class JoinTeam {
             boolean joinable = TeamManager.getInstance().joinTeam(code);
             if(joinable){
                 errorLabel.setStyle("-fx-text-fill: #17fd17;");
+
                 errorLabel.setText("成功加入團隊！");
 
                 Stage stage = (Stage) errorLabel.getScene().getWindow();

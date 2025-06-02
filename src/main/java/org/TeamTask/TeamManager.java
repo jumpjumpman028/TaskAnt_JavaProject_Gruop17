@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.CrossPlatformNotification;
 import org.DatabaseConnectionPool;
 import org.Task.Task;
 import org.Task.TaskInfoController;
@@ -60,7 +61,7 @@ public class TeamManager {
                 }
             }
 
-
+            CrossPlatformNotification.show("成功載入團隊！");
             System.out.println("成功載入包含當前使用者的 Teams: " + teamList.size());
 
         } catch (SQLException e) {
@@ -102,7 +103,7 @@ public class TeamManager {
 
                 // 將新 Team 加入 teamList
                 teamList.add(newTeam);
-
+                CrossPlatformNotification.show("成功創建團隊！");
                 System.out.println("成功新增新 Team: " + newTeam.getTeamName() + "，Team ID: " + newTeam.getTeamId());
                 return true;
             } else {
@@ -144,7 +145,7 @@ public class TeamManager {
                     return false;
                 }
             }
-
+            CrossPlatformNotification.show("成功更新團隊！");
             System.out.println("成功更新所有 Teams。");
             return true;
 
@@ -197,6 +198,7 @@ public class TeamManager {
                     int rowsAffected = updateStatement.executeUpdate();
 
                     if (rowsAffected > 0) {
+                        CrossPlatformNotification.show("成功加入團隊！");
                         System.out.println("成功加入團隊：" + teamName);
 
                         // 更新本地的 teamList
@@ -236,6 +238,7 @@ public class TeamManager {
             if (rowsAffected > 0) {
                 // 從本地 teamList 移除對應的團隊
                 teamList.remove(team);
+                CrossPlatformNotification.show("成功刪除團隊，Team ID: " + team.getTeamId());
                 System.out.println("成功刪除團隊，Team ID: " + team.getTeamId());
                 return true;
             } else {

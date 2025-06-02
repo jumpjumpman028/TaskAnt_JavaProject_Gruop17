@@ -16,7 +16,7 @@
             <Image url="@../images/UIboard.png" />
          </image>
       </ImageView>
-      <Button mnemonicParsing="false" text="Button" />
+      <Button mnemonicParsing="false" text="登出" onAction="#logOut"/>
       <VBox layoutX="55.0" layoutY="55.0" prefHeight="244.0" prefWidth="120.0" spacing="10.0">
          <children>
             <Button mnemonicParsing="false" onAction="#reloadTasks" prefHeight="30.0" prefWidth="110.0" text="重新載入" />

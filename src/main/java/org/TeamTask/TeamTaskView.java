@@ -16,12 +16,16 @@ import org.Task.Task;
 import org.Task.TaskCellController;
 import org.Task.TaskManager;
 import org.TeamTask.TeamTaskManager;
+import org.WaterTest;
 
 import java.io.IOException;
 import java.util.List;
 ///  從TeamInfo中 點入 關於此Team中的所有Task
 public class TeamTaskView implements SceneInterface{
-
+    public static TeamTaskView instance;
+    public static TeamTaskView getInstance() {
+        return instance;
+    }
     @FXML private VBox taskListPane;
 
 
