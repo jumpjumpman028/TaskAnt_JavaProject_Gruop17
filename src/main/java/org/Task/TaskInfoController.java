@@ -197,6 +197,11 @@ public class TaskInfoController {
             DeBugConsole.log(DT.getMessage());
             return;
         }
+//        if(newRecurringDays.isEmpty()){
+//            ErrorLabel.setText("請設定你想要重複的日期");
+//            return;
+//        }
+        DeBugConsole.log(newRecurringDays.toString());
         if(newStatus == Task.Status.COMPLETED && task.getStatus() == Task.Status.TODO){
                 ErrorLabel.setText("你尚未開始任務，請先開始任務");
                 return;
@@ -208,7 +213,7 @@ public class TaskInfoController {
         task.setStatus(newStatus);
         // 3. 你可以在這裡做後續儲存，例如呼叫資料庫、顯示提示等等
         try{
-            if(task.getStatus() != Task.Status.COMPLETED) syncTaskToGoogleCalendar(task);
+            if(task.getStatus() != Task.Status.COMPLETED) TaskManager.syncTaskToGoogleCalendar(task);
         }catch (Exception GA){
             DeBugConsole.log("TaskInfoController"+ GA.getMessage());
         }
@@ -287,10 +292,5 @@ public class TaskInfoController {
     private void onCancelClicked() {
         ((Stage)cancelButton.getScene().getWindow()).close();
     }
-    public static void syncTaskToGoogleCalendar(Task task) throws Exception {
-        if (!task.getGoogleEventIds().isEmpty()) {
-            GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
-        }
-        TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(task);
-    }
+
 }

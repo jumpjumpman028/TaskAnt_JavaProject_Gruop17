@@ -499,8 +499,8 @@ public class TaskManager {
 
     }
     public void DeleteTask(Task task) {
-        // 先刪除 Google Calendar 事件
         try {
+            if(task.getType() == Task.Type.Experience)
             GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
             deleteDataFromDatabase(task);
         } catch (Exception e) {
@@ -515,24 +515,11 @@ public class TaskManager {
         Platform.runLater(this::UploadDataToDatabase);
     }
 
-    public int getNextTaskNumberForUser(int userId) {
-        String query = "SELECT COUNT(*) FROM tasks WHERE user_id = ?";
-        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, userId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    int taskCount = resultSet.getInt(1); // 獲取任務數量
-                    return taskCount + 1; // 返回下一個任務編號
-                }
-            }
-        } catch (SQLException e) {
-            // 錯誤處理：記錄日誌或拋出異常
-            e.printStackTrace();
+    public static void syncTaskToGoogleCalendar(Task task) throws Exception {
+        if (!task.getGoogleEventIds().isEmpty()) {
+            GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
         }
-
-        // 如果查詢失敗或發生異常，返回 -1 表示錯誤
-        return -1;
+        TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(task);
     }
 
     /// 方便 但ShowInfo不應該在這裡
@@ -559,4 +546,24 @@ public class TaskManager {
             e.printStackTrace();
         }
     }
+
+//    public int getNextTaskNumberForUser(int userId) {
+//        String query = "SELECT COUNT(*) FROM tasks WHERE user_id = ?";
+//        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+//            preparedStatement.setInt(1, userId);
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                if (resultSet.next()) {
+//                    int taskCount = resultSet.getInt(1); // 獲取任務數量
+//                    return taskCount + 1; // 返回下一個任務編號
+//                }
+//            }
+//        } catch (SQLException e) {
+//            // 錯誤處理：記錄日誌或拋出異常
+//            e.printStackTrace();
+//        }
+//
+//        // 如果查詢失敗或發生異常，返回 -1 表示錯誤
+//        return -1;
+//    }
 }

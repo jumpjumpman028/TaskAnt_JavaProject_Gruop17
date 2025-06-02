@@ -166,7 +166,7 @@ public class GoogleCalendarAuthorization {
 
         }
     }
-    public static List<LocalDate> getNextTargetDates(
+    private static List<LocalDate> getNextTargetDates(
             LocalDate today, List<DayOfWeek> targetDays, LocalDate endDay) {
         return targetDays.stream()
                 .map(day -> {
