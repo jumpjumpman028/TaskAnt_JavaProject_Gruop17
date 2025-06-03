@@ -7,12 +7,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.Task.Task;
 import org.Task.TaskCellController;
@@ -20,14 +17,14 @@ import org.Task.TaskManager;
 
 import java.util.List;
 
-public class WaterTest implements SceneInterface {
+public class MainMenu implements SceneInterface {
     @FXML private VBox taskListPane;
     @FXML private ScrollPane ScrollPane;
-    public static WaterTest instance;
-    public WaterTest() {
+    public static MainMenu instance;
+    public MainMenu() {
         instance = this;
     }
-    public static WaterTest getInstance() {
+    public static MainMenu getInstance() {
         return instance;
     }
     @FXML

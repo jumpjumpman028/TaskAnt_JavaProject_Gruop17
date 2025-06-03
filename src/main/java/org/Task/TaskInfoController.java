@@ -8,10 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.*;
 
 import java.net.URL;
@@ -219,7 +217,7 @@ public class TaskInfoController {
         TaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
         CrossPlatformNotification.show( task.getName() + "任務資訊已被修改" );
-        WaterTest.getInstance().refreshTaskList();
+        MainMenu.getInstance().refreshTaskList();
 
         ((Stage)saveButton.getScene().getWindow()).close();
 

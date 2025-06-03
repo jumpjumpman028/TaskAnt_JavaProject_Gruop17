@@ -2,27 +2,19 @@ package org.TeamTask;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.MainApplication;
 import org.SceneInterface;
-import org.Task.Task;
-import org.Task.TaskCellController;
-import org.Task.TaskManager;
-import org.TeamTask.TeamTaskManager;
-import org.WaterTest;
 
-import java.io.IOException;
 import java.util.List;
 ///  從TeamInfo中 點入 關於此Team中的所有Task
 public class TeamTaskView implements SceneInterface{
-    public static TeamTaskView instance;
+    public static TeamTaskView instance = new TeamTaskView();
     public static TeamTaskView getInstance() {
         return instance;
     }

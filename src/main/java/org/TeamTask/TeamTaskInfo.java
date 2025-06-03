@@ -1,6 +1,5 @@
 package org.TeamTask;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,14 +7,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.DeBugConsole;
 import org.GoogleCalendarAuthorization;
-import org.SceneInterface;
-import org.WaterTest;
+import org.MainMenu;
 
 import java.net.URL;
 import java.time.DateTimeException;
@@ -216,7 +212,7 @@ public class TeamTaskInfo{
         }
         TeamTaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
-        WaterTest.getInstance().refreshTaskList();
+        MainMenu.getInstance().refreshTaskList();
         if(!Error){
             ((Stage)saveButton.getScene().getWindow()).close();
         }

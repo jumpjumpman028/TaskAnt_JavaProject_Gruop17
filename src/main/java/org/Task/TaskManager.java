@@ -20,7 +20,6 @@ import java.sql.SQLException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
@@ -525,7 +524,7 @@ public class TaskManager {
         // 再從本地列表移除
         taskList.remove(task);
         DeBugConsole.log("刪除task");
-        if(WaterTest.getInstance() != null) WaterTest.getInstance().refreshTaskList();
+        if(MainMenu.getInstance() != null) MainMenu.getInstance().refreshTaskList();
         if(NodeMapView.GetInstance() != null) NodeMapView.GetInstance().FreshEvent();
         Platform.runLater(this::UploadDataToDatabase);
     }
