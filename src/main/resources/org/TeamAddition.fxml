@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="407.0" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TeamTask.TeamAddition">
+<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.TeamTask.TeamAddition">
     <children>
 
         <VBox layoutX="50" layoutY="80" prefHeight="278.0" prefWidth="442.0" spacing="15">
@@ -32,7 +32,7 @@
             </children>
         </VBox>
 
-        <Button fx:id="comfirmButton" defaultButton="true" layoutX="504.0" layoutY="358.0" mnemonicParsing="false" onAction="#ConfirmTeam" prefHeight="36.0" prefWidth="80.0" text="確認" textFill="#613535" />
+        <Button fx:id="comfirmButton" defaultButton="true" layoutX="504.0" layoutY="346.0" mnemonicParsing="false" onAction="#ConfirmTeam" prefHeight="36.0" prefWidth="80.0" text="確認" textFill="#613535" />
         <Button fx:id="cancelButton" cancelButton="true" layoutX="502.0" layoutY="16.0" mnemonicParsing="false" onAction="#CancelScene" prefHeight="36.0" prefWidth="84.0" text="取消" />
       <Label alignment="CENTER" layoutX="249.0" layoutY="30.0" minWidth="80" text="創建團隊" textAlignment="CENTER">
          <font>

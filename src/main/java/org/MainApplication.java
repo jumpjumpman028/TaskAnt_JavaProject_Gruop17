@@ -17,6 +17,7 @@ public class MainApplication extends Application {
         primaryStage.setTitle("TaskManager");
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         // 啟動 DesktopPet

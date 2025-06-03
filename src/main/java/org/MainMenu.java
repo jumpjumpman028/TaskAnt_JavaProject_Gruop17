@@ -48,6 +48,7 @@ public class MainMenu implements SceneInterface {
             stage.setTitle("新增事件");
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.showAndWait();
 
 
