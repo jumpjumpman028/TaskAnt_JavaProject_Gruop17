@@ -26,6 +26,7 @@ public class DesktopPet {
     private double yOffset = 0;
     private double speed = 2;
     private boolean movingRight = true;
+    private Stage menuStage; // 用來追蹤功能選單
 
     public void start(Stage primaryStage) {
         Image petImage = new Image(getClass().getResource("/images/chiikawa.gif").toExternalForm());
@@ -93,7 +94,12 @@ public class DesktopPet {
     }
 
     private void showPetMenu() {
-        Stage menuStage = new Stage();
+        if (menuStage != null && menuStage.isShowing()) {
+            menuStage.toFront(); // 已存在就 bring to front
+            return;
+        }
+
+        menuStage = new Stage();
         menuStage.initStyle(StageStyle.UTILITY);
         menuStage.setAlwaysOnTop(true);
         menuStage.setTitle("寵物功能選單");
@@ -102,17 +108,32 @@ public class DesktopPet {
         label.setStyle("-fx-font-size: 14px;");
 
         Button waterTestButton = new Button("跳到 WaterTest");
+
         waterTestButton.setOnAction(e -> {
             try {
-                MainApplication.switchScene("WaterTest.fxml");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/WaterTest.fxml"));
+                Scene scene = new Scene(loader.load());
+
+                Stage waterStage = new Stage();
+                waterStage.setTitle("Water Test");
+                waterStage.setScene(scene);
+                waterStage.initStyle(StageStyle.UTILITY);
+                waterStage.setAlwaysOnTop(true);
+                waterStage.show();
+
                 menuStage.close();
+                menuStage = null;
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
 
         Button cancelButton = new Button("取消");
-        cancelButton.setOnAction(e -> menuStage.close());
+        cancelButton.setOnAction(e -> {
+            menuStage.close();
+            menuStage = null;
+        });
 
         VBox layout = new VBox(10, label, waterTestButton, cancelButton);
         layout.setAlignment(Pos.CENTER);
@@ -121,9 +142,12 @@ public class DesktopPet {
         Scene scene = new Scene(layout, 250, 150);
         menuStage.setScene(scene);
 
-        // 視窗顯示在寵物附近
-        menuStage.setX(menuStage.getOwner() == null ? 300 : menuStage.getOwner().getX() + 100);
-        menuStage.setY(menuStage.getOwner() == null ? 300 : menuStage.getOwner().getY() + 100);
+        // 顯示在寵物正上方
+        Stage ownerStage = (Stage) waterTestButton.getScene().getWindow();
+        menuStage.setX(ownerStage.getX() + 30);
+        menuStage.setY(ownerStage.getY() - 160);
+
+        menuStage.setOnCloseRequest(e -> menuStage = null); // 視窗關閉時釋放資源
 
         menuStage.show();
     }
@@ -152,4 +176,5 @@ public class DesktopPet {
         moveTimeline.play();
     }
 }
+
 
