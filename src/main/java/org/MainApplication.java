@@ -14,7 +14,7 @@ public class MainApplication extends Application {
         // 初始化主應用程式的主舞台
         primaryStage = stage;
         switchScene("Login.fxml");
-        primaryStage.setTitle("TaskAnt");
+        primaryStage.setTitle("TaskManager");
         primaryStage.setMinWidth(600);
         primaryStage.setMinHeight(400);
         primaryStage.show();

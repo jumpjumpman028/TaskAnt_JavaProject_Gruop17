@@ -1,6 +1,7 @@
 package org;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -107,11 +108,11 @@ public class DesktopPet {
         Label label = new Label("請選擇您需要的功能：");
         label.setStyle("-fx-font-size: 14px;");
 
-        Button waterTestButton = new Button("跳到 WaterTest");
+        Button waterTestButton = new Button("開啟登入畫面");
 
         waterTestButton.setOnAction(e -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/WaterTest.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Login.fxml"));
                 Scene scene = new Scene(loader.load());
 
                 Stage waterStage = new Stage();
