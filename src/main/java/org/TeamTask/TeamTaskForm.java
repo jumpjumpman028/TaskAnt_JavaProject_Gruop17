@@ -56,6 +56,7 @@ public class TeamTaskForm implements Initializable {
     private Map<CheckBox, DayOfWeek> dayCheckMap;
     /// TeamTaskView 前來
     public void SetTeamID(int TeamID) {
+        System.out.println("TeamTaskForm set TeamID: " + TeamID);
         this.TeamID = TeamID;
     }
     @FXML
@@ -77,7 +78,9 @@ public class TeamTaskForm implements Initializable {
                 }
                 Stage stage = (Stage) comfirmButton.getScene().getWindow();
                 System.out.println("TeamID is " + TeamID);
-                TeamTaskManager.getInstance().addTeamTaskToDatabase(new TeamTask(TeamID,name,desc,UserInfo.username,startDate,startTime,null,null,null,TeamTask.Type.Experience));
+                TeamTask task = new TeamTask(TeamID,name,desc,UserInfo.username,startDate,startTime,null,null,null,TeamTask.Type.Experience);
+                System.out.println(task.toString());
+                TeamTaskManager.getInstance().addTeamTaskToDatabase(task);
                 stage.close();
             }
         } else if (repeatPane.isVisible()) {

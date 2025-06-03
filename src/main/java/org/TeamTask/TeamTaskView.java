@@ -73,7 +73,7 @@ public class TeamTaskView implements SceneInterface{
 
     @FXML private void initialize() {
         setTeamId(TeamInfo.TeamID);
-        System.out.println("成功設定TeamID: " + TeamInfo.TeamID);
+        System.out.println("TeamTaskView成功設定TeamID: " + TeamInfo.TeamID);
         reloadTasks();
     }
 
@@ -84,8 +84,10 @@ public class TeamTaskView implements SceneInterface{
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/TeamTaskForm.fxml"));
-            Parent root = loader.load();
 
+            Parent root = loader.load();
+            TeamTaskForm controller = loader.getController();
+            controller.SetTeamID(teamId);
             Scene scene = new Scene(root);
 
             scene.getStylesheets().add(getClass().getResource("/styles/EventForm.css").toExternalForm());
@@ -117,12 +119,4 @@ public class TeamTaskView implements SceneInterface{
 
     }
 
-//    @FXML
-//    private void addTask() {
-//        // 打開新增任務窗口
-//        SceneSwitcher.getInstance().openModal("EventForm.fxml", controller -> {
-//            EventFormController formController = (EventFormController) controller;
-//            formController.setTeamId(teamId); // 傳遞 Team ID
-//        });
-//    }
 }

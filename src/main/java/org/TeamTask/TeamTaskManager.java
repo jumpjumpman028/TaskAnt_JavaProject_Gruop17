@@ -52,7 +52,7 @@ public class TeamTaskManager {
 
         try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-
+            System.out.println("getTeamIDis " + teamTask.getTeamID());
             // 設定參數
             preparedStatement.setInt(1, teamTask.getTeamID());
             preparedStatement.setString(2, teamTask.getName()); // task_name
@@ -93,6 +93,7 @@ public class TeamTaskManager {
             }else{
                 preparedStatement.setInt(10, teamTask.getRecurringDaysInt());
             }
+
             preparedStatement.setDouble(11, teamTask.getX());//x
             preparedStatement.setDouble(12, teamTask.getY());//y
             preparedStatement.setString(13, Task.GoogleEventIDToJson(teamTask.getGoogleEventIds()));//裡面放JSON
