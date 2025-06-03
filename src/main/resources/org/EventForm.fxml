@@ -111,9 +111,9 @@
             </children>
         </VBox>
       <Button fx:id="comfirmButton" defaultButton="true" layoutX="504.0" layoutY="376.0" mnemonicParsing="false" onAction="#ConfirmData" prefHeight="36.0" prefWidth="80.0" text="確認" textFill="#613535" />
-      <Label fx:id="errorLabel" alignment="TOP_LEFT" layoutX="-3.0" layoutY="390.0" prefHeight="44.0" prefWidth="525.0" textFill="#eb0707">
+      <Label fx:id="errorLabel" alignment="TOP_LEFT" layoutY="366.0" prefHeight="68.0" prefWidth="503.0" text="Tww" textFill="#eb0707" wrapText="true">
          <font>
-            <Font size="20.0" />
+            <Font size="26.0" />
          </font>
       </Label>
       <Button fx:id="cancelButton" cancelButton="true" layoutX="502.0" layoutY="16.0" mnemonicParsing="false" onAction="#CancelScene" prefHeight="36.0" prefWidth="84.0" text="取消" />

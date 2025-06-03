@@ -12,10 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.DeBugConsole;
-import org.GoogleCalendarAuthorization;
-import org.SceneInterface;
-import org.WaterTest;
+import org.*;
 
 import java.net.URL;
 import java.time.DateTimeException;
@@ -178,7 +175,13 @@ public class TaskInfoController {
         // 2. 更新 Task 物件
 
         try {
-            if (newStartDate != null && newEndDate != null && newStartDate.isBefore(newEndDate)) {
+            if(task.getType() == Task.Type.Experience && newStartDate != null){
+                task.setStartDate(newStartDate);
+            }
+            if(task.getType() == Task.Type.Experience && newEndDate != null){
+                task.setEndDate(newEndDate);
+            }
+            if (task.getType() != Task.Type.Experience && newStartDate != null && newEndDate != null && newStartDate.isBefore(newEndDate)) {
                 task.setStartDate(newStartDate);
                 task.setEndDate(newEndDate);
             }
@@ -197,10 +200,6 @@ public class TaskInfoController {
             DeBugConsole.log(DT.getMessage());
             return;
         }
-//        if(newRecurringDays.isEmpty()){
-//            ErrorLabel.setText("請設定你想要重複的日期");
-//            return;
-//        }
         DeBugConsole.log(newRecurringDays.toString());
         if(newStatus == Task.Status.COMPLETED && task.getStatus() == Task.Status.TODO){
                 ErrorLabel.setText("你尚未開始任務，請先開始任務");
@@ -219,6 +218,7 @@ public class TaskInfoController {
         }
         TaskManager.getInstance().UploadDataToDatabase();
         DeBugConsole.log("任務資訊已被更改");
+        CrossPlatformNotification.show( task.getName() + "任務資訊已被修改" );
         WaterTest.getInstance().refreshTaskList();
 
         ((Stage)saveButton.getScene().getWindow()).close();
@@ -262,7 +262,9 @@ public class TaskInfoController {
             // 如果沒有更改Button的text便不會有按兩下的問題
             //saveButton.setText("");
         });
-        saveButton.setOnMouseReleased(e -> {saveImageView.setImage(normalSaveImage);
+        saveButton.setOnMouseReleased(e -> {
+            saveImageView.setImage(normalSaveImage);
+            saveText.setTranslateY( saveText.getTranslateY() -8);
         });
     }
     ///  設定取消按鍵

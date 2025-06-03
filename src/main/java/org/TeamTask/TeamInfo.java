@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.DeBugConsole;
 import org.MainApplication;
@@ -38,6 +39,8 @@ public class TeamInfo {
     @FXML
     private TextArea descriptionTextArea;
 
+    @FXML
+    private Text saveText;
     @FXML
     private Button saveButton, cancelButton;
 
@@ -72,8 +75,14 @@ public class TeamInfo {
         pressedSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium_Pressed.png").toExternalForm());
         saveImageView.setImage(normalSaveImage);
 
-        saveButton.setOnMousePressed(e -> saveImageView.setImage(pressedSaveImage));
-        saveButton.setOnMouseReleased(e -> saveImageView.setImage(normalSaveImage));
+        saveButton.setOnMousePressed(e -> {
+            saveImageView.setImage(pressedSaveImage);
+            saveText.setTranslateY(saveText.getTranslateY() +8);
+        });
+        saveButton.setOnMouseReleased(e -> {
+            saveImageView.setImage(normalSaveImage);
+            saveText.setTranslateY(saveText.getTranslateY() -8);
+        });
         saveButton.setOnAction(event -> goToTeamTaskView());
     }
 

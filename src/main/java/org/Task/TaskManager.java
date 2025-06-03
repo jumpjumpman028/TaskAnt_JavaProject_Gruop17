@@ -27,15 +27,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TaskManager {
-
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private List<Task> taskList = new ArrayList<>();
     private final static TaskManager instance = new TaskManager();
 
     public static TaskManager getInstance() {
         return instance;
+    }
+    TaskManager() {
+        scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.MINUTES);
     }
 
     public void AddTask(Task task) {
@@ -113,7 +118,8 @@ public class TaskManager {
         }
     }
 
-
+    Runnable task = () -> CheckAllTaskTimeInProcess();
+    ;
     public void CreateTask(String taskName, String description, LocalDate startDate, Integer startHour, Integer startMinute,
                            LocalDate endDate, Integer endHour, Integer endMinute, List<DayOfWeek> recurringDays, Task.Type taskType) {
         LocalTime startTime = null;
@@ -126,10 +132,10 @@ public class TaskManager {
         }
 
         if (taskType == Task.Type.Experience) {
-            AddTask(new Task(taskName, description, "使用者", startDate, startTime));
+            AddTask(new Task(taskName, description, UserInfo.username, startDate, startTime));
         } else {
 
-            AddTask(new Task(taskName, description, "使用者", startDate, startTime, endDate, endTime, recurringDays, taskType));
+            AddTask(new Task(taskName, description, UserInfo.username, startDate, startTime, endDate, endTime, recurringDays, taskType));
         }
     }
     public void setTaskList(ArrayList<Task> taskList) {
@@ -384,42 +390,42 @@ public class TaskManager {
 
 
 
-    public void Notify() {
-        // 遍歷所有任務
-        for (Task task : taskList) {
-            // 判斷任務的狀態
-            if (task.getStatus() == Task.Status.TODO) {
-                // 檢查任務是否即將開始
-                if (task.getStartDate() != null && task.getStartTime() != null) {
-                    LocalDateTime taskStartDateTime = LocalDateTime.of(task.getStartDate(), task.getStartTime());
-                    LocalDateTime now = LocalDateTime.now();
-
-                    // 如果任務即將開始（例如提前10分鐘提醒）
-                    if (taskStartDateTime.isAfter(now) && taskStartDateTime.isBefore(now.plusMinutes(10))) {
-                        // 發送通知
-                        CrossPlatformNotification.show("任務即將開始"+ "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
-
-
-                        // 更新任務狀態為進行中
-                        task.setStatus(Task.Status.IN_PROGRESS);
-                        System.out.println("任務狀態已更新為進行中：" + task.getName());
-                    }
-                }
-            } else if (task.getStatus() == Task.Status.IN_PROGRESS) {
-                // 如果任務正在進行，檢查是否需要提醒用戶
-                if (task.getEndDate() != null && task.getEndTime() != null) {
-                    LocalDateTime taskEndDateTime = LocalDateTime.of(task.getEndDate(), task.getEndTime());
-                    LocalDateTime now = LocalDateTime.now();
-
-                    // 如果任務即將結束（例如提前10分鐘提醒）
-                    if (taskEndDateTime.isAfter(now) && taskEndDateTime.isBefore(now.plusMinutes(10))) {
-                        // 發送通知
-                        CrossPlatformNotification.show("任務即將結束"+ "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
-                    }
-                }
-            }
-        }
-    }
+//    public void Notify() {
+//        // 遍歷所有任務
+//        for (Task task : taskList) {
+//            // 判斷任務的狀態
+//            if (task.getStatus() == Task.Status.TODO) {
+//                // 檢查任務是否即將開始
+//                if (task.getStartDate() != null && task.getStartTime() != null) {
+//                    LocalDateTime taskStartDateTime = LocalDateTime.of(task.getStartDate(), task.getStartTime());
+//                    LocalDateTime now = LocalDateTime.now();
+//
+//                    // 如果任務即將開始（例如提前10分鐘提醒）
+//                    if (taskStartDateTime.isAfter(now) && taskStartDateTime.isBefore(now.plusMinutes(10))) {
+//                        // 發送通知
+//                        CrossPlatformNotification.show("任務即將開始"+ "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+//
+//
+//                        // 更新任務狀態為進行中
+//                        task.setStatus(Task.Status.IN_PROGRESS);
+//                        System.out.println("任務狀態已更新為進行中：" + task.getName());
+//                    }
+//                }
+//            } else if (task.getStatus() == Task.Status.IN_PROGRESS) {
+//                // 如果任務正在進行，檢查是否需要提醒用戶
+//                if (task.getEndDate() != null && task.getEndTime() != null) {
+//                    LocalDateTime taskEndDateTime = LocalDateTime.of(task.getEndDate(), task.getEndTime());
+//                    LocalDateTime now = LocalDateTime.now();
+//
+//                    // 如果任務即將結束（例如提前10分鐘提醒）
+//                    if (taskEndDateTime.isAfter(now) && taskEndDateTime.isBefore(now.plusMinutes(10))) {
+//                        // 發送通知
+//                        CrossPlatformNotification.show("任務即將結束"+ "任務名稱: " + task.getName() + "\n描述: " + task.getDescription());
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private void sendNotification(String title, String message) {
         // 檢查系統是否支援 SystemTray
@@ -474,6 +480,7 @@ public class TaskManager {
             if (task.getStatus() == Task.Status.IN_PROGRESS) {
                 GoogleCalendarAuthorization.addTaskToGoogleCalendarForNextRecurringDays(task);
                 System.out.println("Task added to Google Calendar: " + task.getName());
+                CrossPlatformNotification.show("任務已被新增到日曆中 請查看" + task.getName());
             }else if(task.getStatus() == Task.Status.COMPLETED){
                 GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
             }
@@ -482,6 +489,7 @@ public class TaskManager {
         }
     }
     public void CheckAllTaskTimeInProcess() {
+        DeBugConsole.log("正在確認任務狀態");
         for (Task task : taskList) {
             CheckLocalDateTimeInProcess(task);
         }
@@ -489,7 +497,7 @@ public class TaskManager {
 
     private void CheckLocalDateTimeInProcess(Task task) {
         //TODO:通知任務已開啟
-        if(task.getStatus() == Task.Status.TODO && task.isTaskOnTimeCheck()){
+        if(task.getStatus() == Task.Status.TODO && task.isTaskOnTimeCheck(task)){
             task.setStatus(Task.Status.IN_PROGRESS);
             DeBugConsole.log("成功將任務 " + task.getName()+" 調至進行");
         }else if(task.getStatus() == Task.Status.IN_PROGRESS && task.getGoogleEventIds().isEmpty()){
@@ -504,8 +512,10 @@ public class TaskManager {
     }
     public void DeleteTask(Task task) {
         try {
-            if(task.getType() == Task.Type.Experience)
-            GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
+            if(task.getType() != Task.Type.Experience){
+                CrossPlatformNotification.show("已刪除日曆上的任務: " + task.getName());
+                GoogleCalendarAuthorization.deleteAllGoogleEventsForTask(task);
+            }
             deleteDataFromDatabase(task);
         } catch (Exception e) {
             System.err.println("刪除 Google Calendar 事件失敗：" + e.getMessage());

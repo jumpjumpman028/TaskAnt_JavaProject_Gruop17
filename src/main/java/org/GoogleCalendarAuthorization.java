@@ -135,6 +135,7 @@ public class GoogleCalendarAuthorization {
 
     // 批次刪除 Task 所有事件
     public static void deleteAllGoogleEventsForTask(Task task) {
+
         Set<String> ids = task.getGoogleEventIds();
         if (ids == null || ids.isEmpty()) return;
 

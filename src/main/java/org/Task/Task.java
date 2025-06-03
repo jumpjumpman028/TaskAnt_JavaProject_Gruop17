@@ -1,7 +1,9 @@
 package org.Task;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.CrossPlatformNotification;
 import org.DeBugConsole;
+import org.UserInfo;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -87,6 +89,7 @@ public class Task {
         this.y = 0.0;
         this.parentId = null;
         googleEventIds = new HashSet<>();
+
     }
 
     public Task(String name, String description, String assignee,LocalDate startDate, LocalTime startTime,LocalDate endDate, LocalTime endTime,Status status, Type type,List<DayOfWeek> recurringDays,double x,double y,Set<String> googleEventIds, Integer parentId,int ID) {
@@ -141,6 +144,7 @@ public class Task {
             if(endDate == null) setEndDate( LocalDate.now());
             if(endTime == null) setEndTime( LocalTime.now());
             DeBugConsole.log("已將任務 "+name+" 調至完成");
+            CrossPlatformNotification.show("任務: " + name + "已完成!" + "結束時間 : " + getEndDateString() + getEndTimeString());
             try{
                 TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(this);
             }catch (Exception e){
@@ -157,6 +161,7 @@ public class Task {
             }
             try{
                 TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(this);
+                CrossPlatformNotification.show("任務: " + name + " 已開始!" + " 開始時間 : " + getStartDateString() + getStartTimeString());
             }catch (Exception e){
                 DeBugConsole.log("Error in checkAndUpdateTaskInGoogleCalendar" + e.getMessage());
             }
@@ -244,7 +249,7 @@ public class Task {
     }
 
     public void setStartTime(LocalTime startTime) {
-        if(endTime != null && (startTime.isBefore(endTime) || endTime.equals(startTime)))
+        if(endTime != null &&  (!startDate.isEqual(endDate) || (startTime.isBefore(endTime) || endTime.equals(startTime))))
             this.startTime = startTime;
         else if( endTime == null && startTime != null){
             this.startTime = startTime;
@@ -265,7 +270,7 @@ public class Task {
         return endTime.format(formatter);
     }
     public void setEndTime(LocalTime endTime) {
-        if(startTime != null && endTime != null && (endTime.isAfter(startTime)|| endTime.equals(startTime)))
+        if(startTime != null && endTime != null && (!startDate.isEqual(endDate)||(endTime.isAfter(startTime)|| endTime.equals(startTime))))
             this.endTime = endTime;
         else if( startTime == null && endTime != null){
           this.endTime = endTime;
@@ -296,12 +301,13 @@ public class Task {
         return ID;
     }
 
-    public boolean isTaskOnTimeCheck() {
+    public boolean isTaskOnTimeCheck(Task task) {
             if((startDate != null && !startDate.isAfter(LocalDate.now())&& !type.equals(Task.Type.Experience))){
                 //TODO:通知使用者 日期已到
                 return true;    //非一次性任務時，當開始日期>=目前日期 任務開始
-            }else if (startDate !=null && startTime != null && !startDate.isAfter(LocalDate.now()) && startTime.isAfter(LocalTime.now()) && type.equals(Task.Type.Experience)) {
+            }else if (startDate !=null && startTime != null && !startDate.isAfter(LocalDate.now()) && startTime.isBefore(LocalTime.now()) && type.equals(Task.Type.Experience)) {
                 //TODO 通知使用者 時間已到
+                DeBugConsole.log(startDate + " " + startTime + " " + type + " " + task.getName() + LocalDate.now() + " " + LocalTime.now());
                 return true;    //一次性任務時，當開始時間 >= 目前時間 任務開始
             }
             return false;
