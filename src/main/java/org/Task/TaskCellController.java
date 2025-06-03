@@ -39,7 +39,7 @@ public class TaskCellController {
         // 設定 Tooltip
         Tooltip tip = new Tooltip(
                 "描述：" + task.getDescription() + "\n" +
-                        "類型：" + task.getType()
+                        "類型：" + task.getType().GetString()
         );
         tip.setWrapText(true);
         tip.setShowDelay(Duration.seconds(0.5));

@@ -21,8 +21,8 @@ public class MainApplication extends Application {
 
         // 啟動 DesktopPet
         Stage petStage = new Stage();
-        //DesktopPet desktopPet = new DesktopPet();
-        //desktopPet.start(petStage);
+        DesktopPet desktopPet = new DesktopPet();
+        desktopPet.start(petStage);
     }
 
     public static void switchScene(String fxmlFile) throws Exception {
