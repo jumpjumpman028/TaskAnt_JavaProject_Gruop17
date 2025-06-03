@@ -303,14 +303,18 @@ public class Task {
 
     public boolean isTaskOnTimeCheck(Task task) {
             if((startDate != null && !startDate.isAfter(LocalDate.now())&& !type.equals(Task.Type.Experience))){
-                //TODO:通知使用者 日期已到
                 return true;    //非一次性任務時，當開始日期>=目前日期 任務開始
             }else if (startDate !=null && startTime != null && !startDate.isAfter(LocalDate.now()) && startTime.isBefore(LocalTime.now()) && type.equals(Task.Type.Experience)) {
-                //TODO 通知使用者 時間已到
-                DeBugConsole.log(startDate + " " + startTime + " " + type + " " + task.getName() + LocalDate.now() + " " + LocalTime.now());
                 return true;    //一次性任務時，當開始時間 >= 目前時間 任務開始
             }
             return false;
+    }
+    public boolean isTaskExpire(Task task) {
+        if(endDate != null && endTime != null && endDate.equals(LocalDate.now()) && !endTime.isAfter(LocalTime.now())){
+
+            return true;
+        }
+        return false;
     }
 
 

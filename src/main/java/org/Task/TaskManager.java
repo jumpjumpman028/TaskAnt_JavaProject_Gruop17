@@ -119,7 +119,6 @@ public class TaskManager {
     }
 
     Runnable task = () -> CheckAllTaskTimeInProcess();
-    ;
     public void CreateTask(String taskName, String description, LocalDate startDate, Integer startHour, Integer startMinute,
                            LocalDate endDate, Integer endHour, Integer endMinute, List<DayOfWeek> recurringDays, Task.Type taskType) {
         LocalTime startTime = null;
@@ -507,6 +506,8 @@ public class TaskManager {
                 DeBugConsole.log(e.getMessage());
             }
 
+        }else if(task.getStatus() == Task.Status.IN_PROGRESS && task.isTaskExpire(task)){
+            CrossPlatformNotification.show("任務" + task.getName() + "已過期 請查看!");
         }
 
     }
