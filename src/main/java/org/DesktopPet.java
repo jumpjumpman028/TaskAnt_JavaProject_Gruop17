@@ -5,16 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Button;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -27,7 +24,7 @@ public class DesktopPet {
     private double yOffset = 0;
     private double speed = 2;
     private boolean movingRight = true;
-    private Stage menuStage; // 用來追蹤功能選單
+    private Stage menuStage;
 
     public void start(Stage primaryStage) {
         Image petImage = new Image(getClass().getResource("/images/chiikawa.gif").toExternalForm());
@@ -46,12 +43,10 @@ public class DesktopPet {
         primaryStage.setAlwaysOnTop(true);
         primaryStage.setScene(scene);
 
-        // 設定寵物位置：貼在螢幕底部
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2); // 水平居中
-        primaryStage.setY(600); // 貼在螢幕底部
+        primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
+        primaryStage.setY(screenBounds.getHeight() - 300);
 
-        // 拖動邏輯
         scene.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
@@ -61,28 +56,20 @@ public class DesktopPet {
             primaryStage.setY(event.getScreenY() - yOffset);
         });
 
-        // 點擊寵物彈出功能選單
         petView.setPickOnBounds(true);
         petView.setOnMouseClicked(event -> {
-            showPetMenu();
+            showPetMenu(primaryStage);
         });
 
         primaryStage.show();
-
-        // 寵物自動移動邏輯
         animatePet(primaryStage, petView);
     }
 
     private VBox createSpeechBubble() {
         Label speechLabel = new Label("你好呀！");
-        speechLabel.setStyle(
-                "-fx-background-color: white; -fx-text-fill: black; -fx-padding: 8 12; -fx-background-radius: 12;");
+        speechLabel.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-padding: 8 12; -fx-background-radius: 12;");
 
-        Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(
-                0.0, 0.0,
-                10.0, 0.0,
-                5.0, 7.0);
+        Polygon triangle = new Polygon(0.0, 0.0, 10.0, 0.0, 5.0, 7.0);
         triangle.setFill(Color.WHITE);
 
         VBox speechBubble = new VBox(speechLabel, triangle);
@@ -94,9 +81,9 @@ public class DesktopPet {
         return speechBubble;
     }
 
-    private void showPetMenu() {
+    private void showPetMenu(Stage ownerStage) {
         if (menuStage != null && menuStage.isShowing()) {
-            menuStage.toFront(); // 已存在就 bring to front
+            menuStage.toFront();
             return;
         }
 
@@ -109,14 +96,13 @@ public class DesktopPet {
         label.setStyle("-fx-font-size: 14px;");
 
         Button waterTestButton = new Button("開啟登入畫面");
-
         waterTestButton.setOnAction(e -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Login.fxml"));
                 Scene scene = new Scene(loader.load());
 
                 Stage waterStage = new Stage();
-                waterStage.setTitle("Water Test");
+                waterStage.setTitle("登入畫面");
                 waterStage.setScene(scene);
                 waterStage.initStyle(StageStyle.UTILITY);
                 waterStage.setAlwaysOnTop(true);
@@ -124,7 +110,6 @@ public class DesktopPet {
 
                 menuStage.close();
                 menuStage = null;
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -143,12 +128,11 @@ public class DesktopPet {
         Scene scene = new Scene(layout, 250, 150);
         menuStage.setScene(scene);
 
-        // 顯示在寵物正上方
-        Stage ownerStage = (Stage) waterTestButton.getScene().getWindow();
         menuStage.setX(ownerStage.getX() + 30);
         menuStage.setY(ownerStage.getY() - 160);
 
-        menuStage.setOnCloseRequest(e -> menuStage = null); // 視窗關閉時釋放資源
+        menuStage.setOnCloseRequest(e -> menuStage = null);
+        menuStage.setOnHidden(e -> menuStage = null);
 
         menuStage.show();
     }
