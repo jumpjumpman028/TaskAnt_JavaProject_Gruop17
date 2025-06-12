@@ -23,7 +23,7 @@ Label[fx\\:id="statusLabel"] {
 TextField, PasswordField {
     -fx-background-color: #FFFFFF; /* 白色背景 */
     -fx-border-color: #752702; /* 粉紅色邊框 */
-    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-border-radius: 5px; /* 圓角邊框 */
     -fx-background-radius: 10px; /* 圓角背景 */
     -fx-padding: 5px; /* 內邊距 */
     -fx-font-size: 14px; /* 字型大小 */
@@ -35,8 +35,8 @@ Button {
     -fx-background-color: linear-gradient(#b34422, #752702); /* 粉紅漸層背景 */
     -fx-text-fill: white; /* 白色文字 */
     -fx-font-weight: bold; /* 粗體文字 */
-    -fx-border-radius: 15px; /* 圓角邊框 */
-    -fx-background-radius: 15px; /* 圓角背景 */
+    -fx-border-radius: 10px; /* 圓角邊框 */
+    -fx-background-radius: 10px; /* 圓角背景 */
     -fx-padding: 5px 15px; /* 內邊距 */
     -fx-cursor: hand; /* 滑鼠指標變成手型 */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0.2, 0, 2); /* 按鈕陰影 */
