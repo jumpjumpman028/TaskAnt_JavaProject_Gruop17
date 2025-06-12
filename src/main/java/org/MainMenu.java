@@ -1,13 +1,19 @@
 package org;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
@@ -20,6 +26,22 @@ import java.util.List;
 public class MainMenu implements SceneInterface {
     @FXML private VBox taskListPane;
     @FXML private ScrollPane ScrollPane;
+    @FXML private Button reloadButton;
+    @FXML private Button switchToNodeMap;
+    @FXML private Button addEventButton;
+    @FXML private Button goToTeamMenuButton;
+    @FXML private Button logOutButton;
+    @FXML private ImageView reloadImageView;
+    @FXML private ImageView switchToNodeMapImageView;
+    @FXML private ImageView addEventImageView;
+    @FXML private ImageView goToTeamMenuImageView;
+    @FXML private ImageView logOutImageView;
+    @FXML private Text reloadText;
+    @FXML private Text switchToNodeMapText;
+    @FXML private Text addEventText;
+    @FXML private Text goToTeamMenuText;
+    @FXML private Text logOutText;
+    private Scene scene;
     public static MainMenu instance;
     public MainMenu() {
         instance = this;
@@ -85,7 +107,8 @@ public class MainMenu implements SceneInterface {
     }
 
     @Override
-    public void LoadEvent() {
+    public void LoadEvent(Scene scene) {
+        this.scene = scene;
         reloadTasks();
         DeBugConsole.log("LoadEvent " + getClass().getName());
 
@@ -115,6 +138,48 @@ public class MainMenu implements SceneInterface {
 
         // 設置 VBox 背景透明
         taskListPane.setStyle("-fx-background-color: transparent;");
+        Image normalSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium.png").toExternalForm());
+        Image pressedSaveImage = new Image(getClass().getResource("/images/TextBTN_Medium_Pressed.png").toExternalForm());
+        reloadButton.setOnMousePressed(e -> {
+            reloadText.setTranslateY(reloadText.getTranslateY()+8);
+            reloadImageView.setImage(pressedSaveImage);
+        });
+        reloadButton.setOnMouseReleased(e -> {
+            reloadText.setTranslateY(reloadText.getTranslateY() - 8);
+            reloadImageView.setImage(normalSaveImage);
+        });
+        switchToNodeMap.setOnMousePressed(e -> {
+            switchToNodeMapText.setTranslateY(switchToNodeMapText.getTranslateY() + 8);
+            switchToNodeMapImageView.setImage(pressedSaveImage);
+        });
+        switchToNodeMap.setOnMouseReleased(e -> {
+            switchToNodeMapText.setTranslateY(switchToNodeMapText.getTranslateY() - 8);
+            switchToNodeMapImageView.setImage(normalSaveImage);
+        });
+        addEventButton.setOnMousePressed(e -> {
+            addEventText.setTranslateY(addEventText.getTranslateY() + 8);
+            addEventImageView.setImage(pressedSaveImage);
+        });
+        addEventButton.setOnMouseReleased(e -> {
+            addEventText.setTranslateY(addEventText.getTranslateY() - 8);
+            addEventImageView.setImage(normalSaveImage);
+        });
+        goToTeamMenuButton.setOnMousePressed(e -> {
+            goToTeamMenuText.setTranslateY(goToTeamMenuText.getTranslateY() + 8);
+            goToTeamMenuImageView.setImage(pressedSaveImage);
+        });
+        goToTeamMenuButton.setOnMouseReleased(e -> {
+            goToTeamMenuText.setTranslateY(goToTeamMenuText.getTranslateY() - 8);
+            goToTeamMenuImageView.setImage(normalSaveImage);
+        });
+        logOutButton.setOnMousePressed(e -> {
+            logOutText.setTranslateY(logOutText.getTranslateY() + 8);
+            logOutImageView.setImage(pressedSaveImage);
+        });
+        logOutButton.setOnMouseReleased(e -> {
+            logOutText.setTranslateY(logOutText.getTranslateY() - 8);
+            logOutImageView.setImage(normalSaveImage);
+        });
     }
 
     @Override

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.Task.TaskManager;
 
 public class MainApplication extends Application {
     private static SceneInterface SceneController;
@@ -35,7 +36,7 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/org/" + fxmlFile));
         Scene scene = new Scene(fxmlLoader.load());
         SceneController = (SceneInterface) fxmlLoader.getController();
-        SceneController.LoadEvent();
+        SceneController.LoadEvent(scene);
 
         String cssFile = "/styles/" + fxmlFile.replace(".fxml", ".css");
         if (MainApplication.class.getResource(cssFile) != null) {
@@ -43,6 +44,11 @@ public class MainApplication extends Application {
         }
 
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(event -> {
+            TaskManager.getInstance().stopTaskManager();
+            System.out.println("視窗關閉請求！");
+
+        });
     }
 
 

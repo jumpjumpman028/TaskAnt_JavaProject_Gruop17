@@ -32,4 +32,9 @@
 #statusLabel {
     -fx-text-fill: yellow; /* 狀態文字為黃色 */
 }
+.image-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
 

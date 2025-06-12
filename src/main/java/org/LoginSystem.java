@@ -1,10 +1,12 @@
 package org;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.net.URI;
@@ -17,7 +19,7 @@ import java.time.LocalDate;
 
 public class LoginSystem implements SceneInterface {
     @Override
-    public void LoadEvent() {
+    public void LoadEvent(Scene scene) {
         DeBugConsole.log("LoadEvent " + getClass().getName());
     }
 
@@ -76,7 +78,7 @@ public class LoginSystem implements SceneInterface {
                 try{
                     MainApplication.switchScene("WaterTest.fxml");
                 }catch (Exception e){
-                    DeBugConsole.log(e.getMessage());
+                    e.printStackTrace();
                 }
 
             } else {

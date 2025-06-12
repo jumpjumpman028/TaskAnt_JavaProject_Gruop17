@@ -23,7 +23,7 @@ public class TeamMenu implements SceneInterface {
     @FXML private VBox teamListPane;
 
     @Override
-    public void LoadEvent() {
+    public void LoadEvent(Scene scene) {
         reloadTeams();
         DeBugConsole.log("LoadEvent " + getClass().getName());
     }

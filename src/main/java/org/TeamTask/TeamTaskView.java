@@ -98,7 +98,7 @@ public class TeamTaskView implements SceneInterface{
         }
     }
     @Override
-    public void LoadEvent() {
+    public void LoadEvent(Scene scene) {
 
     }
 

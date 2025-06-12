@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
@@ -292,7 +293,7 @@ public class NodeMapView implements SceneInterface {
     }
 
     @Override
-    public void LoadEvent() {
+    public void LoadEvent(Scene scene) {
         //TaskManager.getInstance().FetchDataFromDatabase();
         ///不要碰 線會不見啦 ㄍㄍㄍㄢㄢㄢ
     }

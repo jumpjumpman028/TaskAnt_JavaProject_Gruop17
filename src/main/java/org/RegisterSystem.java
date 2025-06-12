@@ -2,6 +2,7 @@ package org;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 public class RegisterSystem implements SceneInterface{
 
     @Override
-    public void LoadEvent() {
+    public void LoadEvent(Scene scene) {
 
     }
 

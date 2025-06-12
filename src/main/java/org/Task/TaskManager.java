@@ -536,6 +536,13 @@ public class TaskManager {
         TaskManager.getInstance().CheckAndUpdateTaskInGoogleCalendar(task);
     }
 
+    public void stopTaskManager() {
+        if (scheduler != null && !scheduler.isShutdown()) {
+            scheduler.shutdown(); // 停止調度任務
+            System.out.println("TaskManager 已停止。");
+        }
+    }
+
     /// 方便 但ShowInfo不應該在這裡
     public static void ShowInfo(Task task, Stage ownerStage){
         try {
