@@ -1,6 +1,5 @@
 package org;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -16,36 +15,33 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 public class DesktopPet {
 
     private double xOffset = 0;
     private double yOffset = 0;
-    private double speed = 2;
-    private boolean movingRight = true;
     private Stage menuStage;
 
     public void start(Stage primaryStage) {
-        Image petImage = new Image(getClass().getResource("/images/chiikawa.gif").toExternalForm());
+        Image petImage = new Image(getClass().getResource("/images/knight-geocities.gif").toExternalForm());
         ImageView petView = new ImageView(petImage);
-        petView.setScaleX(0.2);
-        petView.setScaleY(0.2);
+        petView.setFitWidth(80 * 2); // 設定 GIF 的寬度
+        petView.setFitHeight(75 * 2); // 設定 GIF 的高度
 
         VBox speechBubble = createSpeechBubble();
 
         StackPane root = new StackPane(petView, speechBubble);
         root.setStyle("-fx-background-color: transparent;");
 
-        Scene scene = new Scene(root, 300, 300, Color.TRANSPARENT);
+        Scene scene = new Scene(root, petView.getFitWidth(), petView.getFitHeight(), Color.TRANSPARENT);
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setAlwaysOnTop(true);
         primaryStage.setScene(scene);
 
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
-        primaryStage.setY(screenBounds.getHeight() - 300);
+        primaryStage.setX(screenBounds.getWidth() - petView.getFitWidth() - 20);
+        primaryStage.setY(screenBounds.getHeight() - petView.getFitHeight() - 20);
 
         scene.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
@@ -62,7 +58,6 @@ public class DesktopPet {
         });
 
         primaryStage.show();
-        animatePet(primaryStage, petView);
     }
 
     private VBox createSpeechBubble() {
@@ -128,7 +123,7 @@ public class DesktopPet {
         Scene scene = new Scene(layout, 250, 150);
         menuStage.setScene(scene);
 
-        menuStage.setX(ownerStage.getX() + 30);
+        menuStage.setX(ownerStage.getX() - 100);
         menuStage.setY(ownerStage.getY() - 160);
 
         menuStage.setOnCloseRequest(e -> menuStage = null);
@@ -136,30 +131,4 @@ public class DesktopPet {
 
         menuStage.show();
     }
-
-    private void animatePet(Stage primaryStage, ImageView petView) {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-
-        Timeline moveTimeline = new Timeline(new KeyFrame(Duration.millis(32), e -> {
-            double currentX = primaryStage.getX();
-
-            if (currentX <= screenBounds.getMinX()) {
-                movingRight = true;
-            } else if (currentX + primaryStage.getWidth() >= screenBounds.getMaxX()) {
-                movingRight = false;
-            }
-
-            if (movingRight) {
-                petView.setScaleX(-0.2);
-                primaryStage.setX(currentX + speed);
-            } else {
-                petView.setScaleX(0.2);
-                primaryStage.setX(currentX - speed);
-            }
-        }));
-        moveTimeline.setCycleCount(Timeline.INDEFINITE);
-        moveTimeline.play();
-    }
 }
-
-

@@ -22,7 +22,7 @@ Label[fx\\:id="statusLabel"] {
 /* 輸入框樣式 */
 TextField, PasswordField {
     -fx-background-color: #FFFFFF; /* 白色背景 */
-    -fx-border-color: #FFB6C1; /* 粉紅色邊框 */
+    -fx-border-color: #752702; /* 粉紅色邊框 */
     -fx-border-radius: 10px; /* 圓角邊框 */
     -fx-background-radius: 10px; /* 圓角背景 */
     -fx-padding: 5px; /* 內邊距 */
@@ -32,7 +32,7 @@ TextField, PasswordField {
 
 /* 按鈕樣式 */
 Button {
-    -fx-background-color: linear-gradient(#FFB6C1, #FF69B4); /* 粉紅漸層背景 */
+    -fx-background-color: linear-gradient(#b34422, #752702); /* 粉紅漸層背景 */
     -fx-text-fill: white; /* 白色文字 */
     -fx-font-weight: bold; /* 粗體文字 */
     -fx-border-radius: 15px; /* 圓角邊框 */
@@ -43,11 +43,11 @@ Button {
 }
 
 Button:hover {
-    -fx-background-color: linear-gradient(#FF69B4, #FF1493); /* 更深的粉紅漸層 */
+    -fx-background-color: linear-gradient(#b34422, #752702); /* 更深的粉紅漸層 */
 }
 
 Button:default {
-    -fx-border-color: #FF69B4; /* 預設按鈕的邊框顏色 */
+    -fx-border-color: #752702; /* 預設按鈕的邊框顏色 */
     -fx-border-width: 2px; /* 邊框寬度 */
 }
 
